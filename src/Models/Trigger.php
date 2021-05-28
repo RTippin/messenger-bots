@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use RTippin\Messenger\Traits\ScopesProvider;
 use RTippin\Messenger\Traits\Uuids;
 use RTippin\MessengerBots\Database\Factories\TriggerFactory;
 
@@ -22,7 +21,6 @@ class Trigger extends Model
 {
     use HasFactory;
     use Uuids;
-    use ScopesProvider;
 
     /**
      * The database table used by the model.

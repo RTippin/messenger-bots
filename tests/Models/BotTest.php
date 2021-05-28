@@ -27,8 +27,9 @@ class BotTest extends FeatureTestCase
     /** @test */
     public function it_has_relations()
     {
-        $thread = Thread::factory()->group()->create();
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
+        $bot = Bot::factory()->for(
+            Thread::factory()->group()->create()
+        )->owner($this->tippin)->create();
 
         $this->assertSame($bot->thread_id, $bot->thread->id);
         $this->assertSame($this->tippin->getKey(), $bot->owner->getKey());
