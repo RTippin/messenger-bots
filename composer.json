@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "RTippin\\MessengerBots\\": "src/"
+            "RTippin\\MessengerBots\\": "src/",
+            "RTippin\\MessengerBots\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {

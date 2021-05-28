@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Messenger Faker Test Suite">
+        <testsuite name="Messenger Bots Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
