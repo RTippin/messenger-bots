@@ -64,4 +64,28 @@ class BotTest extends FeatureTestCase
         $this->assertInstanceOf(Carbon::class, $bot->created_at);
         $this->assertInstanceOf(Carbon::class, $bot->updated_at);
     }
+
+    /** @test */
+    public function it_has_avatar_route()
+    {
+        $thread = Thread::factory()->group()->create();
+        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create(['avatar' => 'test.png']);
+        $avatar = [
+            'sm' => "/messenger/threads/$thread->id/bots/$bot->id/avatar/sm/test.png",
+            'md' => "/messenger/threads/$thread->id/bots/$bot->id/avatar/md/test.png",
+            'lg' => "/messenger/threads/$thread->id/bots/$bot->id/avatar/lg/test.png",
+        ];
+        $apiAvatarApi = [
+            'sm' => "/api/messenger/threads/$thread->id/bots/$bot->id/avatar/sm/test.png",
+            'md' => "/api/messenger/threads/$thread->id/bots/$bot->id/avatar/md/test.png",
+            'lg' => "/api/messenger/threads/$thread->id/bots/$bot->id/avatar/lg/test.png",
+        ];
+
+        $this->assertSame($avatar['sm'], $bot->getProviderAvatarRoute('sm'));
+        $this->assertSame($avatar['md'], $bot->getProviderAvatarRoute('md'));
+        $this->assertSame($avatar['lg'], $bot->getProviderAvatarRoute('lg'));
+        $this->assertSame($apiAvatarApi['sm'], $bot->getProviderAvatarRoute('sm', true));
+        $this->assertSame($apiAvatarApi['md'], $bot->getProviderAvatarRoute('md', true));
+        $this->assertSame($apiAvatarApi['lg'], $bot->getProviderAvatarRoute('lg', true));
+    }
 }

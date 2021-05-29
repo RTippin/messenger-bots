@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\Models\Thread;
@@ -66,7 +66,7 @@ class Bot extends Model implements MessengerProvider
     /**
      * @return MorphTo|MessengerProvider
      */
-    public function owner()
+    public function owner(): MorphTo
     {
         return $this->morphTo()->withDefault(function () {
             return Messenger::getGhostProvider();
@@ -76,15 +76,15 @@ class Bot extends Model implements MessengerProvider
     /**
      * @return BelongsTo|Thread
      */
-    public function thread()
+    public function thread(): BelongsTo
     {
         return $this->belongsTo(Thread::class);
     }
 
     /**
-     * @return HasMany|Action
+     * @return HasMany|Action|Collection
      */
-    public function actions()
+    public function actions(): HasMany
     {
         return $this->hasMany(Action::class);
     }
@@ -128,16 +128,14 @@ class Bot extends Model implements MessengerProvider
      */
     public function getProviderAvatarRoute(string $size = 'sm', bool $api = false): ?string
     {
-        return null;
-
-//        return Helpers::Route(($api ? 'api.' : '').'messenger.threads.bot.avatar.render',
-//            [
-//                'thread' => $this->thread_id,
-//                'bot' => $this->id,
-//                'size' => $size,
-//                'image' => $this->avatar,
-//            ]
-//        );
+        return Helpers::Route(($api ? 'api.' : '').'messenger.threads.bots.avatar.render',
+            [
+                'thread' => $this->thread_id,
+                'bot' => $this->id,
+                'size' => $size,
+                'image' => $this->avatar ?: 'default.png',
+            ]
+        );
     }
 
     /**

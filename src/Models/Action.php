@@ -49,7 +49,7 @@ class Action extends Model
     /**
      * @return BelongsTo|Bot
      */
-    public function bot()
+    public function bot(): BelongsTo
     {
         return $this->belongsTo(Bot::class);
     }
