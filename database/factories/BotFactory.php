@@ -21,7 +21,9 @@ class BotFactory extends Factory
      */
     public function definition(): array
     {
-        return [];
+        return [
+            'name' => $this->faker->name,
+        ];
     }
 
     /**

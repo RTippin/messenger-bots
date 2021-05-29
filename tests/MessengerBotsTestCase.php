@@ -6,23 +6,18 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Orchestra\Testbench\TestCase;
 use RTippin\Messenger\MessengerServiceProvider;
 use RTippin\MessengerBots\MessengerBotsServiceProvider;
+use RTippin\MessengerBots\Models\Bot;
 use RTippin\MessengerBots\Tests\Fixtures\UserModel;
 
-class MessengerTestCase extends TestCase
+class MessengerBotsTestCase extends TestCase
 {
     use HelperTrait;
 
     /**
      * Set TRUE to run all feature test with
-     * provider models/tables using UUIDS.
-     */
-    const UseUUID = false;
-
-    /**
-     * Set TRUE to run all feature test with
      * relation morph map set for providers.
      */
-    const UseMorphMap = false;
+    const UseMorphMap = true;
 
     protected function getPackageProviders($app): array
     {
@@ -36,7 +31,7 @@ class MessengerTestCase extends TestCase
     {
         $config = $app->get('config');
 
-        $config->set('messenger.provider_uuids', self::UseUUID);
+        $config->set('messenger.provider_uuids', false);
         $config->set('messenger.calling.enabled', true);
         $config->set('messenger.storage.avatars.disk', 'public');
         $config->set('messenger.storage.threads.disk', 'messenger');
@@ -64,6 +59,18 @@ class MessengerTestCase extends TestCase
                     'can_message' => true,
                     'can_search' => true,
                     'can_friend' => true,
+                ],
+            ],
+            'bot' => [
+                'model' => Bot::class,
+                'searchable' => false,
+                'friendable' => false,
+                'devices' => false,
+                'default_avatar' => '/path/to/bot.png',
+                'provider_interactions' => [
+                    'can_message' => false,
+                    'can_search' => false,
+                    'can_friend' => false,
                 ],
             ],
         ];

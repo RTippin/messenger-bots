@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RTippin\Messenger\Traits\Uuids;
-use RTippin\MessengerBots\Database\Factories\TriggerFactory;
+use RTippin\MessengerBots\Database\Factories\ActionFactory;
 
 /**
  * @property string $id
@@ -17,7 +17,7 @@ use RTippin\MessengerBots\Database\Factories\TriggerFactory;
  * @mixin Model|\Eloquent
  * @property-read Model|Bot $bot
  */
-class Trigger extends Model
+class Action extends Model
 {
     use HasFactory;
     use Uuids;
@@ -27,7 +27,7 @@ class Trigger extends Model
      *
      * @var string
      */
-    protected $table = 'messenger_bot_triggers';
+    protected $table = 'messenger_bot_actions';
 
     /**
      * @var bool
@@ -61,6 +61,6 @@ class Trigger extends Model
      */
     protected static function newFactory(): Factory
     {
-        return TriggerFactory::new();
+        return ActionFactory::new();
     }
 }

@@ -5,52 +5,52 @@ namespace RTippin\MessengerBots\Tests\Models;
 use Illuminate\Support\Carbon;
 use RTippin\Messenger\Models\Thread;
 use RTippin\MessengerBots\Models\Bot;
-use RTippin\MessengerBots\Models\Trigger;
+use RTippin\MessengerBots\Models\Action;
 use RTippin\MessengerBots\Tests\FeatureTestCase;
 
-class TriggerTest extends FeatureTestCase
+class ActionTest extends FeatureTestCase
 {
     /** @test */
     public function it_exists()
     {
-        $trigger = Trigger::factory()->for(
+        $action = Action::factory()->for(
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
         )->create();
 
-        $this->assertDatabaseCount('messenger_bot_triggers', 1);
-        $this->assertDatabaseHas('messenger_bot_triggers', [
-            'id' => $trigger->id,
+        $this->assertDatabaseCount('messenger_bot_actions', 1);
+        $this->assertDatabaseHas('messenger_bot_actions', [
+            'id' => $action->id,
         ]);
-        $this->assertInstanceOf(Trigger::class, $trigger);
-        $this->assertSame(1, Trigger::count());
+        $this->assertInstanceOf(Action::class, $action);
+        $this->assertSame(1, Action::count());
     }
 
     /** @test */
     public function it_has_relations()
     {
-        $trigger = Trigger::factory()->for(
+        $action = Action::factory()->for(
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
         )->create();
 
-        $this->assertSame($trigger->bot_id, $trigger->bot->id);
-        $this->assertInstanceOf(Bot::class, $trigger->bot);
+        $this->assertSame($action->bot_id, $action->bot->id);
+        $this->assertInstanceOf(Bot::class, $action->bot);
     }
 
     /** @test */
     public function it_cast_attributes()
     {
-        Trigger::factory()->for(
+        Action::factory()->for(
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
         )->create();
-        $trigger = Trigger::first();
+        $action = Action::first();
 
-        $this->assertInstanceOf(Carbon::class, $trigger->created_at);
-        $this->assertInstanceOf(Carbon::class, $trigger->updated_at);
+        $this->assertInstanceOf(Carbon::class, $action->created_at);
+        $this->assertInstanceOf(Carbon::class, $action->updated_at);
     }
 }

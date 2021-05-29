@@ -2,10 +2,12 @@
 
 namespace RTippin\MessengerBots\Tests\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Models\GhostUser;
 use RTippin\Messenger\Models\Thread;
+use RTippin\MessengerBots\Models\Action;
 use RTippin\MessengerBots\Models\Bot;
 use RTippin\MessengerBots\Tests\FeatureTestCase;
 
@@ -27,14 +29,19 @@ class BotTest extends FeatureTestCase
     /** @test */
     public function it_has_relations()
     {
-        $bot = Bot::factory()->for(
-            Thread::factory()->group()->create()
-        )->owner($this->tippin)->create();
+        Action::factory()->for(
+            Bot::factory()->for(
+                Thread::factory()->group()->create()
+            )->owner($this->tippin)->create()
+        )->create();
+        $bot = Bot::first();
 
         $this->assertSame($bot->thread_id, $bot->thread->id);
         $this->assertSame($this->tippin->getKey(), $bot->owner->getKey());
         $this->assertInstanceOf(Thread::class, $bot->thread);
         $this->assertInstanceOf(MessengerProvider::class, $bot->owner);
+        $this->assertInstanceOf(Collection::class, $bot->actions);
+        $this->assertSame(Action::first()->id, $bot->actions->first()->id);
     }
 
     /** @test */

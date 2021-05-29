@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\Models\Thread;
+use RTippin\Messenger\Support\Helpers;
 use RTippin\Messenger\Traits\ScopesProvider;
 use RTippin\Messenger\Traits\Uuids;
 use RTippin\MessengerBots\Database\Factories\BotFactory;
@@ -19,16 +23,20 @@ use RTippin\MessengerBots\Database\Factories\BotFactory;
  * @property string $thread_id
  * @property string|int $owner_id
  * @property string $owner_type
+ * @property string $name
+ * @property string $avatar
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \RTippin\Messenger\Models\Thread $thread
+ * @property-read \RTippin\MessengerBots\Models\Action[]|Collection $actions
  * @mixin Model|\Eloquent
  * @property-read Model|MessengerProvider $owner
  */
-class Bot extends Model
+class Bot extends Model implements MessengerProvider
 {
     use HasFactory;
     use Uuids;
+    use SoftDeletes;
     use ScopesProvider;
 
     /**
@@ -71,6 +79,81 @@ class Bot extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
+    }
+
+    /**
+     * @return HasMany|Action
+     */
+    public function actions()
+    {
+        return $this->hasMany(Action::class);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProviderProfileRoute(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName(): string
+    {
+        return strip_tags(ucwords($this->name));
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderAvatarColumn(): string
+    {
+        return 'avatar';
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderLastActiveColumn(): string
+    {
+        return 'updated_at';
+    }
+
+    /**
+     * @param string $size
+     * @param bool $api
+     * @return string|null
+     */
+    public function getProviderAvatarRoute(string $size = 'sm', bool $api = false): ?string
+    {
+        return null;
+
+//        return Helpers::Route(($api ? 'api.' : '').'messenger.threads.bot.avatar.render',
+//            [
+//                'thread' => $this->thread_id,
+//                'bot' => $this->id,
+//                'size' => $size,
+//                'image' => $this->avatar,
+//            ]
+//        );
+    }
+
+    /**
+     * @return int
+     */
+    public function getProviderOnlineStatus(): int
+    {
+        return 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderOnlineStatusVerbose(): string
+    {
+        return 'offline';
     }
 
     /**

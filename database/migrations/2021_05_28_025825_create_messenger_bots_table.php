@@ -18,6 +18,8 @@ class CreateMessengerBotsTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('thread_id');
             Helpers::SchemaMorphType('owner', $table);
+            $table->string('name');
+            $table->string('avatar')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('thread_id')

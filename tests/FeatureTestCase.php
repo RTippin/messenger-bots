@@ -11,7 +11,7 @@ use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\MessengerBots\Tests\Fixtures\UserModel;
 
-class FeatureTestCase extends MessengerTestCase
+class FeatureTestCase extends MessengerBotsTestCase
 {
     /**
      * @var MessengerProvider|Model|Authenticatable

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMessengerBotTriggersTable extends Migration
+class CreateMessengerBotActionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMessengerBotTriggersTable extends Migration
      */
     public function up()
     {
-        Schema::create('messenger_bot_triggers', function (Blueprint $table) {
+        Schema::create('messenger_bot_actions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('bot_id');
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateMessengerBotTriggersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messenger_bot_triggers');
+        Schema::dropIfExists('messenger_bot_actions');
     }
 }
