@@ -23,4 +23,15 @@ class ActionFactory extends Factory
     {
         return [];
     }
+
+    /**
+     * Owner relation to add.
+     *
+     * @param $owner
+     * @return Factory
+     */
+    public function owner($owner): Factory
+    {
+        return $this->for($owner, 'owner');
+    }
 }

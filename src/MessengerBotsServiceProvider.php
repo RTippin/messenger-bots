@@ -2,14 +2,27 @@
 
 namespace RTippin\MessengerBots;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use RTippin\MessengerBots\Listeners\BotSubscriber;
 use RTippin\MessengerBots\Models\Bot;
+use RTippin\MessengerBots\Policies\BotPolicy;
 
 class MessengerBotsServiceProvider extends ServiceProvider
 {
     use RouteMap;
+
+    /**
+     * The policy mappings for messenger bots models.
+     *
+     * @var array
+     */
+    private array $policies = [
+        Bot::class => BotPolicy::class,
+    ];
 
     /**
      * Bootstrap any package services.
@@ -20,6 +33,8 @@ class MessengerBotsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerRoutes();
+        $this->registerPolicies();
+        $this->registerSubscriber();
 
         Relation::morphMap([
             'bots' => Bot::class,
@@ -44,6 +59,34 @@ class MessengerBotsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/messenger-bots.php', 'messenger-bots');
 
         $this->addBotToMessengerProviders();
+    }
+
+    /**
+     * Register the application's policies.
+     *
+     * @return void
+     * @throws BindingResolutionException
+     */
+    private function registerPolicies(): void
+    {
+        $gate = $this->app->make(Gate::class);
+
+        foreach ($this->policies as $key => $value) {
+            $gate->policy($key, $value);
+        }
+    }
+
+    /**
+     * Register the Event Subscribers.
+     *
+     * @return void
+     * @throws BindingResolutionException
+     */
+    private function registerSubscriber(): void
+    {
+        $events = $this->app->make(Dispatcher::class);
+
+        $events->subscribe(BotSubscriber::class);
     }
 
     /**

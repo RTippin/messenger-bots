@@ -33,7 +33,7 @@ class BotTest extends FeatureTestCase
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
-        )->create();
+        )->owner($this->tippin)->create();
         $bot = Bot::first();
 
         $this->assertSame($bot->thread_id, $bot->thread->id);

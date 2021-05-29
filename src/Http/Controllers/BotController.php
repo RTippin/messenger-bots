@@ -18,7 +18,25 @@ class BotController
      */
     public function index(Thread $thread)
     {
+        $this->authorize('viewAny', [
+            Bot::class,
+            $thread,
+        ]);
+
         return $thread->bots;
+    }
+
+    /**
+     * Display the bot.
+     */
+    public function show(Thread $thread, Bot $bot)
+    {
+        $this->authorize('view', [
+            Bot::class,
+            $thread,
+        ]);
+
+        return $bot;
     }
 
     /**
@@ -27,19 +45,16 @@ class BotController
      */
     public function store(Request $request, Thread $thread)
     {
+        $this->authorize('create', [
+            Bot::class,
+            $thread,
+        ]);
+
         return $thread->bots()->create([
             'owner_id' => Messenger::getProvider()->getKey(),
             'owner_type' => Messenger::getProvider()->getMorphClass(),
             'name' => $request->input('name')
         ]);
-    }
-
-    /**
-     * Display the bot.
-     */
-    public function show(Thread $thread, Bot $bot)
-    {
-        return $bot;
     }
 
     /**

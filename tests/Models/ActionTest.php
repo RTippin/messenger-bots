@@ -3,6 +3,7 @@
 namespace RTippin\MessengerBots\Tests\Models;
 
 use Illuminate\Support\Carbon;
+use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Models\Thread;
 use RTippin\MessengerBots\Models\Bot;
 use RTippin\MessengerBots\Models\Action;
@@ -17,7 +18,7 @@ class ActionTest extends FeatureTestCase
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
-        )->create();
+        )->owner($this->tippin)->create();
 
         $this->assertDatabaseCount('messenger_bot_actions', 1);
         $this->assertDatabaseHas('messenger_bot_actions', [
@@ -34,10 +35,12 @@ class ActionTest extends FeatureTestCase
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
-        )->create();
+        )->owner($this->tippin)->create();
 
         $this->assertSame($action->bot_id, $action->bot->id);
         $this->assertInstanceOf(Bot::class, $action->bot);
+        $this->assertSame($this->tippin->getKey(), $action->owner->getKey());
+        $this->assertInstanceOf(MessengerProvider::class, $action->owner);
     }
 
     /** @test */
@@ -47,7 +50,7 @@ class ActionTest extends FeatureTestCase
             Bot::factory()->for(
                 Thread::factory()->group()->create()
             )->owner($this->tippin)->create()
-        )->create();
+        )->owner($this->tippin)->create();
         $action = Action::first();
 
         $this->assertInstanceOf(Carbon::class, $action->created_at);

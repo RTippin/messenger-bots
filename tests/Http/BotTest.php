@@ -2,7 +2,6 @@
 
 namespace RTippin\MessengerBots\Tests\Http;
 
-use RTippin\Messenger\Models\Thread;
 use RTippin\MessengerBots\Models\Bot;
 use RTippin\MessengerBots\Tests\FeatureTestCase;
 
@@ -11,7 +10,7 @@ class BotTest extends FeatureTestCase
     /** @test */
     public function it_list_thread_bots()
     {
-        $thread = Thread::factory()->group()->create();
+        $thread = $this->createGroupThread($this->tippin);
         Bot::factory()->for($thread)->owner($this->tippin)->count(2)->create();
         $this->actingAs($this->tippin);
 
@@ -25,7 +24,7 @@ class BotTest extends FeatureTestCase
     /** @test */
     public function it_stores_thread_bot()
     {
-        $thread = Thread::factory()->group()->create();
+        $thread = $this->createGroupThread($this->tippin);
         $this->actingAs($this->tippin);
 
         $this->postJson(route('api.messenger.threads.bots.store', [
@@ -44,7 +43,7 @@ class BotTest extends FeatureTestCase
     /** @test */
     public function it_shows_bot()
     {
-        $thread = Thread::factory()->group()->create();
+        $thread = $this->createGroupThread($this->tippin);
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create(['name' => 'Test Bot']);
         $this->actingAs($this->tippin);
 
