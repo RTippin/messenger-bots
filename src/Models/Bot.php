@@ -122,6 +122,38 @@ class Bot extends Model implements MessengerProvider
     }
 
     /**
+     * @return string
+     */
+    public function getStorageDisk(): string
+    {
+        return Messenger::getThreadStorage('disk');
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorageDirectory(): string
+    {
+        return Messenger::getThreadStorage('directory')."/$this->thread_id/bots/$this->id";
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarDirectory(): string
+    {
+        return "{$this->getStorageDirectory()}/avatar";
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarPath(): string
+    {
+        return "{$this->getAvatarDirectory()}/$this->avatar";
+    }
+
+    /**
      * @param string $size
      * @param bool $api
      * @return string|null

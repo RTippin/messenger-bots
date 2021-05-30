@@ -23,8 +23,8 @@ class BotSubscriber
      */
     public function newMessageEvent(NewMessageEvent $event): void
     {
-        dump($this->messenger->getProvider());
-        dump($event->message);
+//        dump($this->messenger->getProvider());
+//        dump($event->message);
     }
 
     /**
