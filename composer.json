@@ -16,8 +16,9 @@
         "Faker"
     ],
     "require": {
+        "ext-json": "*",
         "php": "^7.4||^8.0",
-        "rtippin/messenger": "~0.32"
+        "rtippin/messenger": "dev-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",
