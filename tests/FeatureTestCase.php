@@ -35,7 +35,6 @@ class FeatureTestCase extends MessengerBotsTestCase
         BaseMessengerAction::disableEvents();
         Storage::fake('public');
         Storage::fake('messenger');
-        $this->withoutMiddleware(ThrottleRequests::class);
     }
 
     protected function tearDown(): void
