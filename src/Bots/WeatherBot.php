@@ -79,7 +79,7 @@ class WeatherBot implements BotHandler
         $region = $weather['location']['region'];
         $country = $weather['location']['country'];
         $temp = $weather['current']['temp_f'];
-        $condition = $weather['current']['condition']['text'];
+        $condition = Str::lower($weather['current']['condition']['text']);
         $wind = $weather['current']['wind_mph'];
         $windDirection = $weather['current']['wind_dir'];
         $humidity = $weather['current']['humidity'];
