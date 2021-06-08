@@ -39,10 +39,11 @@ class YoMommaBot implements BotHandler
     /**
      * @param Action $action
      * @param Message $message
+     * @param string $matchingTrigger
      * @throws InvalidProviderException
      * @throws Throwable
      */
-    public function execute(Action $action, Message $message): void
+    public function execute(Action $action, Message $message, string $matchingTrigger): void
     {
         $this->messenger->setProvider($action->bot);
 
