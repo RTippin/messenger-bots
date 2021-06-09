@@ -8,7 +8,7 @@ use RTippin\Messenger\Actions\Messages\StoreMessage;
 use RTippin\Messenger\Contracts\BotHandler;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
 use RTippin\Messenger\Messenger;
-use RTippin\Messenger\Models\Action;
+use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
 use Throwable;
 
@@ -37,13 +37,13 @@ class DadJokeBot implements BotHandler
     }
 
     /**
-     * @param Action $action
+     * @param BotAction $action
      * @param Message $message
      * @param string $matchingTrigger
      * @throws InvalidProviderException
      * @throws Throwable
      */
-    public function execute(Action $action, Message $message, string $matchingTrigger): void
+    public function execute(BotAction $action, Message $message, string $matchingTrigger): void
     {
         $this->messenger->setProvider($action->bot);
 
