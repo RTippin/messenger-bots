@@ -5,16 +5,19 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
-use RTippin\Messenger\Contracts\BotHandler;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
 use RTippin\Messenger\Messenger;
-use RTippin\Messenger\Models\BotAction;
-use RTippin\Messenger\Models\Message;
 use Throwable;
 
-class WeatherBot implements BotHandler
+class WeatherBot extends BotActionHandler
 {
+    /**
+     * @var string
+     */
+    public static string $description = 'Get the weather for the given location.';
+
     /**
      * @var Messenger
      */
@@ -38,20 +41,17 @@ class WeatherBot implements BotHandler
     }
 
     /**
-     * @param BotAction $action
-     * @param Message $message
-     * @param string $matchingTrigger
      * @throws InvalidProviderException
      * @throws Throwable
      */
-    public function execute(BotAction $action, Message $message, string $matchingTrigger): void
+    public function handle(): void
     {
-        $this->messenger->setProvider($action->bot);
+        $this->messenger->setProvider($this->action->bot);
 
-        $weather = $this->getWeather($matchingTrigger, $message->body);
+        $weather = $this->getWeather($this->matchingTrigger, $this->message->body);
 
         if ($weather->successful()) {
-            $this->storeMessage->execute($message->thread, [
+            $this->storeMessage->execute($this->message->thread, [
                 'message' => $this->generateWeatherText($weather->json()),
             ]);
         }

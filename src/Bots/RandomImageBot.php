@@ -4,16 +4,19 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreImageMessage;
-use RTippin\Messenger\Contracts\BotHandler;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
 use RTippin\Messenger\Messenger;
-use RTippin\Messenger\Models\BotAction;
-use RTippin\Messenger\Models\Message;
 use Throwable;
 
-class RandomImageBot implements BotHandler
+class RandomImageBot extends BotActionHandler
 {
+    /**
+     * @var string
+     */
+    public static string $description = 'Get a random image.';
+
     /**
      * @var Messenger
      */
@@ -37,21 +40,18 @@ class RandomImageBot implements BotHandler
     }
 
     /**
-     * @param BotAction $action
-     * @param Message $message
-     * @param string $matchingTrigger
      * @throws InvalidProviderException
      */
-    public function execute(BotAction $action, Message $message, string $matchingTrigger): void
+    public function handle(): void
     {
         $name = uniqid();
         $file = '/tmp/'.$name;
         file_put_contents($file, Http::timeout(30)->get(config('messenger-bots.random_image_url'))->body());
 
-        $this->messenger->setProvider($action->bot);
+        $this->messenger->setProvider($this->action->bot);
 
         try {
-            $this->storeImage->execute($message->thread, [
+            $this->storeImage->execute($this->message->thread, [
                 'image' => new UploadedFile($file, $name),
             ]);
         } catch (Throwable $e) {

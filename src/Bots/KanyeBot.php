@@ -4,16 +4,19 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
-use RTippin\Messenger\Contracts\BotHandler;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
 use RTippin\Messenger\Messenger;
-use RTippin\Messenger\Models\BotAction;
-use RTippin\Messenger\Models\Message;
 use Throwable;
 
-class KanyeBot implements BotHandler
+class KanyeBot extends BotActionHandler
 {
+    /**
+     * @var string
+     */
+    public static string $description = 'Get a random kanye quote.';
+
     /**
      * @var Messenger
      */
@@ -37,20 +40,17 @@ class KanyeBot implements BotHandler
     }
 
     /**
-     * @param BotAction $action
-     * @param Message $message
-     * @param string $matchingTrigger
      * @throws InvalidProviderException
      * @throws Throwable
      */
-    public function execute(BotAction $action, Message $message, string $matchingTrigger): void
+    public function handle(): void
     {
-        $this->messenger->setProvider($action->bot);
+        $this->messenger->setProvider($this->action->bot);
 
         $quote = $this->getKanyeQuote();
 
         if ($quote->successful()) {
-            $this->storeMessage->execute($message->thread, [
+            $this->storeMessage->execute($this->message->thread, [
                 'message' => ":bearded_person_tone5: \"{$quote->json()['quote']}\"",
             ]);
         }

@@ -2,16 +2,19 @@
 
 namespace RTippin\MessengerBots\Bots;
 
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
-use RTippin\Messenger\Contracts\BotHandler;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
 use RTippin\Messenger\Messenger;
-use RTippin\Messenger\Models\BotAction;
-use RTippin\Messenger\Models\Message;
 use Throwable;
 
-class ReplyBot implements BotHandler
+class ReplyBot extends BotActionHandler
 {
+    /**
+     * @var string
+     */
+    public static string $description = 'Reply with the defined response(s).';
+
     /**
      * @var Messenger
      */
@@ -35,19 +38,16 @@ class ReplyBot implements BotHandler
     }
 
     /**
-     * @param BotAction $action
-     * @param Message $message
-     * @param string $matchingTrigger
      * @throws InvalidProviderException
      * @throws Throwable
      */
-    public function execute(BotAction $action, Message $message, string $matchingTrigger): void
+    public function handle(): void
     {
-        $this->messenger->setProvider($action->bot);
+        $this->messenger->setProvider($this->action->bot);
 
-        $this->storeMessage->execute($message->thread, [
-            'message' => json_decode($action->payload, true)['reply'],
-            'reply_to_id' => $message->id,
+        $this->storeMessage->execute($this->message->thread, [
+            'message' => json_decode($this->action->payload, true)['reply'],
+            'reply_to_id' => $this->message->id,
         ]);
     }
 }
