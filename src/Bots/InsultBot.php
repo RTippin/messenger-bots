@@ -13,9 +13,35 @@ use Throwable;
 class InsultBot extends BotActionHandler
 {
     /**
-     * @var string
+     * Set the alias we will use when attaching the handler to
+     * a bot model via a form post.
+     *
+     * @return string
      */
-    public static string $description = 'Respond with a random insult.';
+    public static function getAlias(): string
+    {
+        return 'insult';
+    }
+
+    /**
+     * Set the description of the handler.
+     *
+     * @return string
+     */
+    public static function getDescription(): string
+    {
+        return 'Respond with a random insult.';
+    }
+
+    /**
+     * Set the name of the handler we will display to the frontend.
+     *
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return 'Insult Bot';
+    }
 
     /**
      * @var Messenger

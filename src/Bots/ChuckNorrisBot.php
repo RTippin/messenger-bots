@@ -13,9 +13,35 @@ use Throwable;
 class ChuckNorrisBot extends BotActionHandler
 {
     /**
-     * @var string
+     * Set the alias we will use when attaching the handler to
+     * a bot model via a form post.
+     *
+     * @return string
      */
-    public static string $description = 'Get a random chuck norris joke.';
+    public static function getAlias(): string
+    {
+        return 'chuck';
+    }
+
+    /**
+     * Set the description of the handler.
+     *
+     * @return string
+     */
+    public static function getDescription(): string
+    {
+        return 'Get a random chuck norris joke.';
+    }
+
+    /**
+     * Set the name of the handler we will display to the frontend.
+     *
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return 'Chuck Norris Bot';
+    }
 
     /**
      * @var Messenger
