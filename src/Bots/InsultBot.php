@@ -6,48 +6,10 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
-use RTippin\Messenger\Exceptions\InvalidProviderException;
-use RTippin\Messenger\Messenger;
 use Throwable;
 
 class InsultBot extends BotActionHandler
 {
-    /**
-     * Set the alias we will use when attaching the handler to
-     * a bot model via a form post.
-     *
-     * @return string
-     */
-    public static function getAlias(): string
-    {
-        return 'insult';
-    }
-
-    /**
-     * Set the description of the handler.
-     *
-     * @return string
-     */
-    public static function getDescription(): string
-    {
-        return 'Respond with a random insult.';
-    }
-
-    /**
-     * Set the name of the handler we will display to the frontend.
-     *
-     * @return string
-     */
-    public static function getName(): string
-    {
-        return 'Insult Bot';
-    }
-
-    /**
-     * @var Messenger
-     */
-    private Messenger $messenger;
-
     /**
      * @var StoreMessage
      */
@@ -56,23 +18,33 @@ class InsultBot extends BotActionHandler
     /**
      * InsultBot constructor.
      *
-     * @param Messenger $messenger
      * @param StoreMessage $storeMessage
      */
-    public function __construct(Messenger $messenger, StoreMessage $storeMessage)
+    public function __construct(StoreMessage $storeMessage)
     {
-        $this->messenger = $messenger;
         $this->storeMessage = $storeMessage;
     }
 
     /**
-     * @throws InvalidProviderException
+     * The bots settings.
+     *
+     * @return array
+     */
+    public static function getSettings(): array
+    {
+        return [
+            'alias' => 'insult',
+            'description' => 'Respond with a random insult.',
+            'name' => 'Insult Bot',
+            'unique' => false,
+        ];
+    }
+
+    /**
      * @throws Throwable
      */
     public function handle(): void
     {
-        $this->messenger->setProvider($this->action->bot);
-
         $insult = $this->getInsult();
 
         if ($insult->successful()) {
