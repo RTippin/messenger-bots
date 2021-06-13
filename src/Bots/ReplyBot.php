@@ -34,6 +34,7 @@ class ReplyBot extends BotActionHandler
             'alias' => 'reply',
             'description' => 'Reply with the defined response(s).',
             'name' => 'Reply Bot',
+            'unique' => false,
         ];
     }
 
@@ -53,9 +54,7 @@ class ReplyBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $replies = json_decode($this->action->payload, true)['replies'];
-
-        foreach ($replies as $reply) {
+        foreach ($this->decodePayload()['replies'] as $reply) {
             $this->storeMessage->execute($this->message->thread, [
                 'message' => $reply,
             ]);
