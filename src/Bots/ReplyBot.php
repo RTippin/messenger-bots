@@ -34,7 +34,17 @@ class ReplyBot extends BotActionHandler
             'alias' => 'reply',
             'description' => 'Reply with the defined response(s).',
             'name' => 'Reply Bot',
-            'unique' => false,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'replies' => ['required', 'array', 'min:1'],
+            'replies.*' => ['required', 'string'],
         ];
     }
 
@@ -43,9 +53,12 @@ class ReplyBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->storeMessage->execute($this->message->thread, [
-            'message' => json_decode($this->action->payload, true)['reply'],
-            'reply_to_id' => $this->message->id,
-        ]);
+        $replies = json_decode($this->action->payload, true)['replies'];
+
+        foreach ($replies as $reply) {
+            $this->storeMessage->execute($this->message->thread, [
+                'message' => $reply,
+            ]);
+        }
     }
 }

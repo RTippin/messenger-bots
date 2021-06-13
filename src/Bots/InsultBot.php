@@ -36,7 +36,6 @@ class InsultBot extends BotActionHandler
             'alias' => 'insult',
             'description' => 'Respond with a random insult.',
             'name' => 'Insult Bot',
-            'unique' => false,
         ];
     }
 

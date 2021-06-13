@@ -37,7 +37,7 @@ class RandomImageBot extends BotActionHandler
             'alias' => 'image',
             'description' => 'Get a random image.',
             'name' => 'Image Bot',
-            'unique' => false,
+            'unique' => true,
         ];
     }
 
