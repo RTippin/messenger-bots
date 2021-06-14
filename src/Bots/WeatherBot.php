@@ -48,23 +48,25 @@ class WeatherBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $weather = $this->getWeather($this->matchingTrigger, $this->message->body);
+        $location = trim(Str::remove($this->matchingTrigger, $this->message->body, false));
 
-        if ($weather->successful()) {
-            $this->storeMessage->execute($this->message->thread, [
-                'message' => $this->generateWeatherText($weather->json()),
-            ]);
+        if (! empty($location)) {
+            $weather = $this->getWeather($location);
+
+            if ($weather->successful()) {
+                $this->storeMessage->execute($this->message->thread, [
+                    'message' => $this->generateWeatherText($weather->json()),
+                ]);
+            }
         }
     }
 
     /**
-     * @param string $trigger
-     * @param string $body
+     * @param string $location
      * @return Response
      */
-    private function getWeather(string $trigger, string $body): Response
+    private function getWeather(string $location): Response
     {
-        $location = Str::remove($trigger, $body, false);
         $apiKey = config('messenger-bots.weather_api_key');
 
         return Http::timeout(30)->get("https://api.weatherapi.com/v1/current.json?aqi=no&key=$apiKey&q=$location");
