@@ -44,7 +44,7 @@ class ReplyBot extends BotActionHandler
     public function rules(): array
     {
         return [
-            'replies' => ['required', 'array', 'min:1'],
+            'replies' => ['required', 'array', 'min:1', 'max:5'],
             'replies.*' => ['required', 'string'],
             'quote_original' => ['required', 'boolean'],
         ];
