@@ -35,9 +35,9 @@ class RandomImageBot extends BotActionHandler
     public static function getSettings(): array
     {
         return [
-            'alias' => 'image',
+            'alias' => 'random_image',
             'description' => 'Get a random image.',
-            'name' => 'Image Bot',
+            'name' => 'Random Image Bot',
             'unique' => true,
         ];
     }
@@ -61,6 +61,7 @@ class RandomImageBot extends BotActionHandler
             } catch (Throwable $e) {
                 $this->releaseCooldown();
             }
+
             unlink($imagePath);
         } else {
             $this->releaseCooldown();
