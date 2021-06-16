@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Bots;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
@@ -46,18 +47,31 @@ class RandomImageBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $name = uniqid();
-        $file = '/tmp/'.$name;
-        file_put_contents($file, Http::timeout(30)->get(config('messenger-bots.random_image_url'))->body());
+        $image = $this->getImage();
 
-        try {
-            $this->storeImage->execute($this->message->thread, [
-                'image' => new UploadedFile($file, $name),
-            ]);
-        } catch (Throwable $e) {
-            report($e);
+        if ($image->successful()) {
+            $name = uniqid();
+            $imagePath = '/tmp/'.$name;
+            file_put_contents($imagePath, $image->body());
+
+            try {
+                $this->storeImage->execute($this->message->thread, [
+                    'image' => new UploadedFile($imagePath, $name),
+                ]);
+            } catch (Throwable $e) {
+                $this->releaseCooldown();
+            }
+            unlink($imagePath);
+        } else {
+            $this->releaseCooldown();
         }
+    }
 
-        unlink($file);
+    /**
+     * @return Response
+     */
+    private function getImage(): Response
+    {
+        return Http::timeout(30)->get(config('messenger-bots.random_image_url'));
     }
 }

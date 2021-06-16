@@ -35,7 +35,7 @@ class WeatherBot extends BotActionHandler
     {
         return [
             'alias' => 'weather',
-            'description' => 'Get the weather for the given location.',
+            'description' => 'Get the weather for the given location. (!w {location})',
             'name' => 'Weather Bot',
             'unique' => true,
             'triggers' => ['!w', '!weather'],
@@ -57,7 +57,11 @@ class WeatherBot extends BotActionHandler
                 $this->storeMessage->execute($this->message->thread, [
                     'message' => $this->generateWeatherText($weather->json()),
                 ]);
+            } else {
+                $this->releaseCooldown();
             }
+        } else {
+            $this->releaseCooldown();
         }
     }
 

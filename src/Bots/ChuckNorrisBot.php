@@ -36,7 +36,7 @@ class ChuckNorrisBot extends BotActionHandler
             'alias' => 'chuck',
             'description' => 'Get a random chuck norris joke.',
             'name' => 'Chuck Norris Bot',
-            'unique' => false,
+            'unique' => true,
         ];
     }
 
@@ -51,6 +51,8 @@ class ChuckNorrisBot extends BotActionHandler
             $this->storeMessage->execute($this->message->thread, [
                 'message' => ":skull: {$quote->json()['value']}",
             ]);
+        } else {
+            $this->releaseCooldown();
         }
     }
 

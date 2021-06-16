@@ -36,7 +36,7 @@ class KanyeBot extends BotActionHandler
             'alias' => 'kanye',
             'description' => 'Get a random kanye quote.',
             'name' => 'Kanye Bot',
-            'unique' => false,
+            'unique' => true,
         ];
     }
 
@@ -51,6 +51,8 @@ class KanyeBot extends BotActionHandler
             $this->storeMessage->execute($this->message->thread, [
                 'message' => ":bearded_person_tone5: \"{$quote->json()['quote']}\"",
             ]);
+        } else {
+            $this->releaseCooldown();
         }
     }
 

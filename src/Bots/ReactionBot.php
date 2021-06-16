@@ -78,7 +78,7 @@ class ReactionBot extends BotActionHandler
         $this->addReaction->execute(
             $this->message->thread,
             $this->message,
-            $this->decodePayload()['reaction']
+            $this->getPayload('reaction')
         );
     }
 }

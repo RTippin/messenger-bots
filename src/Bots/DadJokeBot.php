@@ -33,10 +33,10 @@ class DadJokeBot extends BotActionHandler
     public static function getSettings(): array
     {
         return [
-            'alias' => 'dad.joke',
+            'alias' => 'dad_joke',
             'description' => 'Get a random dad joke.',
             'name' => 'Dad Joke Bot',
-            'unique' => false,
+            'unique' => true,
         ];
     }
 
@@ -51,6 +51,8 @@ class DadJokeBot extends BotActionHandler
             $this->storeMessage->execute($this->message->thread, [
                 'message' => ":man: {$joke->json()['joke']}",
             ]);
+        } else {
+            $this->releaseCooldown();
         }
     }
 

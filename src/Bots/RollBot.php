@@ -50,6 +50,8 @@ class RollBot extends BotActionHandler
             $this->storeMessage->execute($this->message->thread, [
                 'message' => "Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]),
             ]);
+        } else {
+            $this->releaseCooldown();
         }
     }
 

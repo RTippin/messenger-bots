@@ -46,6 +46,7 @@ class ReplyBot extends BotActionHandler
         return [
             'replies' => ['required', 'array', 'min:1'],
             'replies.*' => ['required', 'string'],
+            'quote_original' => ['required', 'boolean'],
         ];
     }
 
@@ -54,7 +55,18 @@ class ReplyBot extends BotActionHandler
      */
     public function handle(): void
     {
-        foreach ($this->decodePayload()['replies'] as $reply) {
+        $replies = $this->getPayload('replies');
+
+        foreach ($replies as $key => $reply) {
+            if ($key === array_key_first($replies) && $this->getPayload('quote_original')) {
+                $this->storeMessage->execute($this->message->thread, [
+                    'message' => $reply,
+                    'reply_to_id' => $this->message->id,
+                ]);
+
+                continue;
+            }
+
             $this->storeMessage->execute($this->message->thread, [
                 'message' => $reply,
             ]);

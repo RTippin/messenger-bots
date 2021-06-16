@@ -36,7 +36,7 @@ class InsultBot extends BotActionHandler
             'alias' => 'insult',
             'description' => 'Respond with a random insult.',
             'name' => 'Insult Bot',
-            'unique' => false,
+            'unique' => true,
         ];
     }
 
@@ -53,6 +53,8 @@ class InsultBot extends BotActionHandler
             $this->storeMessage->execute($this->message->thread, [
                 'message' => "{$this->message->owner->getProviderName()}, $insult",
             ]);
+        } else {
+            $this->releaseCooldown();
         }
     }
 
