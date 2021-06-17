@@ -34,7 +34,6 @@ class ReplyBot extends BotActionHandler
             'alias' => 'reply',
             'description' => 'Reply with the defined response(s).',
             'name' => 'Reply Bot',
-            'unique' => false,
         ];
     }
 

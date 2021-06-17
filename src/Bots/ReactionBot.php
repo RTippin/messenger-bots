@@ -45,7 +45,6 @@ class ReactionBot extends BotActionHandler
             'alias' => 'react',
             'description' => 'Reacts to a message.',
             'name' => 'Reaction Bot',
-            'unique' => false,
         ];
     }
 
