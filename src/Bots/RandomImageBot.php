@@ -55,7 +55,7 @@ class RandomImageBot extends BotActionHandler
             file_put_contents($imagePath, $image->body());
 
             try {
-                $this->storeImage->execute($this->message->thread, [
+                $this->storeImage->execute($this->thread, [
                     'image' => new UploadedFile($imagePath, $name),
                 ]);
             } catch (Throwable $e) {
@@ -63,9 +63,11 @@ class RandomImageBot extends BotActionHandler
             }
 
             unlink($imagePath);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**

@@ -48,12 +48,14 @@ class KanyeBot extends BotActionHandler
         $quote = $this->getKanyeQuote();
 
         if ($quote->successful()) {
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => ":bearded_person_tone5: \"{$quote->json()['quote']}\"",
             ]);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**

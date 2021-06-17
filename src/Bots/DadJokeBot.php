@@ -48,12 +48,14 @@ class DadJokeBot extends BotActionHandler
         $joke = $this->getDadJoke();
 
         if ($joke->successful()) {
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => ":man: {$joke->json()['joke']}",
             ]);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**

@@ -48,12 +48,14 @@ class YoMommaBot extends BotActionHandler
         $joke = $this->getYoMomma();
 
         if ($joke->successful()) {
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => ":woman: {$joke->json()['joke']}",
             ]);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**

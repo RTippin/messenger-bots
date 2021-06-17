@@ -59,7 +59,7 @@ class ReplyBot extends BotActionHandler
 
         foreach ($replies as $key => $reply) {
             if ($key === array_key_first($replies) && $this->getPayload('quote_original')) {
-                $this->storeMessage->execute($this->message->thread, [
+                $this->storeMessage->execute($this->thread, [
                     'message' => $reply,
                     'reply_to_id' => $this->message->id,
                 ]);
@@ -67,7 +67,7 @@ class ReplyBot extends BotActionHandler
                 continue;
             }
 
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => $reply,
             ]);
         }

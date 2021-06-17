@@ -54,15 +54,15 @@ class WeatherBot extends BotActionHandler
             $weather = $this->getWeather($location);
 
             if ($weather->successful()) {
-                $this->storeMessage->execute($this->message->thread, [
+                $this->storeMessage->execute($this->thread, [
                     'message' => $this->generateWeatherText($weather->json()),
                 ]);
-            } else {
-                $this->releaseCooldown();
+
+                return;
             }
-        } else {
-            $this->releaseCooldown();
         }
+
+        $this->releaseCooldown();
     }
 
     /**

@@ -76,7 +76,7 @@ class ReactionBot extends BotActionHandler
     public function handle(): void
     {
         $this->addReaction->execute(
-            $this->message->thread,
+            $this->thread,
             $this->message,
             $this->getPayload('reaction')
         );

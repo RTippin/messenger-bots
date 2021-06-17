@@ -47,12 +47,14 @@ class RollBot extends BotActionHandler
     public function handle(): void
     {
         if (! is_null($numbers = $this->getNumbers())) {
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => "Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]),
             ]);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**

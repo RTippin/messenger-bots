@@ -48,12 +48,14 @@ class ChuckNorrisBot extends BotActionHandler
         $quote = $this->getChuckNorris();
 
         if ($quote->successful()) {
-            $this->storeMessage->execute($this->message->thread, [
+            $this->storeMessage->execute($this->thread, [
                 'message' => ":skull: {$quote->json()['value']}",
             ]);
-        } else {
-            $this->releaseCooldown();
+
+            return;
         }
+
+        $this->releaseCooldown();
     }
 
     /**
