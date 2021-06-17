@@ -90,7 +90,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function getChoice(): ?string
     {
-        $choice = Str::lower(trim(Str::remove($this->matchingTrigger, $this->message->body, false)));
+        $choice = Str::lower(explode(' ', $this->message->body)[1] ?? '');
 
         if (in_array($choice, array_keys(self::Game))) {
             return $choice;
