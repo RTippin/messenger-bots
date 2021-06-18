@@ -36,7 +36,7 @@ class WeatherBot extends BotActionHandler
         return [
             'alias' => 'weather',
             'description' => 'Get the weather for the given location. (!w {location})',
-            'name' => 'Weather Bot',
+            'name' => 'Weather',
             'unique' => true,
             'triggers' => ['!w', '!weather'],
             'match' => 'starts:with',

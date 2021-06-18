@@ -34,7 +34,7 @@ class RollBot extends BotActionHandler
         return [
             'alias' => 'roll',
             'description' => 'Rolls a random number between 0 and 100. You may also specify the number range to roll between. (!roll | !roll {start} {end})',
-            'name' => 'Roll Bot',
+            'name' => 'Roll Numbers',
             'unique' => true,
             'triggers' => ['!r', '!roll'],
             'match' => 'starts:with',

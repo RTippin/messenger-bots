@@ -35,7 +35,7 @@ class DadJokeBot extends BotActionHandler
         return [
             'alias' => 'dad_joke',
             'description' => 'Get a random dad joke.',
-            'name' => 'Dad Joke Bot',
+            'name' => 'Dad Joke',
             'unique' => true,
         ];
     }
