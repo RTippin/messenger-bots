@@ -49,7 +49,7 @@ class ChuckNorrisBot extends BotActionHandler
 
         if ($quote->successful()) {
             $this->storeMessage->execute($this->thread, [
-                'message' => ":skull: {$quote->json()['value']}",
+                'message' => ":skull: {$quote->json('value')}",
             ]);
 
             return;

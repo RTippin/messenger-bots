@@ -8,7 +8,7 @@ use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
-class KanyeBot extends BotActionHandler
+class JokeBot extends BotActionHandler
 {
     /**
      * @var StoreMessage
@@ -16,7 +16,7 @@ class KanyeBot extends BotActionHandler
     private StoreMessage $storeMessage;
 
     /**
-     * KanyeBot constructor.
+     * JokeBot constructor.
      *
      * @param StoreMessage $storeMessage
      */
@@ -33,9 +33,9 @@ class KanyeBot extends BotActionHandler
     public static function getSettings(): array
     {
         return [
-            'alias' => 'kanye',
-            'description' => 'Get a random Kanye West quote.',
-            'name' => 'Kanye West',
+            'alias' => 'random_joke',
+            'description' => 'Get a random joke. Has a setup and a punchline.',
+            'name' => 'Jokester',
             'unique' => true,
         ];
     }
@@ -45,11 +45,17 @@ class KanyeBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $quote = $this->getKanyeQuote();
+        $joke = $this->getJoke();
 
-        if ($quote->successful()) {
+        if ($joke->successful()) {
             $this->storeMessage->execute($this->thread, [
-                'message' => ":bearded_person_tone5: \"{$quote->json('quote')}\"",
+                'message' => $joke->json('setup'),
+            ]);
+
+            sleep(6);
+
+            $this->storeMessage->execute($this->message->thread, [
+                'message' => $joke->json('punchline'),
             ]);
 
             return;
@@ -61,8 +67,8 @@ class KanyeBot extends BotActionHandler
     /**
      * @return Response
      */
-    private function getKanyeQuote(): Response
+    private function getJoke(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://api.kanye.rest/');
+        return Http::acceptJson()->timeout(30)->get('https://official-joke-api.appspot.com/jokes/random');
     }
 }

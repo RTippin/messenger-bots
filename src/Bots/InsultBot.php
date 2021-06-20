@@ -48,7 +48,7 @@ class InsultBot extends BotActionHandler
         $insult = $this->getInsult();
 
         if ($insult->successful()) {
-            $insult = htmlspecialchars_decode($insult->json()['insult']);
+            $insult = htmlspecialchars_decode($insult->json('insult'));
 
             $this->storeMessage->execute($this->thread, [
                 'message' => "{$this->message->owner->getProviderName()}, $insult",

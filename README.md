@@ -19,6 +19,7 @@
   - Chuck Norris Bot
   - Dad Joke Bot
   - Insult Bot
+  - Joke Bot
   - Kanye West Bot
   - Random Image Bot
   - Reaction Bot
@@ -100,6 +101,7 @@ use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
+use RTippin\MessengerBots\Bots\JokeBot;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -114,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
             ChuckNorrisBot::class,
             DadJokeBot::class,
             InsultBot::class,
+            JokeBot::class,
             KanyeBot::class,
             RandomImageBot::class,
             ReactionBot::class,

@@ -49,7 +49,7 @@ class DadJokeBot extends BotActionHandler
 
         if ($joke->successful()) {
             $this->storeMessage->execute($this->thread, [
-                'message' => ":man: {$joke->json()['joke']}",
+                'message' => ":man: {$joke->json('joke')}",
             ]);
 
             return;
