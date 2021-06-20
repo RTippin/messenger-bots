@@ -4,6 +4,7 @@ namespace RTippin\MessengerBots\Bots;
 
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
+use RTippin\Messenger\Contracts\EmojiInterface;
 use Throwable;
 
 class ReplyBot extends BotActionHandler
@@ -14,13 +15,20 @@ class ReplyBot extends BotActionHandler
     private StoreMessage $storeMessage;
 
     /**
+     * @var EmojiInterface
+     */
+    private EmojiInterface $emoji;
+
+    /**
      * ReplyBot constructor.
      *
      * @param StoreMessage $storeMessage
+     * @param EmojiInterface $emoji
      */
-    public function __construct(StoreMessage $storeMessage)
+    public function __construct(StoreMessage $storeMessage, EmojiInterface $emoji)
     {
         $this->storeMessage = $storeMessage;
+        $this->emoji = $emoji;
     }
 
     /**
@@ -47,6 +55,30 @@ class ReplyBot extends BotActionHandler
             'replies.*' => ['required', 'string'],
             'quote_original' => ['required', 'boolean'],
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function errorMessages(): array
+    {
+        return [
+            'replies.*.required' => 'Reply is required.',
+            'replies.*.string' => 'A reply must be a string.',
+        ];
+    }
+
+    /**
+     * @param array|null $payload
+     * @return string|null
+     */
+    public function serializePayload(?array $payload): ?string
+    {
+        $payload['replies'] = collect($payload['replies'])
+            ->transform(fn($reply) => $this->emoji->toShort($reply))
+            ->toArray();
+
+        return json_encode($payload);
     }
 
     /**
