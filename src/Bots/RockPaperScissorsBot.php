@@ -124,7 +124,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function getRollMessage(string $botChoice, string $userChoice): string
     {
-        return self::Game[$botChoice]['emoji']." :vs: ".self::Game[$userChoice]['emoji'];
+        return self::Game[$botChoice]['emoji'].' :vs: '.self::Game[$userChoice]['emoji'];
     }
 
     /**
