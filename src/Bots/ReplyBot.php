@@ -75,7 +75,7 @@ class ReplyBot extends BotActionHandler
     public function serializePayload(?array $payload): ?string
     {
         $payload['replies'] = collect($payload['replies'])
-            ->transform(fn($reply) => $this->emoji->toShort($reply))
+            ->transform(fn ($reply) => $this->emoji->toShort($reply))
             ->toArray();
 
         return json_encode($payload);

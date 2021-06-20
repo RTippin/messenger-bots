@@ -13,7 +13,7 @@ use Throwable;
 class RandomImageBot extends BotActionHandler
 {
     /**
-     * @var StoreImageMessage $storeImage
+     * @var StoreImageMessage
      */
     private StoreImageMessage $storeImage;
 
