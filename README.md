@@ -17,6 +17,7 @@
 - Register only the included bot handlers that you want to use with messenger.
 - Included Bot Handlers:
   - Chuck Norris Bot
+  - Commands Bot
   - Dad Joke Bot
   - Insult Bot
   - Joke Bot
@@ -90,18 +91,19 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use RTippin\Messenger\Facades\MessengerBots;
-use RTippin\MessengerBots\Bots\RandomImageBot;
-use RTippin\MessengerBots\Bots\RockPaperScissorsBot;
-use RTippin\MessengerBots\Bots\ReplyBot;
-use RTippin\MessengerBots\Bots\RollBot;
-use RTippin\MessengerBots\Bots\ReactionBot;
-use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\InsultBot;
-use RTippin\MessengerBots\Bots\KanyeBot;
-use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Bots\JokeBot;
+use RTippin\MessengerBots\Bots\KanyeBot;
+use RTippin\MessengerBots\Bots\RandomImageBot;
+use RTippin\MessengerBots\Bots\ReactionBot;
+use RTippin\MessengerBots\Bots\ReplyBot;
+use RTippin\MessengerBots\Bots\RockPaperScissorsBot;
+use RTippin\MessengerBots\Bots\RollBot;
+use RTippin\MessengerBots\Bots\WeatherBot;
+use RTippin\MessengerBots\Bots\YoMommaBot;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -114,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
     {
         MessengerBots::setHandlers([
             ChuckNorrisBot::class,
+            CommandsBot::class,
             DadJokeBot::class,
             InsultBot::class,
             JokeBot::class,
