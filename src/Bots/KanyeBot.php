@@ -34,8 +34,8 @@ class KanyeBot extends BotActionHandler
     {
         return [
             'alias' => 'kanye',
-            'description' => 'Get a random kanye quote.',
-            'name' => 'Kanye',
+            'description' => 'Get a random Kanye West quote.',
+            'name' => 'Kanye West',
             'unique' => true,
         ];
     }

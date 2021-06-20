@@ -34,7 +34,7 @@ class ChuckNorrisBot extends BotActionHandler
     {
         return [
             'alias' => 'chuck',
-            'description' => 'Get a random chuck norris joke.',
+            'description' => 'Get a random Chuck Norris joke.',
             'name' => 'Chuck Norris',
             'unique' => true,
         ];
