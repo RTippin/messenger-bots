@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Bots;
 
+use Illuminate\Database\Eloquent\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
 use RTippin\Messenger\Facades\MessengerBots;
@@ -46,29 +47,41 @@ class CommandsBot extends BotActionHandler
      */
     public function handle(): void
     {
+        $actions = $this->getBotActions()
+            ->transform(fn (BotAction $action) => $this->makeActionString($action))
+            ->sort()
+            ->chunk(5);
+
         $this->storeMessage->execute($this->thread, [
             'message' => "{$this->message->owner->getProviderName()}, I can respond to the following commands:",
         ]);
 
-        $this->storeMessage->execute($this->thread, [
-            'message' => $this->getBotActionDetails(),
-        ]);
+        foreach ($actions as $action) {
+            $this->storeMessage->execute($this->thread, [
+                'message' => $action->implode(', '),
+            ]);
+        }
     }
 
     /**
      * Get all valid actions for the current bot and condense to triggers and name.
      *
-     * @return string
+     * @return Collection
      */
-    private function getBotActionDetails(): string
+    private function getBotActions(): Collection
     {
         return BotAction::validHandler()
             ->where('bot_id', '=', $this->action->bot_id)
             ->select(['triggers', 'handler'])
-            ->get()
-            ->transform(function (BotAction $action) {
-                return MessengerBots::getHandlerSettings($action->handler)['name'].' - ( '.$action->triggers.' )';
-            })
-            ->implode(', ');
+            ->get();
+    }
+
+    /**
+     * @param BotAction $action
+     * @return string
+     */
+    private function makeActionString(BotAction $action): string
+    {
+        return MessengerBots::getHandlerSettings($action->handler)['name'].' - ( '.$action->triggers.' )';
     }
 }
