@@ -28,6 +28,7 @@
   - Rock Paper Scissors Bot
   - Roll Bot
   - Weather Bot
+  - Wikipedia Bot
   - YoMomma Bot
 
 ---
@@ -103,6 +104,7 @@ use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\RockPaperScissorsBot;
 use RTippin\MessengerBots\Bots\RollBot;
 use RTippin\MessengerBots\Bots\WeatherBot;
+use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 
 class AppServiceProvider extends ServiceProvider
@@ -127,6 +129,7 @@ class AppServiceProvider extends ServiceProvider
             RockPaperScissorsBot::class,
             RollBot::class,
             WeatherBot::class,
+            WikiBot::class,
             YoMommaBot::class,
         ]);
     }
