@@ -37,6 +37,7 @@ class CommandsBot extends BotActionHandler
             'alias' => 'commands',
             'description' => 'List all triggers the current bot has across its actions.',
             'name' => 'List Commands / Triggers',
+            'unique' => true,
             'match' => 'exact:caseless',
             'triggers' => ['!commands', '!c'],
         ];
