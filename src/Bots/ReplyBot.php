@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Bots;
 
+use Illuminate\Support\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Actions\Messages\StoreMessage;
 use RTippin\Messenger\Contracts\EmojiInterface;
@@ -74,7 +75,7 @@ class ReplyBot extends BotActionHandler
      */
     public function serializePayload(?array $payload): ?string
     {
-        $payload['replies'] = collect($payload['replies'])
+        $payload['replies'] = (new Collection($payload['replies']))
             ->transform(fn ($reply) => $this->emoji->toShort($reply))
             ->toArray();
 
