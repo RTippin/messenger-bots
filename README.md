@@ -22,6 +22,7 @@
   - Insult Bot
   - Joke Bot
   - Kanye West Bot
+  - Knock Bot
   - Random Image Bot
   - Reaction Bot
   - Reply Bot
@@ -85,6 +86,7 @@ $ php artisan vendor:publish --tag=messenger-bots
 - You can use our `MessengerBots` facade to set handlers. Be sure you do it inside the `boot` method.
 
 ***Example:***
+
 ```php
 <?php
 
@@ -98,6 +100,7 @@ use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
+use RTippin\MessengerBots\Bots\KnockBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
@@ -123,6 +126,7 @@ class AppServiceProvider extends ServiceProvider
             InsultBot::class,
             JokeBot::class,
             KanyeBot::class,
+            KnockBot::class,
             RandomImageBot::class,
             ReactionBot::class,
             ReplyBot::class,            
