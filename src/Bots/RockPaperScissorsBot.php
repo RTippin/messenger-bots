@@ -55,7 +55,7 @@ class RockPaperScissorsBot extends BotActionHandler
             'name' => 'Rock Paper Scissors',
             'unique' => true,
             'triggers' => ['!rps'],
-            'match' => 'starts:with',
+            'match' => 'starts:with:caseless',
         ];
     }
 

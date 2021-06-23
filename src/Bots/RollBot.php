@@ -37,7 +37,7 @@ class RollBot extends BotActionHandler
             'name' => 'Roll Numbers',
             'unique' => true,
             'triggers' => ['!r', '!roll'],
-            'match' => 'starts:with',
+            'match' => 'starts:with:caseless',
         ];
     }
 

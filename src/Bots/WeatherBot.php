@@ -39,7 +39,7 @@ class WeatherBot extends BotActionHandler
             'name' => 'Current Weather',
             'unique' => true,
             'triggers' => ['!w', '!weather'],
-            'match' => 'starts:with',
+            'match' => 'starts:with:caseless',
         ];
     }
 
