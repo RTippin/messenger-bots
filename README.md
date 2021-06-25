@@ -23,6 +23,7 @@
   - Joke Bot
   - Kanye West Bot
   - Knock Bot
+  - Location Bot
   - Random Image Bot
   - Reaction Bot
   - Reply Bot
@@ -68,6 +69,7 @@ $ composer require rtippin/messenger-bots
 
 ```php
 'weather_api_key' => env('BOT_WEATHER_API_KEY'),
+'ip_api_key' => env('BOT_LOCATION_API_KEY'),
 'random_image_url' => env('BOT_RANDOM_IMAGE_URL', 'https://source.unsplash.com/random'),
 ```
 
@@ -77,9 +79,10 @@ $ composer require rtippin/messenger-bots
 $ php artisan vendor:publish --tag=messenger-bots
 ```
 
-- Currently, only the `WeatherBot` and `RandomImageBot` use config values.
+- Currently, only the `WeatherBot`, `LocationBot`, and `RandomImageBot` use config values.
 - To use weather bot, you must get an API key from [Weather API][link-weather-api]
-- Random image bot will use unsplash as the default endpoint to grab a random image from. You may overwrite this value within the config.
+- You may use the location bot without an API key, but for commercial use, you must get an API key from [IP API][link-ip-api]
+- Random image bot will use unsplash as the default endpoint to grab a random image from. You may overwrite this endpoint.
 
 # Register Handlers
 - Inside your `AppServiceProvider` (or any of your providers), you must register all bot action handlers you want to use in your app.
@@ -101,6 +104,7 @@ use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
+use RTippin\MessengerBots\Bots\LocationBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
@@ -127,6 +131,7 @@ class AppServiceProvider extends ServiceProvider
             JokeBot::class,
             KanyeBot::class,
             KnockBot::class,
+            LocationBot::class,
             RandomImageBot::class,
             ReactionBot::class,
             ReplyBot::class,            
@@ -168,3 +173,4 @@ class AppServiceProvider extends ServiceProvider
 [link-messenger]: https://github.com/RTippin/messenger
 [link-messenger-config]: https://github.com/RTippin/messenger/blob/master/config/messenger.php
 [link-weather-api]: https://www.weatherapi.com/
+[link-ip-api]: https://ip-api.com/
