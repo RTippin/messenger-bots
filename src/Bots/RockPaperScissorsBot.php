@@ -65,24 +65,45 @@ class RockPaperScissorsBot extends BotActionHandler
     public function handle(): void
     {
         if (! is_null($userChoice = $this->getChoice())) {
-            $botChoice = $this->rollBotChoice();
-
-            $this->storeMessage->execute($this->thread, [
-                'message' => ':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!',
-            ]);
-
-            $this->storeMessage->execute($this->thread, [
-                'message' => $this->getRollMessage($botChoice, $userChoice),
-            ]);
-
-            $this->storeMessage->execute($this->thread, [
-                'message' => $this->getWinningMessage($botChoice, $userChoice),
-            ]);
+            $this->sendGameMessages($userChoice);
 
             return;
         }
 
+        $this->sendInvalidSelectionMessage();
+
         $this->releaseCooldown();
+    }
+
+    /**
+     * @param string $userChoice
+     * @throws Throwable
+     */
+    private function sendGameMessages(string $userChoice): void
+    {
+        $botChoice = $this->rollBotChoice();
+
+        $this->storeMessage->execute($this->thread, [
+            'message' => ':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!',
+        ]);
+
+        $this->storeMessage->execute($this->thread, [
+            'message' => $this->getRollMessage($botChoice, $userChoice),
+        ]);
+
+        $this->storeMessage->execute($this->thread, [
+            'message' => $this->getWinningMessage($botChoice, $userChoice),
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function sendInvalidSelectionMessage(): void
+    {
+        $this->storeMessage->execute($this->thread, [
+            'message' => 'Please select a valid choice, i.e. ( !rps rock|paper|scissors )',
+        ]);
     }
 
     /**

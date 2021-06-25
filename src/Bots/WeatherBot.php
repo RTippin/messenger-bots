@@ -62,7 +62,19 @@ class WeatherBot extends BotActionHandler
             }
         }
 
+        $this->sendInvalidSelectionMessage();
+
         $this->releaseCooldown();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function sendInvalidSelectionMessage(): void
+    {
+        $this->storeMessage->execute($this->thread, [
+            'message' => 'Please select a valid location, i.e. ( !w Orlando )',
+        ]);
     }
 
     /**

@@ -54,7 +54,19 @@ class RollBot extends BotActionHandler
             return;
         }
 
+        $this->sendInvalidSelectionMessage();
+
         $this->releaseCooldown();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function sendInvalidSelectionMessage(): void
+    {
+        $this->storeMessage->execute($this->thread, [
+            'message' => 'Please select a valid number range, i.e. ( !r 1 50 )',
+        ]);
     }
 
     /**

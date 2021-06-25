@@ -51,24 +51,48 @@ class WikiBot extends BotActionHandler
     {
         $search = trim(Str::remove($this->matchingTrigger, $this->message->body, false));
 
-        $wiki = $this->getWikiSearch($search);
+        if (! empty($search)) {
+            $wiki = $this->getWikiSearch($search);
 
-        if ($wiki->successful()
-            && count($results = $this->formatResults($wiki->json()))) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => "I found the following articles for ( $search ) :",
-            ]);
+            if ($wiki->successful()
+                && count($results = $this->formatResults($wiki->json()))) {
+                $this->sendWikiResultMessages($search, $results);
 
-            foreach ($results as $result) {
-                $this->storeMessage->execute($this->thread, [
-                    'message' => $result,
-                ]);
+                return;
             }
-
-            return;
         }
 
+        $this->sendInvalidSelectionMessage();
+
         $this->releaseCooldown();
+    }
+
+    /**
+     * @param string $search
+     * @param array $results
+     * @throws Throwable
+     */
+    private function sendWikiResultMessages(string $search, array $results): void
+    {
+        $this->storeMessage->execute($this->thread, [
+            'message' => "I found the following articles for ( $search ) :",
+        ]);
+
+        foreach ($results as $result) {
+            $this->storeMessage->execute($this->thread, [
+                'message' => $result,
+            ]);
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function sendInvalidSelectionMessage(): void
+    {
+        $this->storeMessage->execute($this->thread, [
+            'message' => 'Please select a valid search term, i.e. ( !wiki Computers )',
+        ]);
     }
 
     /**
