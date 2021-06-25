@@ -11,12 +11,12 @@ use Throwable;
 class LocationBot extends BotActionHandler
 {
     /**
-     * Free endpoint for IP-API
+     * Free endpoint for IP-API.
      */
     const Free = 'http://ip-api.com/json/';
 
     /**
-     * Pro endpoint for IP-API
+     * Pro endpoint for IP-API.
      */
     const Pro = 'https://pro.ip-api.com/json/';
 
@@ -71,7 +71,7 @@ class LocationBot extends BotActionHandler
             return;
         }
 
-        $this->sendFailedMessage();;
+        $this->sendFailedMessage();
 
         $this->releaseCooldown();
     }
