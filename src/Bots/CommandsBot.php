@@ -4,28 +4,12 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Database\Eloquent\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\BotAction;
 use Throwable;
 
 class CommandsBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * CommandsBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -53,14 +37,10 @@ class CommandsBot extends BotActionHandler
             ->sort()
             ->chunk(5);
 
-        $this->storeMessage->execute($this->thread, [
-            'message' => "{$this->message->owner->getProviderName()}, I can respond to the following commands:",
-        ]);
+        $this->composer()->message("{$this->message->owner->getProviderName()}, I can respond to the following commands:");
 
         foreach ($actions as $action) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => $action->implode(', '),
-            ]);
+            $this->composer()->message($action->implode(', '));
         }
     }
 

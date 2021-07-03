@@ -5,26 +5,10 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class ChuckNorrisBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * ChuckNorrisBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -48,9 +32,7 @@ class ChuckNorrisBot extends BotActionHandler
         $quote = $this->getChuckNorris();
 
         if ($quote->successful()) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => ":skull: {$quote->json('value')}",
-            ]);
+            $this->composer()->message(":skull: {$quote->json('value')}");
 
             return;
         }

@@ -5,7 +5,6 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class LocationBot extends BotActionHandler
@@ -24,21 +23,6 @@ class LocationBot extends BotActionHandler
      * The fields we want in our results.
      */
     const Fields = '?fields=status,country,regionName,city';
-
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * LocationBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
 
     /**
      * The bots settings.
@@ -82,10 +66,10 @@ class LocationBot extends BotActionHandler
      */
     private function sendLocationMessage(array $location): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => "My sources say you are coming all the way from {$location['city']}, {$location['regionName']}, {$location['country']}!",
-            'reply_to_id' => $this->message->id,
-        ]);
+        $this->composer()->message(
+            "My sources say you are coming all the way from {$location['city']}, {$location['regionName']}, {$location['country']}!",
+            $this->message->id
+        );
     }
 
     /**
@@ -93,10 +77,10 @@ class LocationBot extends BotActionHandler
      */
     private function sendFailedMessage(): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => 'It seems that I have no clue where you are right now!',
-            'reply_to_id' => $this->message->id,
-        ]);
+        $this->composer()->message(
+            'It seems that I have no clue where you are right now!',
+            $this->message->id
+        );
     }
 
     /**

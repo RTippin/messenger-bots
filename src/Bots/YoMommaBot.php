@@ -5,26 +5,10 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class YoMommaBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * YoMommaBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -48,9 +32,7 @@ class YoMommaBot extends BotActionHandler
         $joke = $this->getYoMomma();
 
         if ($joke->successful()) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => ":woman: {$joke->json('joke')}",
-            ]);
+            $this->composer()->message(":woman: {$joke->json('joke')}");
 
             return;
         }

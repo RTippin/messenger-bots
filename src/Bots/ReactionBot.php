@@ -3,7 +3,6 @@
 namespace RTippin\MessengerBots\Bots;
 
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\AddReaction;
 use RTippin\Messenger\Contracts\EmojiInterface;
 use RTippin\Messenger\Exceptions\FeatureDisabledException;
 use RTippin\Messenger\Exceptions\ReactionException;
@@ -13,11 +12,6 @@ use Throwable;
 class ReactionBot extends BotActionHandler
 {
     /**
-     * @var AddReaction
-     */
-    private AddReaction $addReaction;
-
-    /**
      * @var EmojiInterface
      */
     private EmojiInterface $emoji;
@@ -25,12 +19,10 @@ class ReactionBot extends BotActionHandler
     /**
      * ReactionBot constructor.
      *
-     * @param AddReaction $addReaction
      * @param EmojiInterface $emoji
      */
-    public function __construct(AddReaction $addReaction, EmojiInterface $emoji)
+    public function __construct(EmojiInterface $emoji)
     {
-        $this->addReaction = $addReaction;
         $this->emoji = $emoji;
     }
 
@@ -74,10 +66,6 @@ class ReactionBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->addReaction->execute(
-            $this->thread,
-            $this->message,
-            $this->getPayload('reaction')
-        );
+        $this->composer()->reaction($this->message, $this->getPayload('reaction'));
     }
 }

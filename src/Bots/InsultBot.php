@@ -5,26 +5,10 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class InsultBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * InsultBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -50,9 +34,7 @@ class InsultBot extends BotActionHandler
         if ($insult->successful()) {
             $insult = htmlspecialchars_decode($insult->json('insult'));
 
-            $this->storeMessage->execute($this->thread, [
-                'message' => "{$this->message->owner->getProviderName()}, $insult",
-            ]);
+            $this->composer()->message("{$this->message->owner->getProviderName()}, $insult");
 
             return;
         }

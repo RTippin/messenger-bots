@@ -5,26 +5,10 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class KanyeBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * KanyeBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -48,9 +32,7 @@ class KanyeBot extends BotActionHandler
         $quote = $this->getKanyeQuote();
 
         if ($quote->successful()) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => ":bearded_person_tone5: \"{$quote->json('quote')}\"",
-            ]);
+            $this->composer()->message(":bearded_person_tone5: \"{$quote->json('quote')}\"");
 
             return;
         }

@@ -4,26 +4,10 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class RollBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * RollBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -47,9 +31,7 @@ class RollBot extends BotActionHandler
     public function handle(): void
     {
         if (! is_null($numbers = $this->getNumbers())) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => "Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]),
-            ]);
+            $this->composer()->message("Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]));
 
             return;
         }
@@ -64,9 +46,7 @@ class RollBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => 'Please select a valid number range, i.e. ( !r 1 50 )',
-        ]);
+        $this->composer()->message('Please select a valid number range, i.e. ( !r 1 50 )');
     }
 
     /**

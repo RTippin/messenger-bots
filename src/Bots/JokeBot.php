@@ -5,26 +5,10 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class JokeBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * JokeBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -48,15 +32,11 @@ class JokeBot extends BotActionHandler
         $joke = $this->getJoke();
 
         if ($joke->successful()) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => $joke->json('setup'),
-            ]);
+            $this->composer()->message($joke->json('setup'));
 
             sleep(6);
 
-            $this->storeMessage->execute($this->message->thread, [
-                'message' => $joke->json('punchline'),
-            ]);
+            $this->composer()->message($joke->json('punchline'));
 
             return;
         }

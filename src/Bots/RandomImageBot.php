@@ -6,27 +6,11 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreImageMessage;
 use RTippin\Messenger\Exceptions\FileServiceException;
 use Throwable;
 
 class RandomImageBot extends BotActionHandler
 {
-    /**
-     * @var StoreImageMessage
-     */
-    private StoreImageMessage $storeImage;
-
-    /**
-     * RandomImageBot constructor.
-     *
-     * @param StoreImageMessage $storeImage
-     */
-    public function __construct(StoreImageMessage $storeImage)
-    {
-        $this->storeImage = $storeImage;
-    }
-
     /**
      * The bots settings.
      *
@@ -55,9 +39,7 @@ class RandomImageBot extends BotActionHandler
             file_put_contents($imagePath, $image->body());
 
             try {
-                $this->storeImage->execute($this->thread, [
-                    'image' => new UploadedFile($imagePath, $name),
-                ]);
+                $this->composer()->image(new UploadedFile($imagePath, $name));
             } catch (Throwable $e) {
                 $this->releaseCooldown();
             }

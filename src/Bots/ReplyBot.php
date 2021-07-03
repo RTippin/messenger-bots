@@ -4,17 +4,11 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Support\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use RTippin\Messenger\Contracts\EmojiInterface;
 use Throwable;
 
 class ReplyBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
     /**
      * @var EmojiInterface
      */
@@ -23,12 +17,10 @@ class ReplyBot extends BotActionHandler
     /**
      * ReplyBot constructor.
      *
-     * @param StoreMessage $storeMessage
      * @param EmojiInterface $emoji
      */
-    public function __construct(StoreMessage $storeMessage, EmojiInterface $emoji)
+    public function __construct(EmojiInterface $emoji)
     {
-        $this->storeMessage = $storeMessage;
         $this->emoji = $emoji;
     }
 
@@ -91,17 +83,12 @@ class ReplyBot extends BotActionHandler
 
         foreach ($replies as $key => $reply) {
             if ($key === array_key_first($replies) && $this->getPayload('quote_original')) {
-                $this->storeMessage->execute($this->thread, [
-                    'message' => $reply,
-                    'reply_to_id' => $this->message->id,
-                ]);
+                $this->composer()->message($reply, $this->message->id);
 
                 continue;
             }
 
-            $this->storeMessage->execute($this->thread, [
-                'message' => $reply,
-            ]);
+            $this->composer()->message($reply);
         }
     }
 }

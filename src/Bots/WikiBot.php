@@ -7,26 +7,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class WikiBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * WikiBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -74,14 +58,10 @@ class WikiBot extends BotActionHandler
      */
     private function sendWikiResultMessages(string $search, array $results): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => "I found the following articles for ( $search ) :",
-        ]);
+        $this->composer()->message("I found the following articles for ( $search ) :");
 
         foreach ($results as $result) {
-            $this->storeMessage->execute($this->thread, [
-                'message' => $result,
-            ]);
+            $this->composer()->message($result);
         }
     }
 
@@ -90,9 +70,7 @@ class WikiBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => 'Please select a valid search term, i.e. ( !wiki Computers )',
-        ]);
+        $this->composer()->message('Please select a valid search term, i.e. ( !wiki Computers )');
     }
 
     /**

@@ -6,26 +6,10 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class WeatherBot extends BotActionHandler
 {
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * WeatherBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
-
     /**
      * The bots settings.
      *
@@ -54,9 +38,7 @@ class WeatherBot extends BotActionHandler
             $weather = $this->getWeather($location);
 
             if ($weather->successful()) {
-                $this->storeMessage->execute($this->thread, [
-                    'message' => $this->generateWeatherText($weather->json()),
-                ]);
+                $this->composer()->message($this->generateWeatherText($weather->json()));
 
                 return;
             }
@@ -72,9 +54,7 @@ class WeatherBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => 'Please select a valid location, i.e. ( !w Orlando )',
-        ]);
+        $this->composer()->message('Please select a valid location, i.e. ( !w Orlando )');
     }
 
     /**

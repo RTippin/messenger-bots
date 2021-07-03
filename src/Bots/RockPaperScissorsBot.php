@@ -4,7 +4,6 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Actions\Messages\StoreMessage;
 use Throwable;
 
 class RockPaperScissorsBot extends BotActionHandler
@@ -26,21 +25,6 @@ class RockPaperScissorsBot extends BotActionHandler
             'emoji' => ':scissors:',
         ],
     ];
-
-    /**
-     * @var StoreMessage
-     */
-    private StoreMessage $storeMessage;
-
-    /**
-     * RockPaperScissorsBot constructor.
-     *
-     * @param StoreMessage $storeMessage
-     */
-    public function __construct(StoreMessage $storeMessage)
-    {
-        $this->storeMessage = $storeMessage;
-    }
 
     /**
      * The bots settings.
@@ -83,17 +67,11 @@ class RockPaperScissorsBot extends BotActionHandler
     {
         $botChoice = $this->rollBotChoice();
 
-        $this->storeMessage->execute($this->thread, [
-            'message' => ':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!',
-        ]);
+        $this->composer()->message(':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!');
 
-        $this->storeMessage->execute($this->thread, [
-            'message' => $this->getRollMessage($botChoice, $userChoice),
-        ]);
+        $this->composer()->message($this->getRollMessage($botChoice, $userChoice));
 
-        $this->storeMessage->execute($this->thread, [
-            'message' => $this->getWinningMessage($botChoice, $userChoice),
-        ]);
+        $this->composer()->message($this->getWinningMessage($botChoice, $userChoice));
     }
 
     /**
@@ -101,9 +79,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->storeMessage->execute($this->thread, [
-            'message' => 'Please select a valid choice, i.e. ( !rps rock|paper|scissors )',
-        ]);
+        $this->composer()->message('Please select a valid choice, i.e. ( !rps rock|paper|scissors )');
     }
 
     /**
