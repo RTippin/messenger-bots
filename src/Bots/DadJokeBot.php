@@ -32,7 +32,7 @@ class DadJokeBot extends BotActionHandler
         $joke = $this->getDadJoke();
 
         if ($joke->successful()) {
-            $this->composer()->message(":man: {$joke->json('joke')}");
+            $this->composer()->emitTyping()->message(":man: {$joke->json('joke')}");
 
             return;
         }

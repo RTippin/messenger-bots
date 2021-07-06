@@ -56,7 +56,7 @@ class ReactionBot extends BotActionHandler
      */
     public function serializePayload(?array $payload): ?string
     {
-        $payload['reaction'] = $this->emoji->getValidEmojiShortcodes($payload['reaction'])[0];
+        $payload['reaction'] = $this->emoji->getFirstValidEmojiShortcode($payload['reaction']);
 
         return json_encode($payload);
     }

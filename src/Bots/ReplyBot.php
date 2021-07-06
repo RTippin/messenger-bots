@@ -81,6 +81,8 @@ class ReplyBot extends BotActionHandler
     {
         $replies = $this->getPayload('replies');
 
+        $this->composer()->emitTyping();
+
         foreach ($replies as $key => $reply) {
             if ($key === array_key_first($replies) && $this->getPayload('quote_original')) {
                 $this->composer()->message($reply, $this->message->id);

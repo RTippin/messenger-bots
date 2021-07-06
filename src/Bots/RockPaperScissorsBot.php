@@ -67,7 +67,7 @@ class RockPaperScissorsBot extends BotActionHandler
     {
         $botChoice = $this->rollBotChoice();
 
-        $this->composer()->message(':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!');
+        $this->composer()->emitTyping()->message(':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!');
 
         $this->composer()->message($this->getRollMessage($botChoice, $userChoice));
 
@@ -79,7 +79,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->composer()->message('Please select a valid choice, i.e. ( !rps rock|paper|scissors )');
+        $this->composer()->emitTyping()->message('Please select a valid choice, i.e. ( !rps rock|paper|scissors )');
     }
 
     /**

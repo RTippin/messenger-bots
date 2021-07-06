@@ -32,11 +32,11 @@ class JokeBot extends BotActionHandler
         $joke = $this->getJoke();
 
         if ($joke->successful()) {
-            $this->composer()->message($joke->json('setup'));
+            $this->composer()->emitTyping()->message($joke->json('setup'));
 
             sleep(6);
 
-            $this->composer()->message($joke->json('punchline'));
+            $this->composer()->emitTyping()->message($joke->json('punchline'));
 
             return;
         }

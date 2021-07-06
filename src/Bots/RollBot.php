@@ -31,7 +31,7 @@ class RollBot extends BotActionHandler
     public function handle(): void
     {
         if (! is_null($numbers = $this->getNumbers())) {
-            $this->composer()->message("Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]));
+            $this->composer()->emitTyping()->message("Rolling ($numbers[0] - $numbers[1]), Got: ".rand($numbers[0], $numbers[1]));
 
             return;
         }
@@ -46,7 +46,7 @@ class RollBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->composer()->message('Please select a valid number range, i.e. ( !r 1 50 )');
+        $this->composer()->emitTyping()->message('Please select a valid number range, i.e. ( !r 1 50 )');
     }
 
     /**

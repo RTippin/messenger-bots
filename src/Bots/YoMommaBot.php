@@ -32,7 +32,7 @@ class YoMommaBot extends BotActionHandler
         $joke = $this->getYoMomma();
 
         if ($joke->successful()) {
-            $this->composer()->message(":woman: {$joke->json('joke')}");
+            $this->composer()->emitTyping()->message(":woman: {$joke->json('joke')}");
 
             return;
         }

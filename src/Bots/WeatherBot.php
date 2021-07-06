@@ -38,7 +38,7 @@ class WeatherBot extends BotActionHandler
             $weather = $this->getWeather($location);
 
             if ($weather->successful()) {
-                $this->composer()->message($this->generateWeatherText($weather->json()));
+                $this->composer()->emitTyping()->message($this->generateWeatherText($weather->json()));
 
                 return;
             }
@@ -54,7 +54,7 @@ class WeatherBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->composer()->message('Please select a valid location, i.e. ( !w Orlando )');
+        $this->composer()->emitTyping()->message('Please select a valid location, i.e. ( !w Orlando )');
     }
 
     /**

@@ -37,7 +37,7 @@ class CommandsBot extends BotActionHandler
             ->sort()
             ->chunk(5);
 
-        $this->composer()->message("{$this->message->owner->getProviderName()}, I can respond to the following commands:");
+        $this->composer()->emitTyping()->message("{$this->message->owner->getProviderName()}, I can respond to the following commands:");
 
         foreach ($actions as $action) {
             $this->composer()->message($action->implode(', '));

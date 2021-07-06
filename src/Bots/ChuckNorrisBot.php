@@ -32,7 +32,7 @@ class ChuckNorrisBot extends BotActionHandler
         $quote = $this->getChuckNorris();
 
         if ($quote->successful()) {
-            $this->composer()->message(":skull: {$quote->json('value')}");
+            $this->composer()->emitTyping()->message(":skull: {$quote->json('value')}");
 
             return;
         }

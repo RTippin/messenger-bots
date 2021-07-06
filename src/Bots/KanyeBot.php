@@ -32,7 +32,7 @@ class KanyeBot extends BotActionHandler
         $quote = $this->getKanyeQuote();
 
         if ($quote->successful()) {
-            $this->composer()->message(":bearded_person_tone5: \"{$quote->json('quote')}\"");
+            $this->composer()->emitTyping()->message(":bearded_person_tone5: \"{$quote->json('quote')}\"");
 
             return;
         }

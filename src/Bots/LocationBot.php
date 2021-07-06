@@ -66,7 +66,7 @@ class LocationBot extends BotActionHandler
      */
     private function sendLocationMessage(array $location): void
     {
-        $this->composer()->message(
+        $this->composer()->emitTyping()->message(
             "My sources say you are coming all the way from {$location['city']}, {$location['regionName']}, {$location['country']}!",
             $this->message->id
         );
@@ -77,7 +77,7 @@ class LocationBot extends BotActionHandler
      */
     private function sendFailedMessage(): void
     {
-        $this->composer()->message(
+        $this->composer()->emitTyping()->message(
             'It seems that I have no clue where you are right now!',
             $this->message->id
         );

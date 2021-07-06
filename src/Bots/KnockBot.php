@@ -30,7 +30,7 @@ class KnockBot extends BotActionHandler
     {
         Messenger::setKnockTimeout(0);
 
-        $this->composer()->message("Knock knock {$this->message->owner->getProviderName()}! :fist::punch::fist::punch:");
+        $this->composer()->emitTyping()->message("Knock knock {$this->message->owner->getProviderName()}! :fist::punch::fist::punch:");
 
         $this->composer()->knock();
     }

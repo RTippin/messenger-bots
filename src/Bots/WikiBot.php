@@ -58,7 +58,7 @@ class WikiBot extends BotActionHandler
      */
     private function sendWikiResultMessages(string $search, array $results): void
     {
-        $this->composer()->message("I found the following articles for ( $search ) :");
+        $this->composer()->emitTyping()->message("I found the following articles for ( $search ) :");
 
         foreach ($results as $result) {
             $this->composer()->message($result);
@@ -70,7 +70,7 @@ class WikiBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->composer()->message('Please select a valid search term, i.e. ( !wiki Computers )');
+        $this->composer()->emitTyping()->message('Please select a valid search term, i.e. ( !wiki Computers )');
     }
 
     /**
