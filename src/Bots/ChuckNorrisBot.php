@@ -45,6 +45,6 @@ class ChuckNorrisBot extends BotActionHandler
      */
     private function getChuckNorris(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://api.chucknorris.io/jokes/random');
+        return Http::acceptJson()->timeout(15)->get('https://api.chucknorris.io/jokes/random');
     }
 }

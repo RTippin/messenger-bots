@@ -79,7 +79,7 @@ class WikiBot extends BotActionHandler
      */
     private function getWikiSearch(string $search): Response
     {
-        return Http::acceptJson()->timeout(30)->get("https://en.wikipedia.org/w/api.php?action=opensearch&search=$search&limit=3&namespace=0&format=json");
+        return Http::acceptJson()->timeout(15)->get("https://en.wikipedia.org/w/api.php?action=opensearch&search=$search&limit=3&namespace=0&format=json");
     }
 
     /**

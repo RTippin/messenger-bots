@@ -47,6 +47,6 @@ class InsultBot extends BotActionHandler
      */
     private function getInsult(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://evilinsult.com/generate_insult.php?lang=en&type=json');
+        return Http::acceptJson()->timeout(15)->get('https://evilinsult.com/generate_insult.php?lang=en&type=json');
     }
 }

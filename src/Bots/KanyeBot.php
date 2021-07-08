@@ -45,6 +45,6 @@ class KanyeBot extends BotActionHandler
      */
     private function getKanyeQuote(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://api.kanye.rest/');
+        return Http::acceptJson()->timeout(15)->get('https://api.kanye.rest/');
     }
 }

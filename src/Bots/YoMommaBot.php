@@ -45,6 +45,6 @@ class YoMommaBot extends BotActionHandler
      */
     private function getYoMomma(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://api.yomomma.info/');
+        return Http::acceptJson()->timeout(15)->get('https://api.yomomma.info/');
     }
 }

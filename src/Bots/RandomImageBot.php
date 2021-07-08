@@ -57,6 +57,6 @@ class RandomImageBot extends BotActionHandler
      */
     private function getImage(): Response
     {
-        return Http::timeout(30)->get(config('messenger-bots.random_image_url'));
+        return Http::timeout(15)->get(config('messenger-bots.random_image_url'));
     }
 }

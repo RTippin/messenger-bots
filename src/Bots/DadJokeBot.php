@@ -45,6 +45,6 @@ class DadJokeBot extends BotActionHandler
      */
     private function getDadJoke(): Response
     {
-        return Http::acceptJson()->timeout(30)->get('https://icanhazdadjoke.com/');
+        return Http::acceptJson()->timeout(15)->get('https://icanhazdadjoke.com/');
     }
 }

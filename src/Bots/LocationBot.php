@@ -97,6 +97,6 @@ class LocationBot extends BotActionHandler
             $keyParam = '&key='.$apiKey;
         }
 
-        return Http::timeout(30)->get($baseUri.$this->senderIp.self::Fields.$keyParam);
+        return Http::timeout(15)->get($baseUri.$this->senderIp.self::Fields.$keyParam);
     }
 }

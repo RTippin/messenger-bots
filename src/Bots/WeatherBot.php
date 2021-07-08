@@ -65,7 +65,7 @@ class WeatherBot extends BotActionHandler
     {
         $apiKey = config('messenger-bots.weather_api_key');
 
-        return Http::timeout(30)->get("https://api.weatherapi.com/v1/current.json?aqi=no&key=$apiKey&q=$location");
+        return Http::timeout(15)->get("https://api.weatherapi.com/v1/current.json?aqi=no&key=$apiKey&q=$location");
     }
 
     /**
