@@ -32,6 +32,7 @@
   - Weather Bot
   - Wikipedia Bot
   - YoMomma Bot
+  - Youtube Bot
 
 ---
 
@@ -70,6 +71,7 @@ $ composer require rtippin/messenger-bots
 ```php
 'weather_api_key' => env('BOT_WEATHER_API_KEY'),
 'ip_api_key' => env('BOT_LOCATION_API_KEY'),
+'youtube_api_key' => env('BOT_YOUTUBE_API_KEY'),
 'random_image_url' => env('BOT_RANDOM_IMAGE_URL', 'https://source.unsplash.com/random'),
 ```
 
@@ -79,8 +81,9 @@ $ composer require rtippin/messenger-bots
 $ php artisan vendor:publish --tag=messenger-bots
 ```
 
-- Currently, only the `WeatherBot`, `LocationBot`, and `RandomImageBot` use config values.
+- Currently, only the `WeatherBot`, `LocationBot`, `YoutubeBot`, and `RandomImageBot` use config values.
 - To use weather bot, you must get an API key from [Weather API][link-weather-api]
+- To use youtube bot, you must get an API key from [Google Developers Console][link-google-api]
 - You may use the location bot without an API key, but for commercial use, you must get an API key from [IP API][link-ip-api]
 - Random image bot will use unsplash as the default endpoint to grab a random image from. You may overwrite this endpoint.
 
@@ -115,6 +118,7 @@ use RTippin\MessengerBots\Bots\RollBot;
 use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
+use RTippin\MessengerBots\Bots\YoutubeBot;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -142,6 +146,7 @@ class AppServiceProvider extends ServiceProvider
             WeatherBot::class,
             WikiBot::class,
             YoMommaBot::class,
+            YoutubeBot::class,
         ]);
     }
 }
@@ -436,5 +441,6 @@ class AppServiceProvider extends ServiceProvider
 [link-action-handler]: https://github.com/RTippin/messenger/blob/master/src/Actions/Bots/BotActionHandler.php
 [link-action-interface]: https://github.com/RTippin/messenger/blob/master/src/Contracts/ActionHandler.php
 [link-messenger-composer]: https://github.com/RTippin/messenger/blob/master/src/Support/MessengerComposer.php
-[link-weather-api]: https://www.weatherapi.com/
-[link-ip-api]: https://ip-api.com/
+[link-weather-api]: https://www.weatherapi.com
+[link-google-api]: https://console.developers.google.com
+[link-ip-api]: https://ip-api.com

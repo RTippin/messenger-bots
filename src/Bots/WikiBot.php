@@ -29,6 +29,16 @@ class WikiBot extends BotActionHandler
     }
 
     /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'limit' => ['nullable', 'integer', 'min:1', 'max:10'],
+        ];
+    }
+
+    /**
      * @throws Throwable
      */
     public function handle(): void
@@ -46,7 +56,7 @@ class WikiBot extends BotActionHandler
             }
         }
 
-        $this->sendInvalidSelectionMessage();
+        $this->sendInvalidSearchMessage();
 
         $this->releaseCooldown();
     }
@@ -58,7 +68,7 @@ class WikiBot extends BotActionHandler
      */
     private function sendWikiResultMessages(string $search, array $results): void
     {
-        $this->composer()->emitTyping()->message("I found the following articles for ( $search ) :");
+        $this->composer()->emitTyping()->message("I found the following article(s) for ( $search ) :");
 
         foreach ($results as $result) {
             $this->composer()->message($result);
@@ -68,7 +78,7 @@ class WikiBot extends BotActionHandler
     /**
      * @throws Throwable
      */
-    private function sendInvalidSelectionMessage(): void
+    private function sendInvalidSearchMessage(): void
     {
         $this->composer()->emitTyping()->message('Please select a valid search term, i.e. ( !wiki Computers )');
     }
@@ -79,7 +89,9 @@ class WikiBot extends BotActionHandler
      */
     private function getWikiSearch(string $search): Response
     {
-        return Http::acceptJson()->timeout(15)->get("https://en.wikipedia.org/w/api.php?action=opensearch&search=$search&limit=3&namespace=0&format=json");
+        $limit = $this->getPayload('limit') ?? 3;
+
+        return Http::acceptJson()->timeout(15)->get("https://en.wikipedia.org/w/api.php?action=opensearch&search=$search&limit=$limit&namespace=0&format=json");
     }
 
     /**

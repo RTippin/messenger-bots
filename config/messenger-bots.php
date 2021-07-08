@@ -37,8 +37,8 @@ return [
     | Youtube key
     |--------------------------------------------------------------------------
     |
-    | When registering the youtube bot, you must have a valid API key to use
-    | youtube's API. To obtain a key, please visitL
+    | When registering the youtube bot, you must have a valid Youtube API key.
+    | To obtain a key, please visit
     | https://console.developers.google.com
     */
     'youtube_api_key' => env('BOT_YOUTUBE_API_KEY'),

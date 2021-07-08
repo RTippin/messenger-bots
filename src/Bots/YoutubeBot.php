@@ -28,6 +28,16 @@ class YoutubeBot extends BotActionHandler
     }
 
     /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'limit' => ['nullable', 'integer', 'min:1', 'max:10'],
+        ];
+    }
+
+    /**
      * @throws Throwable
      */
     public function handle(): void
@@ -38,13 +48,13 @@ class YoutubeBot extends BotActionHandler
             $youtube = $this->getYoutubeSearch($search);
 
             if ($youtube->successful()) {
-                $this->sendYoutubeResultMessages($search, $youtube->json());
+                $this->sendYoutubeResultMessages($search, $youtube->json('items'));
 
                 return;
             }
         }
 
-        $this->sendInvalidSelectionMessage();
+        $this->sendInvalidSearchMessage();
 
         $this->releaseCooldown();
     }
@@ -56,17 +66,17 @@ class YoutubeBot extends BotActionHandler
      */
     private function sendYoutubeResultMessages(string $search, array $results): void
     {
-        $this->composer()->emitTyping()->message("I found the following articles for ( $search ) :");
+        $this->composer()->emitTyping()->message("I found the following video(s) for ( $search ) :");
 
         foreach ($results as $result) {
-            $this->composer()->message($result);
+            $this->composer()->message("https://youtu.be/{$result['id']['videoId']}");
         }
     }
 
     /**
      * @throws Throwable
      */
-    private function sendInvalidSelectionMessage(): void
+    private function sendInvalidSearchMessage(): void
     {
         $this->composer()->emitTyping()->message('Please select a valid search term, i.e. ( !youtube Stairway To Heaven )');
     }
@@ -77,6 +87,9 @@ class YoutubeBot extends BotActionHandler
      */
     private function getYoutubeSearch(string $search): Response
     {
-        return Http::acceptJson()->timeout(15)->get("");
+        $apiKey = config('messenger-bots.youtube_api_key');
+        $limit = $this->getPayload('limit') ?? 1;
+
+        return Http::acceptJson()->timeout(15)->get("https://www.googleapis.com/youtube/v3/search?part=id&maxResults=$limit&q=$search&type=video&key=$apiKey");
     }
 }
