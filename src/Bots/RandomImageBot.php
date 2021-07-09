@@ -34,17 +34,15 @@ class RandomImageBot extends BotActionHandler
         $image = $this->getImage();
 
         if ($image->successful()) {
-            $name = uniqid();
-            $imagePath = '/tmp/'.$name;
-            file_put_contents($imagePath, $image->body());
+            $stash = $this->stashImage($image->body());
 
             try {
-                $this->composer()->image(new UploadedFile($imagePath, $name));
+                $this->composer()->image($stash[0]);
             } catch (Throwable $e) {
                 $this->releaseCooldown();
             }
 
-            unlink($imagePath);
+            $this->unlinkImage($stash[1]);
 
             return;
         }
@@ -58,5 +56,32 @@ class RandomImageBot extends BotActionHandler
     private function getImage(): Response
     {
         return Http::timeout(15)->get(config('messenger-bots.random_image_url'));
+    }
+
+    /**
+     * @param string $body
+     * @return array
+     */
+    private function stashImage(string $body): array
+    {
+        if (self::isTesting()) {
+            return [UploadedFile::fake()->image('test.jpg'), 'test.jpg'];
+        }
+
+        $name = uniqid();
+        $imagePath = '/tmp/'.$name;
+        file_put_contents($imagePath, $body);
+
+        return [new UploadedFile($imagePath, $name), $imagePath];
+    }
+
+    /**
+     * @param string $imagePath
+     */
+    private function unlinkImage(string $imagePath): void
+    {
+        if (! self::isTesting()) {
+            unlink($imagePath);
+        }
     }
 }
