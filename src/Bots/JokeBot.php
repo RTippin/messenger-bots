@@ -34,7 +34,9 @@ class JokeBot extends BotActionHandler
         if ($joke->successful()) {
             $this->composer()->emitTyping()->message($joke->json('setup'));
 
-            sleep(6);
+            if (! self::isTesting()) {
+                sleep(6);
+            }
 
             $this->composer()->emitTyping()->message($joke->json('punchline'));
 

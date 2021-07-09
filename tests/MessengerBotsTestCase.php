@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase;
 use RTippin\Messenger\Actions\BaseMessengerAction;
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\MessengerServiceProvider;
 use RTippin\Messenger\Models\Messenger as MessengerModel;
@@ -67,6 +68,7 @@ class MessengerBotsTestCase extends TestCase
         $this->storeBaseUsers();
         Storage::fake('messenger');
         BaseMessengerAction::disableEvents();
+        BotActionHandler::isTesting(true);
     }
 
     protected function tearDown(): void
