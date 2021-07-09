@@ -159,7 +159,7 @@ class AppServiceProvider extends ServiceProvider
 # Creating Custom Bot Handlers
 
 ## Create your handler class and extend our [BotActionHandler][link-action-handler] abstract class.
-- At the very minimum, your class must define a public `handle(): void` method and a public static `getSettings()` method.
+- At the very minimum, your class must define a public `handle(): void` method and a public static `getSettings(): array` method.
 - Should you need to inject dependencies, you may add your own constructor and type hint any dependencies. Your handler class will be instantiated using the laravel container.
 ```php
 <?php
@@ -246,7 +246,8 @@ class TestBot extends BotActionHandler
   - Cooldowns are optional and are set by the end user, per action. A cooldown will be started right before your handle method is executed.
   - This is helpful when your handler did not perform an action (perhaps an API call that was denied), and you can ensure any cooldowns defined on that bot action are removed.
 - `composer()`
-  - Returns a [MessengerComposer][link-messenger-composer] instance with the `TO` and `FROM` already set as the thread and bot the action belongs to.
+  - Returns a [MessengerComposer][link-messenger-composer] instance with the `TO` preset with the messages thread, and `FROM` preset as the bot the action belongs to.
+    - Please note that each time you call `$this->composer()`, you will be given a new instance.
   - This has the most common use cases for what a bot may do (message, send an image/audio/document message, add message reaction, knock)
     - `silent()` Silences any realtime broadcast.
     - `message()` Sends a message. Optional reply to ID and extra payload.
@@ -255,6 +256,10 @@ class TestBot extends BotActionHandler
     - `audio()` Uploads an audio message. Optional reply to ID and extra payload.
     - `reaction()` Adds a reaction to the message.
     - `knock()` Sends a knock to the current thread.
+    - `read()` Marks the thread read for the `FROM` or set participant.
+    - `emitTyping()` Emits a typing presence client event. (Bot typing).
+    - `emitStopTyping()` Emits a stopped typing presence client event. (Bot stopped typing).
+    - `emitRead` Emits a read presence client event. (Bot read message).
   
 ### Example handler that sends a message and adds a reaction when triggered.
 ```php
@@ -263,7 +268,7 @@ class TestBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->composer()->message('I can send messages and react!');
+        $this->composer()->emitTyping()->message('I can send messages and react!');
 
         $this->composer()->reaction($this->message, '💯');
     }
@@ -334,6 +339,8 @@ class ReplyBot extends BotActionHandler
      */
     public function handle(): void
     {
+        $this->composer()->emitTyping();
+
         foreach ($this->getPayload('replies') as $reply) {
             $this->composer()->message($reply);
         }
@@ -383,7 +390,7 @@ class TestBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->composer()->message('I need authorization!');
+        $this->composer()->emitTyping()->message('I need authorization!');
     }
 }
 ```
