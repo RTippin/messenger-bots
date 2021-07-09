@@ -44,10 +44,6 @@ class MessengerBotsTestCase extends TestCase
         $config->set('messenger.bots.enabled', true);
         $config->set('messenger.providers', $this->getBaseProvidersConfig());
         $config->set('messenger.storage.threads.disk', 'messenger');
-        $config->set('messenger-bots.weather_api_key', 'WEATHER-KEY');
-        $config->set('messenger-bots.ip_api_key', 'IP-KEY');
-        $config->set('messenger-bots.youtube_api_key', 'YOUTUBE-KEY');
-        $config->set('messenger-bots.random_image_url', 'IMAGE-URL');
         $config->set('database.default', 'testbench');
         $config->set('database.connections.testbench', [
             'driver' => 'sqlite',

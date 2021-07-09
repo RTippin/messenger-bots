@@ -16,6 +16,8 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class InsultBotTest extends MessengerBotsTestCase
 {
+    const DATA = ['insult' => 'You suck!'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,7 +69,7 @@ class InsultBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response(['insult' => 'You suck!']),
+            InsultBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $insult = MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -87,7 +89,7 @@ class InsultBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response([], 400),
+            InsultBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $insult = MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -112,7 +114,7 @@ class InsultBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response(['insult' => 'You suck!']),
+            InsultBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(InsultBot::class)

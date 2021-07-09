@@ -10,6 +10,11 @@ use Throwable;
 class ChuckNorrisBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://api.chucknorris.io/jokes/random';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -45,6 +50,6 @@ class ChuckNorrisBot extends BotActionHandler
      */
     private function getChuckNorris(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://api.chucknorris.io/jokes/random');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

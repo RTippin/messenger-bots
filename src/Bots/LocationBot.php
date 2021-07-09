@@ -12,12 +12,12 @@ class LocationBot extends BotActionHandler
     /**
      * Free endpoint for IP-API.
      */
-    const Free = 'http://ip-api.com/json/';
+    const API_ENDPOINT_FREE = 'http://ip-api.com/json/';
 
     /**
      * Pro endpoint for IP-API.
      */
-    const Pro = 'https://pro.ip-api.com/json/';
+    const API_ENDPOINT_PRO = 'https://pro.ip-api.com/json/';
 
     /**
      * The fields we want in our results.
@@ -89,13 +89,8 @@ class LocationBot extends BotActionHandler
     private function getLocation(): Response
     {
         $apiKey = config('messenger-bots.ip_api_key');
-        $baseUri = self::Free;
-        $keyParam = '';
-
-        if (! is_null($apiKey)) {
-            $baseUri = self::Pro;
-            $keyParam = '&key='.$apiKey;
-        }
+        $baseUri = $apiKey ? self::API_ENDPOINT_PRO : self::API_ENDPOINT_FREE;
+        $keyParam = $apiKey ? '&key='.$apiKey : '';
 
         return Http::timeout(15)->get($baseUri.$this->senderIp.self::Fields.$keyParam);
     }

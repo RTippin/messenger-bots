@@ -10,6 +10,11 @@ use Throwable;
 class KanyeBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://api.kanye.rest/';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -45,6 +50,6 @@ class KanyeBot extends BotActionHandler
      */
     private function getKanyeQuote(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://api.kanye.rest/');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

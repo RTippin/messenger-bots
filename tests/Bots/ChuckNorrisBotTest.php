@@ -16,6 +16,8 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class ChuckNorrisBotTest extends MessengerBotsTestCase
 {
+    const DATA = ['value' => 'Chuck!'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,7 +69,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response(['value' => 'Chuck!']),
+            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -88,7 +90,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response([], 400),
+            ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -113,7 +115,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response(['value' => 'Chuck!']),
+            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(ChuckNorrisBot::class)

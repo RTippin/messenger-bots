@@ -16,6 +16,11 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class JokeBotTest extends MessengerBotsTestCase
 {
+    const DATA = [
+        'setup' => 'Setup!',
+        'punchline' => 'And punchline!',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,7 +72,7 @@ class JokeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://official-joke-api.appspot.com/jokes/random' => Http::response(['setup' => 'Setup!', 'punchline' => 'And punchline!']),
+            JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $joke = MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -90,7 +95,7 @@ class JokeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://official-joke-api.appspot.com/jokes/random' => Http::response([], 400),
+            JokeBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $joke = MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -115,7 +120,7 @@ class JokeBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            'https://official-joke-api.appspot.com/jokes/random' => Http::response(['setup' => 'Setup!', 'punchline' => 'And punchline!']),
+            JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(JokeBot::class)

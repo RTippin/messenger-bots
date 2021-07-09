@@ -10,6 +10,11 @@ use Throwable;
 class InsultBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://evilinsult.com/generate_insult.php?lang=en&type=json';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -47,6 +52,6 @@ class InsultBot extends BotActionHandler
      */
     private function getInsult(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://evilinsult.com/generate_insult.php?lang=en&type=json');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

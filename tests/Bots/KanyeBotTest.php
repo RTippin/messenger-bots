@@ -16,6 +16,8 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class KanyeBotTest extends MessengerBotsTestCase
 {
+    const DATA = ['quote' => 'Kanye da bomb.'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,7 +69,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.kanye.rest/' => Http::response(['quote' => 'Kanye da bomb.']),
+            KanyeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -87,7 +89,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.kanye.rest/' => Http::response([], 400),
+            KanyeBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
@@ -112,7 +114,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            'https://api.kanye.rest/' => Http::response(['quote' => 'Kanye da bomb.']),
+            KanyeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(KanyeBot::class)
