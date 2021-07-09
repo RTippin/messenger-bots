@@ -11,32 +11,32 @@ use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class ChuckNorrisBotTest extends MessengerBotsTestCase
+class InsultBotTest extends MessengerBotsTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::setHandlers([InsultBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'chuck',
-            'description' => 'Get a random Chuck Norris joke.',
-            'name' => 'Chuck Norris',
+            'alias' => 'insult',
+            'description' => 'Responds with a random insult.',
+            'name' => 'Insult',
             'unique' => true,
             'authorize' => false,
             'triggers' => null,
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(InsultBot::class));
     }
 
     /** @test */
@@ -50,12 +50,12 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'chuck',
+            'handler' => 'insult',
             'match' => 'exact',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!chuck'],
+            'triggers' => ['!insult'],
         ])
             ->assertSuccessful();
     }
@@ -67,18 +67,17 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response(['value' => 'Chuck!']),
+            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response(['insult' => 'You suck!']),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $insult = MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $insult->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => ':skull: Chuck!',
-            'owner_type' => 'bots',
+            'body' => 'Richard Tippin, You suck!',
         ]);
-        $this->assertFalse($chuck->shouldReleaseCooldown());
+        $this->assertFalse($insult->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -88,14 +87,14 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response([], 400),
+            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response([], 400),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $insult = MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $insult->handle();
 
-        $this->assertTrue($chuck->shouldReleaseCooldown());
+        $this->assertTrue($insult->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -113,10 +112,10 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            'https://api.chucknorris.io/jokes/random' => Http::response(['value' => 'Chuck!']),
+            'https://evilinsult.com/generate_insult.php?lang=en&type=json' => Http::response(['insult' => 'You suck!']),
         ]);
 
-        MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForMessage($thread, $action, $message, null, null)
             ->handle();
     }
