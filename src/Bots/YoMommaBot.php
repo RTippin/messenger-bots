@@ -10,6 +10,11 @@ use Throwable;
 class YoMommaBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://api.yomomma.info/';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -45,6 +50,6 @@ class YoMommaBot extends BotActionHandler
      */
     private function getYoMomma(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://api.yomomma.info/');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

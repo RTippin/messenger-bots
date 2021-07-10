@@ -12,6 +12,11 @@ use Throwable;
 class WikiBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://en.wikipedia.org/w/api.php?action=opensearch&namespace=0&format=json';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -89,9 +94,10 @@ class WikiBot extends BotActionHandler
      */
     private function getWikiSearch(string $search): Response
     {
-        $limit = $this->getPayload('limit') ?? 3;
+        $limit = '&limit='.($this->getPayload('limit') ?? 3);
+        $search = '&search='.$search;
 
-        return Http::acceptJson()->timeout(15)->get("https://en.wikipedia.org/w/api.php?action=opensearch&search=$search&limit=$limit&namespace=0&format=json");
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT.$limit.$search);
     }
 
     /**
