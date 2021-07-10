@@ -11,6 +11,11 @@ use Throwable;
 class WeatherBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://api.weatherapi.com/v1/current.json?aqi=no';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -63,9 +68,10 @@ class WeatherBot extends BotActionHandler
      */
     private function getWeather(string $location): Response
     {
-        $apiKey = config('messenger-bots.weather_api_key');
+        $apiKey = '&key='.config('messenger-bots.weather_api_key');
+        $query = '&q='.$location;
 
-        return Http::timeout(15)->get("https://api.weatherapi.com/v1/current.json?aqi=no&key=$apiKey&q=$location");
+        return Http::timeout(15)->get(self::API_ENDPOINT.$query.$apiKey);
     }
 
     /**
@@ -83,6 +89,6 @@ class WeatherBot extends BotActionHandler
         $windDirection = $weather['current']['wind_dir'];
         $humidity = $weather['current']['humidity'];
 
-        return "Currently in $name, $region, $country, it is $temp degrees celsius and $condition. Winds out of the $windDirection at {$wind}mph. Humidity is $humidity%";
+        return "Currently in $name, $region, $country, it is $temp degrees fahrenheit and $condition. Winds out of the $windDirection at {$wind}mph. Humidity is $humidity%";
     }
 }
