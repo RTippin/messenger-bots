@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
+[![Tests][ico-test]][link-test]
 [![StyleCI][ico-styleci]][link-styleci]
 [![License][ico-license]][link-license]
 
@@ -437,6 +438,8 @@ class AppServiceProvider extends ServiceProvider
 [link-author]: https://github.com/rtippin
 [ico-version]: https://img.shields.io/packagist/v/rtippin/messenger-bots.svg?style=plastic&cacheSeconds=3600
 [ico-downloads]: https://img.shields.io/packagist/dt/rtippin/messenger-bots.svg?style=plastic&cacheSeconds=3600
+[link-test]: https://github.com/RTippin/messenger-bots/actions
+[ico-test]: https://img.shields.io/github/workflow/status/rtippin/messenger-bots/tests?style=plastic
 [ico-styleci]: https://styleci.io/repos/371539005/shield?style=plastic&cacheSeconds=3600
 [ico-license]: https://img.shields.io/github/license/RTippin/messenger-bots?style=plastic
 [link-packagist]: https://packagist.org/packages/rtippin/messenger-bots

@@ -2,7 +2,6 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
-use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -11,34 +10,32 @@ use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\RockPaperScissorsBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class ChuckNorrisBotTest extends MessengerBotsTestCase
+class RockPaperScissorsBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['value' => 'Chuck!'];
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::setHandlers([RockPaperScissorsBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'chuck',
-            'description' => 'Get a random Chuck Norris joke.',
-            'name' => 'Chuck Norris',
+            'alias' => 'rock_paper_scissors',
+            'description' => 'Play a quick game of rock, paper, scissors! [ !rps {rock|paper|scissors} ]',
+            'name' => 'Rock Paper Scissors',
             'unique' => true,
             'authorize' => false,
-            'triggers' => null,
-            'match' => null,
+            'triggers' => ['!rps'],
+            'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(RockPaperScissorsBot::class));
     }
 
     /** @test */
@@ -52,52 +49,48 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'chuck',
-            'match' => 'exact',
+            'handler' => 'rock_paper_scissors',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!chuck'],
         ])
             ->assertSuccessful();
     }
 
     /** @test */
-    public function it_gets_response_and_stores_message()
+    public function it_plays_game_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps rock']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $game->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => ':skull: Chuck!',
-            'owner_type' => 'bots',
+            'body' => ':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!',
         ]);
-        $this->assertFalse($chuck->shouldReleaseCooldown());
+        $this->assertDatabaseCount('messages', 4);
+        $this->assertFalse($game->shouldReleaseCooldown());
     }
 
     /** @test */
-    public function it_releases_cooldown_when_http_fails()
+    public function it_stores_invalid_selection_message_and_releases_cooldown()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps unknown']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
-        ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $game->handle();
 
-        $this->assertTrue($chuck->shouldReleaseCooldown());
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Please select a valid choice, i.e. ( !rps rock|paper|scissors )',
+        ]);
+        $this->assertDatabaseCount('messages', 2);
+        $this->assertTrue($game->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -105,7 +98,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps rock']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
 
         $this->expectsEvents([
@@ -114,11 +107,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             Typing::class,
         ]);
 
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
-
-        MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        MessengerBots::initializeHandler(RockPaperScissorsBot::class)
             ->setDataForMessage($thread, $action, $message, null, null)
             ->handle();
     }

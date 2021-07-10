@@ -10,6 +10,11 @@ use Throwable;
 class JokeBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://official-joke-api.appspot.com/jokes/random';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -34,7 +39,9 @@ class JokeBot extends BotActionHandler
         if ($joke->successful()) {
             $this->composer()->emitTyping()->message($joke->json('setup'));
 
-            sleep(6);
+            if (! self::isTesting()) {
+                sleep(6);
+            }
 
             $this->composer()->emitTyping()->message($joke->json('punchline'));
 
@@ -49,6 +56,6 @@ class JokeBot extends BotActionHandler
      */
     private function getJoke(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://official-joke-api.appspot.com/jokes/random');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

@@ -11,34 +11,37 @@ use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class ChuckNorrisBotTest extends MessengerBotsTestCase
+class JokeBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['value' => 'Chuck!'];
+    const DATA = [
+        'setup' => 'Setup!',
+        'punchline' => 'And punchline!',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::setHandlers([JokeBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'chuck',
-            'description' => 'Get a random Chuck Norris joke.',
-            'name' => 'Chuck Norris',
+            'alias' => 'random_joke',
+            'description' => 'Get a random joke. Has a setup and a punchline.',
+            'name' => 'Jokester',
             'unique' => true,
             'authorize' => false,
             'triggers' => null,
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(JokeBot::class));
     }
 
     /** @test */
@@ -52,12 +55,12 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'chuck',
+            'handler' => 'random_joke',
             'match' => 'exact',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!chuck'],
+            'triggers' => ['!joke'],
         ])
             ->assertSuccessful();
     }
@@ -69,18 +72,20 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
+            JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $joke = MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $joke->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => ':skull: Chuck!',
-            'owner_type' => 'bots',
+            'body' => 'Setup!',
         ]);
-        $this->assertFalse($chuck->shouldReleaseCooldown());
+        $this->assertDatabaseHas('messages', [
+            'body' => 'And punchline!',
+        ]);
+        $this->assertFalse($joke->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -90,14 +95,14 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
+            JokeBot::API_ENDPOINT => Http::response([], 400),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $joke = MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $joke->handle();
 
-        $this->assertTrue($chuck->shouldReleaseCooldown());
+        $this->assertTrue($joke->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -115,10 +120,10 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
+            JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
-        MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message, null, null)
             ->handle();
     }

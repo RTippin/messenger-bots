@@ -10,6 +10,11 @@ use Throwable;
 class DadJokeBot extends BotActionHandler
 {
     /**
+     * Endpoint we gather data from.
+     */
+    const API_ENDPOINT = 'https://icanhazdadjoke.com/';
+
+    /**
      * The bots settings.
      *
      * @return array
@@ -45,6 +50,6 @@ class DadJokeBot extends BotActionHandler
      */
     private function getDadJoke(): Response
     {
-        return Http::acceptJson()->timeout(15)->get('https://icanhazdadjoke.com/');
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
     }
 }

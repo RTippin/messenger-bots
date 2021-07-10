@@ -2,10 +2,12 @@
 
 namespace RTippin\MessengerBots\Tests;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase;
 use RTippin\Messenger\Actions\BaseMessengerAction;
+use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\MessengerServiceProvider;
 use RTippin\Messenger\Models\Messenger as MessengerModel;
@@ -17,12 +19,12 @@ use RTippin\MessengerBots\Tests\Fixtures\UserModel;
 class MessengerBotsTestCase extends TestCase
 {
     /**
-     * @var MessengerProvider
+     * @var MessengerProvider|UserModel|Authenticatable
      */
     protected $tippin;
 
     /**
-     * @var MessengerProvider
+     * @var MessengerProvider|UserModel|Authenticatable
      */
     protected $doe;
 
@@ -39,6 +41,7 @@ class MessengerBotsTestCase extends TestCase
         $config = $app->get('config');
 
         $config->set('messenger.provider_uuids', false);
+        $config->set('messenger.bots.enabled', true);
         $config->set('messenger.providers', $this->getBaseProvidersConfig());
         $config->set('messenger.storage.threads.disk', 'messenger');
         $config->set('database.default', 'testbench');
@@ -61,6 +64,7 @@ class MessengerBotsTestCase extends TestCase
         $this->storeBaseUsers();
         Storage::fake('messenger');
         BaseMessengerAction::disableEvents();
+        BotActionHandler::isTesting(true);
     }
 
     protected function tearDown(): void

@@ -2,43 +2,44 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
-use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
+use RTippin\Messenger\Actions\Messages\StoreImageMessage;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class ChuckNorrisBotTest extends MessengerBotsTestCase
+class RandomImageBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['value' => 'Chuck!'];
+    const DATA = ['quote' => 'Kanye da bomb.'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::setHandlers([RandomImageBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'chuck',
-            'description' => 'Get a random Chuck Norris joke.',
-            'name' => 'Chuck Norris',
+            'alias' => 'random_image',
+            'description' => 'Get a random image.',
+            'name' => 'Random Image',
             'unique' => true,
             'authorize' => false,
             'triggers' => null,
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(RandomImageBot::class));
     }
 
     /** @test */
@@ -52,35 +53,32 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'chuck',
+            'handler' => 'random_image',
             'match' => 'exact',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!chuck'],
+            'triggers' => ['!image'],
         ])
             ->assertSuccessful();
     }
 
     /** @test */
-    public function it_gets_response_and_stores_message()
+    public function it_gets_response_and_stores_image_message()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
+            config('messenger-bots.random_image_url') => Http::response([]),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $image = MessengerBots::initializeHandler(RandomImageBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $image->handle();
 
-        $this->assertDatabaseHas('messages', [
-            'body' => ':skull: Chuck!',
-            'owner_type' => 'bots',
-        ]);
-        $this->assertFalse($chuck->shouldReleaseCooldown());
+        $this->assertSame(1, Message::image()->count());
+        $this->assertFalse($image->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -90,14 +88,34 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
+            config('messenger-bots.random_image_url') => Http::response([], 400),
         ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $image = MessengerBots::initializeHandler(RandomImageBot::class)
             ->setDataForMessage($thread, $action, $message, null, null);
 
-        $chuck->handle();
+        $image->handle();
 
-        $this->assertTrue($chuck->shouldReleaseCooldown());
+        $this->assertTrue($image->shouldReleaseCooldown());
+    }
+
+    /** @test */
+    public function it_releases_cooldown_when_store_image_fails()
+    {
+        $thread = $this->createGroupThread($this->tippin);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
+        Http::fake([
+            config('messenger-bots.random_image_url') => Http::response([]),
+        ]);
+        $this->mock(StoreImageMessage::class)
+            ->shouldReceive('execute')
+            ->andThrow(new Exception('Error.'));
+        $image = MessengerBots::initializeHandler(RandomImageBot::class)
+            ->setDataForMessage($thread, $action, $message, null, null);
+
+        $image->handle();
+
+        $this->assertTrue($image->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -111,14 +129,13 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         $this->expectsEvents([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
-            Typing::class,
         ]);
 
         Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
+            config('messenger-bots.random_image_url') => Http::response([]),
         ]);
 
-        MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        MessengerBots::initializeHandler(RandomImageBot::class)
             ->setDataForMessage($thread, $action, $message, null, null)
             ->handle();
     }
