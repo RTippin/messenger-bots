@@ -20,7 +20,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         'data' => [
             [
                 'quoteText' => 'Do better!',
-                'quoteAuthor' => 'Some Guy'
+                'quoteAuthor' => 'Some Guy',
             ],
         ],
     ];
