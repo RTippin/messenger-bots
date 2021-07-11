@@ -20,11 +20,6 @@ class LocationBot extends BotActionHandler
     const API_ENDPOINT_PRO = 'https://pro.ip-api.com/json/';
 
     /**
-     * The fields we want in our results.
-     */
-    const Fields = '?fields=status,country,regionName,city';
-
-    /**
      * The bots settings.
      *
      * @return array
@@ -89,9 +84,11 @@ class LocationBot extends BotActionHandler
     private function getLocation(): Response
     {
         $apiKey = config('messenger-bots.ip_api_key');
-        $baseUri = $apiKey ? self::API_ENDPOINT_PRO : self::API_ENDPOINT_FREE;
-        $keyParam = $apiKey ? '&key='.$apiKey : '';
+        $endpoint = $apiKey ? self::API_ENDPOINT_PRO : self::API_ENDPOINT_FREE;
 
-        return Http::timeout(15)->get($baseUri.$this->senderIp.self::Fields.$keyParam);
+        return Http::timeout(15)->get($endpoint.$this->senderIp, [
+            'key' => $apiKey,
+            'fields' => 'status,country,regionName,city',
+        ]);
     }
 }

@@ -53,7 +53,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            YoutubeBot::API_ENDPOINT.'&maxResults=1&q=Rick-Roll&key=YOUTUBE-KEY' => Http::response(self::DATA),
+            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
             ->setDataForMessage($thread, $action, $message, '!youtube', null);
@@ -76,7 +76,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            YoutubeBot::API_ENDPOINT.'&maxResults=1&q=Rick-Roll&key=YOUTUBE-KEY' => Http::response([], 400),
+            YoutubeBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
             ->setDataForMessage($thread, $action, $message, '!youtube', null);
@@ -121,7 +121,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            YoutubeBot::API_ENDPOINT.'&maxResults=1&q=Rick-Roll&key=YOUTUBE-KEY' => Http::response(self::DATA),
+            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(YoutubeBot::class)
