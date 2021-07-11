@@ -12,7 +12,7 @@ class YoMommaBot extends BotActionHandler
     /**
      * Endpoint we gather data from.
      */
-    const API_ENDPOINT = 'https://api.yomomma.info/';
+    const API_ENDPOINT = 'https://yomomma-api.herokuapp.com/jokes';
 
     /**
      * The bots settings.
