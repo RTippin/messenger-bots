@@ -13,7 +13,7 @@ class YoutubeBot extends BotActionHandler
     /**
      * Endpoint we gather data from.
      */
-    const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/search?part=id&type=video';
+    const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/search';
 
     /**
      * The bots settings.
@@ -92,10 +92,12 @@ class YoutubeBot extends BotActionHandler
      */
     private function getYoutubeSearch(string $search): Response
     {
-        $apiKey = '&key='.config('messenger-bots.youtube_api_key');
-        $limit = '&maxResults='.($this->getPayload('limit') ?? 1);
-        $search = '&q='.$search;
-
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT.$limit.$search.$apiKey);
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
+            'key' => config('messenger-bots.youtube_api_key'),
+            'maxResults' => ($this->getPayload('limit') ?? 1),
+            'q' => $search,
+            'part' => 'id',
+            'type' => 'video',
+        ]);
     }
 }

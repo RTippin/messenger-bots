@@ -13,7 +13,7 @@ class WeatherBot extends BotActionHandler
     /**
      * Endpoint we gather data from.
      */
-    const API_ENDPOINT = 'https://api.weatherapi.com/v1/current.json?aqi=no';
+    const API_ENDPOINT = 'https://api.weatherapi.com/v1/current.json';
 
     /**
      * The bots settings.
@@ -68,10 +68,11 @@ class WeatherBot extends BotActionHandler
      */
     private function getWeather(string $location): Response
     {
-        $apiKey = '&key='.config('messenger-bots.weather_api_key');
-        $query = '&q='.$location;
-
-        return Http::timeout(15)->get(self::API_ENDPOINT.$query.$apiKey);
+        return Http::timeout(15)->get(self::API_ENDPOINT, [
+            'key' => config('messenger-bots.weather_api_key'),
+            'q' => $location,
+            'aqi' => 'no',
+        ]);
     }
 
     /**

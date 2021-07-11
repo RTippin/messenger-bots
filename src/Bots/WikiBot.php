@@ -14,7 +14,7 @@ class WikiBot extends BotActionHandler
     /**
      * Endpoint we gather data from.
      */
-    const API_ENDPOINT = 'https://en.wikipedia.org/w/api.php?action=opensearch&namespace=0&format=json';
+    const API_ENDPOINT = 'https://en.wikipedia.org/w/api.php';
 
     /**
      * The bots settings.
@@ -94,10 +94,13 @@ class WikiBot extends BotActionHandler
      */
     private function getWikiSearch(string $search): Response
     {
-        $limit = '&limit='.($this->getPayload('limit') ?? 3);
-        $search = '&search='.$search;
-
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT.$limit.$search);
+        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
+            'limit' => ($this->getPayload('limit') ?? 3),
+            'search' => $search,
+            'action' => 'opensearch',
+            'namespace' => 0,
+            'format' => 'json',
+        ]);
     }
 
     /**

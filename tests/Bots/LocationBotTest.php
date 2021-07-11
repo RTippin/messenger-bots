@@ -71,9 +71,8 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        $free = LocationBot::API_ENDPOINT_FREE.'127.0.0.1'.LocationBot::Fields;
         Http::fake([
-            $free => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::DATA),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForMessage($thread, $action, $message, null, '127.0.0.1');
@@ -94,9 +93,8 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        $pro = LocationBot::API_ENDPOINT_PRO.'127.0.0.1'.LocationBot::Fields.'&key=IP-KEY';
         Http::fake([
-            $pro => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_PRO.'127.0.0.1*' => Http::response(self::DATA),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForMessage($thread, $action, $message, null, '127.0.0.1');
@@ -116,9 +114,8 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        $free = LocationBot::API_ENDPOINT_FREE.'127.0.0.1'.LocationBot::Fields;
         Http::fake([
-            $free => Http::response([], 400),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response([], 400),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForMessage($thread, $action, $message, null, '127.0.0.1');
@@ -138,9 +135,8 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        $free = LocationBot::API_ENDPOINT_FREE.'127.0.0.1'.LocationBot::Fields;
         Http::fake([
-            $free => Http::response(['status' => 'error']),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(['status' => 'error']),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForMessage($thread, $action, $message, null, '127.0.0.1');
@@ -161,7 +157,6 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        $free = LocationBot::API_ENDPOINT_FREE.'127.0.0.1'.LocationBot::Fields;
 
         $this->expectsEvents([
             NewMessageBroadcast::class,
@@ -170,7 +165,7 @@ class LocationBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            $free => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(LocationBot::class)

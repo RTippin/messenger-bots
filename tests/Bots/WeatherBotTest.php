@@ -84,7 +84,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            WeatherBot::API_ENDPOINT.'&q=Location&key=WEATHER-KEY' => Http::response(self::DATA),
+            WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
             ->setDataForMessage($thread, $action, $message, '!w', null);
@@ -104,7 +104,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            WeatherBot::API_ENDPOINT.'&q=Location&key=WEATHER-KEY' => Http::response([], 400),
+            WeatherBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
             ->setDataForMessage($thread, $action, $message, '!w', null);
@@ -149,7 +149,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            WeatherBot::API_ENDPOINT.'&q=Location&key=WEATHER-KEY' => Http::response(self::DATA),
+            WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(WeatherBot::class)
