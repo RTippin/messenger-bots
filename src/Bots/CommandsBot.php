@@ -33,6 +33,7 @@ class CommandsBot extends BotActionHandler
     public function handle(): void
     {
         $actions = $this->getBotActions()
+            ->reject(fn (BotAction $action) => $this->adminOnlyActionWhenNotAdmin($action))
             ->transform(fn (BotAction $action) => $this->makeActionString($action))
             ->sort()
             ->chunk(5);
@@ -53,8 +54,17 @@ class CommandsBot extends BotActionHandler
     {
         return BotAction::validHandler()
             ->where('bot_id', '=', $this->action->bot_id)
-            ->select(['triggers', 'handler'])
+            ->select(['triggers', 'handler', 'admin_only'])
             ->get();
+    }
+
+    /**
+     * @param BotAction $action
+     * @return bool
+     */
+    private function adminOnlyActionWhenNotAdmin(BotAction $action): bool
+    {
+        return $action->admin_only && ! $this->isGroupAdmin;
     }
 
     /**
