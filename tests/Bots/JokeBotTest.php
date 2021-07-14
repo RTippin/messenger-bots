@@ -75,7 +75,7 @@ class JokeBotTest extends MessengerBotsTestCase
             JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $joke = MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $joke->handle();
 
@@ -98,7 +98,7 @@ class JokeBotTest extends MessengerBotsTestCase
             JokeBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $joke = MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $joke->handle();
 
@@ -124,7 +124,7 @@ class JokeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

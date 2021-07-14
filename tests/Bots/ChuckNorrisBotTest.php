@@ -72,7 +72,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $chuck->handle();
 
@@ -93,7 +93,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $chuck->handle();
 
@@ -119,7 +119,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(ChuckNorrisBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

@@ -56,7 +56,7 @@ class WikiBotTest extends MessengerBotsTestCase
             WikiBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki', null);
+            ->setDataForMessage($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -82,7 +82,7 @@ class WikiBotTest extends MessengerBotsTestCase
             WikiBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki', null);
+            ->setDataForMessage($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -99,7 +99,7 @@ class WikiBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki', null);
+            ->setDataForMessage($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -128,7 +128,7 @@ class WikiBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki', null)
+            ->setDataForMessage($thread, $action, $message, '!wiki')
             ->handle();
     }
 

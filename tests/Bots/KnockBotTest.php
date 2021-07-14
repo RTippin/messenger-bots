@@ -68,7 +68,7 @@ class KnockBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $knock = MessengerBots::initializeHandler(KnockBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $knock->handle();
 
@@ -95,7 +95,7 @@ class KnockBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(KnockBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

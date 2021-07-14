@@ -72,7 +72,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
             YoMommaBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $momma = MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $momma->handle();
 
@@ -92,7 +92,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
             YoMommaBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $momma = MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $momma->handle();
 
@@ -118,7 +118,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

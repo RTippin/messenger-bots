@@ -87,7 +87,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -107,7 +107,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             WeatherBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -124,7 +124,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -153,7 +153,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null)
+            ->setDataForMessage($thread, $action, $message, '!w')
             ->handle();
     }
 }

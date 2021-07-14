@@ -64,7 +64,7 @@ class RollBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll', null);
+            ->setDataForMessage($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -79,7 +79,7 @@ class RollBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll 1 unknown']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll', null);
+            ->setDataForMessage($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -96,7 +96,7 @@ class RollBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll 1 1']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll', null);
+            ->setDataForMessage($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -121,7 +121,7 @@ class RollBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll', null)
+            ->setDataForMessage($thread, $action, $message, '!roll')
             ->handle();
     }
 }

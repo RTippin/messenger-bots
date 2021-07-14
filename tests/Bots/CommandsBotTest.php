@@ -73,7 +73,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         )->owner($this->tippin)->handler(CommandsBot::class)->triggers('!commands|!c')->create();
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -108,7 +108,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         }
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -142,7 +142,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

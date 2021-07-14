@@ -64,7 +64,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps rock']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $game->handle();
 
@@ -82,7 +82,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps unknown']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $game->handle();
 
@@ -108,7 +108,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

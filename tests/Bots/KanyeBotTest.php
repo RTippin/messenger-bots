@@ -72,7 +72,7 @@ class KanyeBotTest extends MessengerBotsTestCase
             KanyeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $kanye->handle();
 
@@ -92,7 +92,7 @@ class KanyeBotTest extends MessengerBotsTestCase
             KanyeBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $kanye->handle();
 
@@ -118,7 +118,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

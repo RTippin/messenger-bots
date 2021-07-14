@@ -77,7 +77,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             QuotableBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $quote = MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $quote->handle();
 
@@ -97,7 +97,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             QuotableBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $quote = MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $quote->handle();
 
@@ -123,7 +123,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }

@@ -52,7 +52,7 @@ class ReplyBotTest extends MessengerBotsTestCase
         )->owner($this->tippin)->payload($payload)->create();
 
         MessengerBots::initializeHandler(ReplyBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -75,7 +75,7 @@ class ReplyBotTest extends MessengerBotsTestCase
         )->owner($this->tippin)->payload($payload)->create();
 
         MessengerBots::initializeHandler(ReplyBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -113,7 +113,7 @@ class ReplyBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(ReplyBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 

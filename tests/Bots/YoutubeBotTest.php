@@ -56,7 +56,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube', null);
+            ->setDataForMessage($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -79,7 +79,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             YoutubeBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube', null);
+            ->setDataForMessage($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -96,7 +96,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube', null);
+            ->setDataForMessage($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -125,7 +125,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube', null)
+            ->setDataForMessage($thread, $action, $message, '!youtube')
             ->handle();
     }
 

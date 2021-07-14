@@ -72,7 +72,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
             DadJokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $dad = MessengerBots::initializeHandler(DadJokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $dad->handle();
 
@@ -93,7 +93,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
             DadJokeBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $dad = MessengerBots::initializeHandler(DadJokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $dad->handle();
 
@@ -119,7 +119,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(DadJokeBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
     }
 }
