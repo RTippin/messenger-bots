@@ -18,6 +18,7 @@
 - Register only the included bot handlers that you want to use with messenger.
 - Included Bot Handlers:
   - Chuck Norris Bot
+  - Coin Toss Bot
   - Commands Bot
   - Dad Joke Bot
   - Insult Bot
@@ -105,6 +106,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\CoinTossBot;
 use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\InsultBot;
@@ -134,6 +136,7 @@ class AppServiceProvider extends ServiceProvider
     {
         MessengerBots::setHandlers([
             ChuckNorrisBot::class,
+            CoinTossBot::class,
             CommandsBot::class,
             DadJokeBot::class,
             InsultBot::class,
@@ -239,6 +242,7 @@ class TestBot extends BotActionHandler
   - `$this->thread` provides the group `Thread` model we are using.
   - `$this->message` provides the `Message` model we are using. You can also access the message sender via the owner relation `$this->message->owner`.
   - `$this->matchingTrigger` provides the trigger that was matched to the message.
+  - `$this->isGroupAdmin` boolean for if the message sender is a group admin or not.
   - `$this->senderIp` provides the IP of the message sender.
 
 ### Helper methods

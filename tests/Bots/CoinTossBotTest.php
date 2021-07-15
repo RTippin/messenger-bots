@@ -3,7 +3,6 @@
 namespace RTippin\MessengerBots\Tests\Bots;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -12,34 +11,32 @@ use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\ChuckNorrisBot;
+use RTippin\MessengerBots\Bots\CoinTossBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class ChuckNorrisBotTest extends MessengerBotsTestCase
+class CoinTossBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['value' => 'Chuck!'];
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::setHandlers([CoinTossBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'chuck',
-            'description' => 'Get a random Chuck Norris joke.',
-            'name' => 'Chuck Norris',
+            'alias' => 'coin_toss',
+            'description' => 'Toss a coin! Simple heads or tails. [ !toss {heads|tails} ]',
+            'name' => 'Coin Toss',
             'unique' => true,
             'authorize' => false,
-            'triggers' => null,
-            'match' => null,
+            'triggers' => ['!toss', '!headsOrTails', '!coinToss'],
+            'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(CoinTossBot::class));
     }
 
     /** @test */
@@ -53,52 +50,66 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'chuck',
-            'match' => 'exact',
+            'handler' => 'coin_toss',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!chuck'],
         ])
             ->assertSuccessful();
     }
 
     /** @test */
-    public function it_gets_response_and_stores_message()
+    public function it_uses_user_selection_and_stores_messages()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!toss heads']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $toss = MessengerBots::initializeHandler(CoinTossBot::class)
             ->setDataForMessage($thread, $action, $message);
 
-        $chuck->handle();
+        $toss->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => ':skull: Chuck!',
-            'owner_type' => 'bots',
+            'body' => ':cd: Heads or :dvd: Tails!',
         ]);
-        $this->assertFalse($chuck->shouldReleaseCooldown());
+        $this->assertDatabaseCount('messages', 4);
+        $this->assertFalse($toss->shouldReleaseCooldown());
     }
 
     /** @test */
-    public function it_releases_cooldown_when_http_fails()
+    public function it_stores_messages_without_user_selection()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!toss']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response([], 400),
-        ]);
-        $chuck = MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        $toss = MessengerBots::initializeHandler(CoinTossBot::class)
             ->setDataForMessage($thread, $action, $message);
 
-        $chuck->handle();
+        $toss->handle();
 
-        $this->assertTrue($chuck->shouldReleaseCooldown());
+        $this->assertDatabaseHas('messages', [
+            'body' => ':cd: Heads or :dvd: Tails!',
+        ]);
+        $this->assertDatabaseCount('messages', 3);
+        $this->assertFalse($toss->shouldReleaseCooldown());
+    }
+
+    /** @test */
+    public function it_stores_invalid_selection_message_and_releases_cooldown()
+    {
+        $thread = $this->createGroupThread($this->tippin);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!toss unknown']);
+        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
+        $toss = MessengerBots::initializeHandler(CoinTossBot::class)
+            ->setDataForMessage($thread, $action, $message);
+
+        $toss->handle();
+
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Please select a valid choice, i.e. ( !toss {heads|tails} )',
+        ]);
+        $this->assertDatabaseCount('messages', 2);
+        $this->assertTrue($toss->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -106,7 +117,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!toss heads']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Event::fake([
             NewMessageBroadcast::class,
@@ -114,11 +125,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             Typing::class,
         ]);
 
-        Http::fake([
-            ChuckNorrisBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
-
-        MessengerBots::initializeHandler(ChuckNorrisBot::class)
+        MessengerBots::initializeHandler(CoinTossBot::class)
             ->setDataForMessage($thread, $action, $message)
             ->handle();
 

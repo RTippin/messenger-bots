@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -58,13 +59,13 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_plays_game_and_stores_message()
+    public function it_plays_game_and_stores_messages()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps rock']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $game->handle();
 
@@ -76,13 +77,31 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_plays_game_without_user_selection()
+    {
+        $thread = $this->createGroupThread($this->tippin);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps']);
+        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
+        $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
+            ->setDataForMessage($thread, $action, $message);
+
+        $game->handle();
+
+        $this->assertDatabaseHas('messages', [
+            'body' => ':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!',
+        ]);
+        $this->assertDatabaseCount('messages', 3);
+        $this->assertFalse($game->shouldReleaseCooldown());
+    }
+
+    /** @test */
     public function it_stores_invalid_selection_message_and_releases_cooldown()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps unknown']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $game->handle();
 
@@ -100,15 +119,18 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!rps rock']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
         ]);
 
         MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }

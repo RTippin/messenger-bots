@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
@@ -77,7 +78,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             QuotableBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $quote = MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $quote->handle();
 
@@ -97,7 +98,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             QuotableBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $quote = MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $quote->handle();
 
@@ -111,8 +112,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -123,7 +123,11 @@ class QuotableBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(QuotableBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }

@@ -6,24 +6,14 @@ use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
-class RockPaperScissorsBot extends BotActionHandler
+class CoinTossBot extends BotActionHandler
 {
     /**
-     * Game rules!
+     * Coins and their emojis.
      */
-    const Game = [
-        'rock' => [
-            'weakness' => 'paper',
-            'emoji' => ':mountain:',
-        ],
-        'paper' => [
-            'weakness' => 'scissors',
-            'emoji' => ':page_facing_up:',
-        ],
-        'scissors' => [
-            'weakness' => 'rock',
-            'emoji' => ':scissors:',
-        ],
+    const Coins = [
+        'heads' => ':cd:',
+        'tails' => ':dvd:',
     ];
 
     /**
@@ -34,11 +24,11 @@ class RockPaperScissorsBot extends BotActionHandler
     public static function getSettings(): array
     {
         return [
-            'alias' => 'rock_paper_scissors',
-            'description' => 'Play a quick game of rock, paper, scissors! [ !rps {rock|paper|scissors} ]',
-            'name' => 'Rock Paper Scissors',
+            'alias' => 'coin_toss',
+            'description' => 'Toss a coin! Simple heads or tails. [ !toss {heads|tails} ]',
+            'name' => 'Coin Toss',
             'unique' => true,
-            'triggers' => ['!rps'],
+            'triggers' => ['!toss', '!headsOrTails', '!coinToss'],
             'match' => 'starts:with:caseless',
         ];
     }
@@ -49,7 +39,7 @@ class RockPaperScissorsBot extends BotActionHandler
     public function handle(): void
     {
         if (! is_null($userChoice = $this->getChoice())) {
-            $this->sendGameMessages($userChoice);
+            $this->sendCoinTossMessages($userChoice);
 
             return;
         }
@@ -63,11 +53,11 @@ class RockPaperScissorsBot extends BotActionHandler
      * @param string $userChoice
      * @throws Throwable
      */
-    private function sendGameMessages(string $userChoice): void
+    private function sendCoinTossMessages(string $userChoice): void
     {
-        $botChoice = $this->rollBotChoice();
+        $botChoice = $this->tossBotChoice();
 
-        $this->composer()->emitTyping()->message(':mountain: Rock! :page_facing_up: Paper! :scissors: Scissors!');
+        $this->composer()->emitTyping()->message(':cd: Heads or :dvd: Tails!');
 
         if (empty($userChoice)) {
             $this->composer()->message($this->getRollMessage($botChoice));
@@ -77,7 +67,7 @@ class RockPaperScissorsBot extends BotActionHandler
 
         $this->composer()->message($this->getChoiceRollMessage($botChoice, $userChoice));
 
-        $this->composer()->message($this->getWinningMessage($botChoice, $userChoice));
+        $this->composer()->message($this->getChoiceOutcomeMessage($botChoice, $userChoice));
     }
 
     /**
@@ -85,7 +75,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function sendInvalidSelectionMessage(): void
     {
-        $this->composer()->emitTyping()->message('Please select a valid choice, i.e. ( !rps rock|paper|scissors )');
+        $this->composer()->emitTyping()->message('Please select a valid choice, i.e. ( !toss {heads|tails} )');
     }
 
     /**
@@ -99,7 +89,7 @@ class RockPaperScissorsBot extends BotActionHandler
             return '';
         }
 
-        if (in_array($choice, array_keys(self::Game))) {
+        if (in_array($choice, array_keys(self::Coins))) {
             return $choice;
         }
 
@@ -109,19 +99,9 @@ class RockPaperScissorsBot extends BotActionHandler
     /**
      * @return string
      */
-    private function rollBotChoice(): string
+    private function tossBotChoice(): string
     {
-        $roll = rand(1, 99);
-
-        if ($roll < 34) {
-            return 'rock';
-        }
-
-        if ($roll > 33 && $roll < 67) {
-            return 'paper';
-        }
-
-        return 'scissors';
+        return rand(1, 99) < 50 ? 'heads' : 'tails';
     }
 
     /**
@@ -131,7 +111,7 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function getChoiceRollMessage(string $botChoice, string $userChoice): string
     {
-        return self::Game[$botChoice]['emoji'].' :vs: '.self::Game[$userChoice]['emoji'];
+        return "{$this->message->owner->getProviderName()} chose $userChoice ".self::Coins[$userChoice]." *Toss* We got $botChoice ".self::Coins[$botChoice];
     }
 
     /**
@@ -139,17 +119,13 @@ class RockPaperScissorsBot extends BotActionHandler
      * @param string $userChoice
      * @return string
      */
-    private function getWinningMessage(string $botChoice, string $userChoice): string
+    private function getChoiceOutcomeMessage(string $botChoice, string $userChoice): string
     {
         if ($botChoice === $userChoice) {
-            return "Seems we had a tie {$this->message->owner->getProviderName()}!";
-        }
-
-        if (self::Game[$botChoice]['weakness'] === $userChoice) {
             return "{$this->message->owner->getProviderName()} wins!";
         }
 
-        return "I win! {$this->message->owner->getProviderName()} looses!";
+        return "{$this->message->owner->getProviderName()} looses!";
     }
 
     /**
@@ -158,6 +134,6 @@ class RockPaperScissorsBot extends BotActionHandler
      */
     private function getRollMessage(string $botChoice): string
     {
-        return 'We choose '.self::Game[$botChoice]['emoji'];
+        return "*Toss* We got $botChoice ".self::Coins[$botChoice];
     }
 }

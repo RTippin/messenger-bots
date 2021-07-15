@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
@@ -87,7 +88,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -107,7 +108,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             WeatherBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -124,7 +125,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null);
+            ->setDataForMessage($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -141,8 +142,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -153,7 +153,11 @@ class WeatherBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w', null)
+            ->setDataForMessage($thread, $action, $message, '!w')
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }

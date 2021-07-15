@@ -3,6 +3,7 @@
 namespace RTippin\MessengerBots\Tests\Bots;
 
 use Exception;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Actions\Messages\StoreImageMessage;
@@ -73,7 +74,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             config('messenger-bots.random_image_url') => Http::response([]),
         ]);
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $image->handle();
 
@@ -91,7 +92,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             config('messenger-bots.random_image_url') => Http::response([], 400),
         ]);
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $image->handle();
 
@@ -111,7 +112,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             ->shouldReceive('execute')
             ->andThrow(new Exception('Error.'));
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null);
+            ->setDataForMessage($thread, $action, $message);
 
         $image->handle();
 
@@ -125,8 +126,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
         ]);
@@ -136,7 +136,10 @@ class RandomImageBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message, null, null)
+            ->setDataForMessage($thread, $action, $message)
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
     }
 }
