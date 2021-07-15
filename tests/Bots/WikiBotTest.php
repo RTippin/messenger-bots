@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
@@ -116,8 +117,7 @@ class WikiBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki PHP']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -130,6 +130,10 @@ class WikiBotTest extends MessengerBotsTestCase
         MessengerBots::initializeHandler(WikiBot::class)
             ->setDataForMessage($thread, $action, $message, '!wiki')
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 
     /** @test */

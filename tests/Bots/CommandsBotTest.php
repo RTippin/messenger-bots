@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -196,8 +197,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         $action = BotAction::factory()->for(
             Bot::factory()->for($thread)->owner($this->tippin)->create()
         )->owner($this->tippin)->handler(CommandsBot::class)->triggers('!commands|!c')->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -206,5 +206,9 @@ class CommandsBotTest extends MessengerBotsTestCase
         MessengerBots::initializeHandler(CommandsBot::class)
             ->setDataForMessage($thread, $action, $message)
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }

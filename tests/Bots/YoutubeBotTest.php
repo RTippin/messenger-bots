@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
@@ -113,8 +114,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -127,6 +127,10 @@ class YoutubeBotTest extends MessengerBotsTestCase
         MessengerBots::initializeHandler(YoutubeBot::class)
             ->setDataForMessage($thread, $action, $message, '!youtube')
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 
     /** @test */

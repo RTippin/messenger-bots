@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ReactionAddedBroadcast;
 use RTippin\Messenger\Events\ReactionAddedEvent;
@@ -65,8 +66,7 @@ class ReactionBotTest extends MessengerBotsTestCase
         $action = BotAction::factory()->for(
             Bot::factory()->for($thread)->owner($this->tippin)->create()
         )->owner($this->tippin)->payload(['reaction' => ':100:'])->create();
-
-        $this->expectsEvents([
+        Event::fake([
             ReactionAddedBroadcast::class,
             ReactionAddedEvent::class,
         ]);
@@ -74,6 +74,9 @@ class ReactionBotTest extends MessengerBotsTestCase
         MessengerBots::initializeHandler(ReactionBot::class)
             ->setDataForMessage($thread, $action, $message)
             ->handle();
+
+        Event::assertDispatched(ReactionAddedBroadcast::class);
+        Event::assertDispatched(ReactionAddedEvent::class);
     }
 
     /** @test */

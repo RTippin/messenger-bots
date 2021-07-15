@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
@@ -157,8 +158,7 @@ class LocationBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-
-        $this->expectsEvents([
+        Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
@@ -171,5 +171,9 @@ class LocationBotTest extends MessengerBotsTestCase
         MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1')
             ->handle();
+
+        Event::assertDispatched(NewMessageBroadcast::class);
+        Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }
