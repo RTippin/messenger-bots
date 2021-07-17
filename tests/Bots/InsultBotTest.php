@@ -23,7 +23,7 @@ class InsultBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([InsultBot::class]);
+        MessengerBots::registerHandlers([InsultBot::class]);
     }
 
     /** @test */

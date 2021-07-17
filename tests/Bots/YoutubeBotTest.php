@@ -27,7 +27,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([YoutubeBot::class]);
+        MessengerBots::registerHandlers([YoutubeBot::class]);
         config()->set('messenger-bots.youtube_api_key', 'YOUTUBE-KEY');
     }
 

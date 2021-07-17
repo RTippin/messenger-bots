@@ -23,7 +23,7 @@ class KanyeBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([KanyeBot::class]);
+        MessengerBots::registerHandlers([KanyeBot::class]);
     }
 
     /** @test */

@@ -38,7 +38,7 @@ class WeatherBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([WeatherBot::class]);
+        MessengerBots::registerHandlers([WeatherBot::class]);
         config()->set('messenger-bots.weather_api_key', 'WEATHER-KEY');
     }
 

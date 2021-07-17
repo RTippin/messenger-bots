@@ -26,7 +26,7 @@ class CommandsBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([CommandsBot::class]);
+        MessengerBots::registerHandlers([CommandsBot::class]);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             KanyeBot::class,
             KnockBot::class,
         ];
-        MessengerBots::setHandlers($handlers);
+        MessengerBots::registerHandlers($handlers);
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -134,7 +134,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             DadJokeBot::class,
             InsultBot::class,
         ];
-        MessengerBots::setHandlers($handlers);
+        MessengerBots::registerHandlers($handlers);
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -165,7 +165,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             DadJokeBot::class,
             InsultBot::class,
         ];
-        MessengerBots::setHandlers($handlers);
+        MessengerBots::registerHandlers($handlers);
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();

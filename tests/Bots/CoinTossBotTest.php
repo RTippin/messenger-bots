@@ -20,7 +20,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([CoinTossBot::class]);
+        MessengerBots::registerHandlers([CoinTossBot::class]);
     }
 
     /** @test */

@@ -20,7 +20,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([RockPaperScissorsBot::class]);
+        MessengerBots::registerHandlers([RockPaperScissorsBot::class]);
     }
 
     /** @test */

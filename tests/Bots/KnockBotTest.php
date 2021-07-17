@@ -22,7 +22,7 @@ class KnockBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([KnockBot::class]);
+        MessengerBots::registerHandlers([KnockBot::class]);
     }
 
     /** @test */
