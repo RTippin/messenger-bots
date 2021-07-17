@@ -20,7 +20,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ReplyBot::class]);
+        MessengerBots::registerHandlers([ReplyBot::class]);
     }
 
     /** @test */

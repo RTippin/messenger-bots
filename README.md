@@ -93,7 +93,7 @@ $ php artisan vendor:publish --tag=messenger-bots
 ---
 
 # Register Handlers
-- Inside your `AppServiceProvider` (or any of your providers), you must register all bot action handlers you want to use in your app.
+- Inside your `MessengerServiceProvider` (or any of your providers), you must register all bot action handlers you want to use in your app.
 - You can use our `MessengerBots` facade to set handlers. Be sure you do it inside the `boot` method.
 
 ***Example:***
@@ -125,7 +125,7 @@ use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
 
-class AppServiceProvider extends ServiceProvider
+class MessengerServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -134,7 +134,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        MessengerBots::setHandlers([
+        MessengerBots::registerHandlers([
             ChuckNorrisBot::class,
             CoinTossBot::class,
             CommandsBot::class,
@@ -403,7 +403,7 @@ class TestBot extends BotActionHandler
 }
 ```
 ### Now register your new handler
-- Once you are ready to make your handler available for use, head back to your `AppServiceProvider` and add your handler class to your `MessengerBots::setHandlers()` array
+- Once you are ready to make your handler available for use, head back to your `AppServiceProvider` and add your handler class to your `MessengerBots::registerHandlers()` array
 ```php
 <?php
 
@@ -423,7 +423,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        MessengerBots::setHandlers([
+        MessengerBots::registerHandlers([
             TestBot::class,
             // all other handlers
         ]);

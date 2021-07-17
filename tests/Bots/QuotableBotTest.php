@@ -30,7 +30,7 @@ class QuotableBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([QuotableBot::class]);
+        MessengerBots::registerHandlers([QuotableBot::class]);
     }
 
     /** @test */

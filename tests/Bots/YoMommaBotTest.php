@@ -23,7 +23,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([YoMommaBot::class]);
+        MessengerBots::registerHandlers([YoMommaBot::class]);
     }
 
     /** @test */

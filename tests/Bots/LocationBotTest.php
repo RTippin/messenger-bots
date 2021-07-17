@@ -28,7 +28,7 @@ class LocationBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([LocationBot::class]);
+        MessengerBots::registerHandlers([LocationBot::class]);
     }
 
     /** @test */

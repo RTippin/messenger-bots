@@ -28,7 +28,7 @@ class WikiBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([WikiBot::class]);
+        MessengerBots::registerHandlers([WikiBot::class]);
     }
 
     /** @test */

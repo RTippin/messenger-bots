@@ -23,7 +23,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([ChuckNorrisBot::class]);
+        MessengerBots::registerHandlers([ChuckNorrisBot::class]);
     }
 
     /** @test */

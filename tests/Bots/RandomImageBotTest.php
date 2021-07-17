@@ -24,7 +24,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([RandomImageBot::class]);
+        MessengerBots::registerHandlers([RandomImageBot::class]);
     }
 
     /** @test */

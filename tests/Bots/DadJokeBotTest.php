@@ -23,7 +23,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([DadJokeBot::class]);
+        MessengerBots::registerHandlers([DadJokeBot::class]);
     }
 
     /** @test */

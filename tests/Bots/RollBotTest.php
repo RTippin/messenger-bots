@@ -20,7 +20,7 @@ class RollBotTest extends MessengerBotsTestCase
     {
         parent::setUp();
 
-        MessengerBots::setHandlers([RollBot::class]);
+        MessengerBots::registerHandlers([RollBot::class]);
     }
 
     /** @test */
