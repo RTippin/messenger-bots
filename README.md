@@ -210,7 +210,7 @@ class TestBot extends BotActionHandler
 ### alias
 - Used to locate and attach your handler to a bot.
 
-### description`
+### description
 - The description of your bot handler, typically what it does.
 
 ### name
