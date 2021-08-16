@@ -164,8 +164,6 @@ class MessengerServiceProvider extends ServiceProvider
 
 ---
 
-### You may also view our base interface [ActionHandler][link-action-interface]
-
 ## Credits - [Richard Tippin][link-author]
 
 ## License - MIT
