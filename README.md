@@ -8,6 +8,8 @@
 
 ---
 
+![Preview](https://raw.githubusercontent.com/RTippin/messenger-demo/master/public/examples/image2.png)
+
 ## This package is an addon for [rtippin/messenger][link-messenger]
 
 ## Notice
