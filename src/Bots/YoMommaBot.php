@@ -2,17 +2,16 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
 class YoMommaBot extends BotActionHandler
 {
     /**
-     * Endpoint we gather data from.
+     * Location of our yo-momma jokes!
      */
-    const API_ENDPOINT = 'https://yomomma-api.herokuapp.com/jokes';
+    const JOKES_FILE = __DIR__.'/../../assets/mom-jokes.json';
 
     /**
      * The bots settings.
@@ -34,22 +33,20 @@ class YoMommaBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $joke = $this->getYoMomma();
-
-        if ($joke->successful()) {
-            $this->composer()->emitTyping()->message(":woman: {$joke->json('joke')}");
-
-            return;
-        }
-
-        $this->releaseCooldown();
+        $this->composer()->emitTyping()->message(":woman: {$this->getYoMomma()}");
     }
 
     /**
-     * @return Response
+     * Pick a random joke from our yo-momma jokes file.
+     *
+     * @return string
      */
-    private function getYoMomma(): Response
+    public function getYoMomma(): string
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
+        return (new Collection(
+            json_decode(
+                file_get_contents(self::JOKES_FILE)
+            )
+        ))->random();
     }
 }
