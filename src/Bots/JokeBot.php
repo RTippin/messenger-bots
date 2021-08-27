@@ -2,17 +2,16 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
 class JokeBot extends BotActionHandler
 {
     /**
-     * Endpoint we gather data from.
+     * Location of our jokes!
      */
-    const API_ENDPOINT = 'https://official-joke-api.appspot.com/jokes/random';
+    const JOKES_FILE = __DIR__.'/../../assets/jokes.json';
 
     /**
      * The bots settings.
@@ -36,26 +35,24 @@ class JokeBot extends BotActionHandler
     {
         $joke = $this->getJoke();
 
-        if ($joke->successful()) {
-            $this->composer()->emitTyping()->message($joke->json('setup'));
+        $this->composer()->emitTyping()->message($joke['setup']);
 
-            if (! self::isTesting()) {
-                sleep(6);
-            }
-
-            $this->composer()->emitTyping()->message($joke->json('punchline'));
-
-            return;
+        if (! self::isTesting()) {
+            sleep(6);
         }
 
-        $this->releaseCooldown();
+        $this->composer()->emitTyping()->message($joke['punchline']);
     }
 
     /**
-     * @return Response
+     * @return array
      */
-    private function getJoke(): Response
+    private function getJoke(): array
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
+        return (new Collection(
+            json_decode(
+                file_get_contents(self::JOKES_FILE), true
+            )
+        ))->random();
     }
 }

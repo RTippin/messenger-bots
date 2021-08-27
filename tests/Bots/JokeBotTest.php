@@ -3,7 +3,6 @@
 namespace RTippin\MessengerBots\Tests\Bots;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -17,11 +16,6 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class JokeBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
-        'setup' => 'Setup!',
-        'punchline' => 'And punchline!',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,43 +61,18 @@ class JokeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_response_and_stores_message()
+    public function it_gets_jokes_and_stores_messages()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            JokeBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
         $joke = MessengerBots::initializeHandler(JokeBot::class)
             ->setDataForMessage($thread, $action, $message);
 
         $joke->handle();
 
-        $this->assertDatabaseHas('messages', [
-            'body' => 'Setup!',
-        ]);
-        $this->assertDatabaseHas('messages', [
-            'body' => 'And punchline!',
-        ]);
+        $this->assertDatabaseCount('messages', 3);
         $this->assertFalse($joke->shouldReleaseCooldown());
-    }
-
-    /** @test */
-    public function it_releases_cooldown_when_http_fails()
-    {
-        $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
-        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            JokeBot::API_ENDPOINT => Http::response([], 400),
-        ]);
-        $joke = MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message);
-
-        $joke->handle();
-
-        $this->assertTrue($joke->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -117,10 +86,6 @@ class JokeBotTest extends MessengerBotsTestCase
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
-        ]);
-
-        Http::fake([
-            JokeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(JokeBot::class)
