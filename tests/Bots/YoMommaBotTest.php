@@ -3,7 +3,6 @@
 namespace RTippin\MessengerBots\Tests\Bots;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -17,8 +16,6 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class YoMommaBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['joke' => 'Yo momma ugly!'];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -64,40 +61,18 @@ class YoMommaBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_response_and_stores_message()
+    public function it_gets_random_joke_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            YoMommaBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
         $momma = MessengerBots::initializeHandler(YoMommaBot::class)
             ->setDataForMessage($thread, $action, $message);
 
         $momma->handle();
 
-        $this->assertDatabaseHas('messages', [
-            'body' => ':woman: Yo momma ugly!',
-        ]);
+        $this->assertDatabaseCount('messages', 2);
         $this->assertFalse($momma->shouldReleaseCooldown());
-    }
-
-    /** @test */
-    public function it_releases_cooldown_when_http_fails()
-    {
-        $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
-        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            YoMommaBot::API_ENDPOINT => Http::response([], 400),
-        ]);
-        $momma = MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message);
-
-        $momma->handle();
-
-        $this->assertTrue($momma->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -111,10 +86,6 @@ class YoMommaBotTest extends MessengerBotsTestCase
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
-        ]);
-
-        Http::fake([
-            YoMommaBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(YoMommaBot::class)

@@ -3,7 +3,6 @@
 namespace RTippin\MessengerBots\Tests\Bots;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
@@ -17,8 +16,6 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class KanyeBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['quote' => 'Kanye da bomb.'];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -69,35 +66,13 @@ class KanyeBotTest extends MessengerBotsTestCase
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            KanyeBot::API_ENDPOINT => Http::response(self::DATA),
-        ]);
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
             ->setDataForMessage($thread, $action, $message);
 
         $kanye->handle();
 
-        $this->assertDatabaseHas('messages', [
-            'body' => ':bearded_person_tone5: "Kanye da bomb."',
-        ]);
+        $this->assertDatabaseCount('messages', 2);
         $this->assertFalse($kanye->shouldReleaseCooldown());
-    }
-
-    /** @test */
-    public function it_releases_cooldown_when_http_fails()
-    {
-        $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
-        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            KanyeBot::API_ENDPOINT => Http::response([], 400),
-        ]);
-        $kanye = MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message);
-
-        $kanye->handle();
-
-        $this->assertTrue($kanye->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -111,10 +86,6 @@ class KanyeBotTest extends MessengerBotsTestCase
             NewMessageBroadcast::class,
             NewMessageEvent::class,
             Typing::class,
-        ]);
-
-        Http::fake([
-            KanyeBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
 
         MessengerBots::initializeHandler(KanyeBot::class)

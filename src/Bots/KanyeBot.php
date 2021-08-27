@@ -2,17 +2,16 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
 class KanyeBot extends BotActionHandler
 {
     /**
-     * Endpoint we gather data from.
+     * Location of our Kanye quotes!
      */
-    const API_ENDPOINT = 'https://api.kanye.rest/';
+    const KANYE_FILE = __DIR__.'/../../assets/kanye.json';
 
     /**
      * The bots settings.
@@ -34,22 +33,18 @@ class KanyeBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $quote = $this->getKanyeQuote();
-
-        if ($quote->successful()) {
-            $this->composer()->emitTyping()->message(":bearded_person_tone5: \"{$quote->json('quote')}\"");
-
-            return;
-        }
-
-        $this->releaseCooldown();
+        $this->composer()->emitTyping()->message(":bearded_person_tone5: \"{$this->getKanyeQuote()}\"");
     }
 
     /**
-     * @return Response
+     * @return string
      */
-    private function getKanyeQuote(): Response
+    private function getKanyeQuote(): string
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
+        return (new Collection(
+            json_decode(
+                file_get_contents(self::KANYE_FILE)
+            )
+        ))->random();
     }
 }
