@@ -18,7 +18,7 @@
 
 ### Features:
 - Ready to go bot action handlers that will plug into the core messenger package.
-- Register only the included bot handlers that you want to use with messenger.
+- Register only the selected bots you wish to use, or let us auto-register all bots we provide.
 - Included Bot Handlers:
   - Chuck Norris Bot
   - Coin Toss Bot
@@ -79,6 +79,7 @@ $ composer require rtippin/messenger-bots
 'ip_api_key' => env('BOT_LOCATION_API_KEY'),
 'youtube_api_key' => env('BOT_YOUTUBE_API_KEY'),
 'random_image_url' => env('BOT_RANDOM_IMAGE_URL', 'https://source.unsplash.com/random'),
+'auto_register_all' => env('BOT_AUTO_REGISTER_ALL', false),
 ```
 
 ### Publish the config file
@@ -89,15 +90,26 @@ $ php artisan vendor:publish --tag=messenger-bots
 
 - Currently, only the `WeatherBot`, `LocationBot`, `YoutubeBot`, and `RandomImageBot` use config values.
 - To use weather bot, you must get an API key from [Weather API][link-weather-api]
-- To use youtube bot, you must get an API key from [Google Developers Console][link-google-api]
+- To use YouTube bot, you must get an API key from [Google Developers Console][link-google-api]
 - You may use the location bot without an API key, but for commercial use, you must get an API key from [IP API][link-ip-api]
 - Random image bot will use unsplash as the default endpoint to grab a random image from. You may overwrite this endpoint.
 
 ---
 
-# Register Handlers
-- Inside your `MessengerServiceProvider` (or any of your providers), you must register all bot action handlers you want to use in your app.
-- You can use our `MessengerBots` facade to set handlers. Be sure you do it inside the `boot` method.
+# Auto Registering Handlers
+- If you plan to use all the bot handlers we provide, you can skip registering them manually by enabling the `BOT_AUTO_REGISTER_ALL` flag.
+
+***Update your `.env`***
+
+```dotenv
+BOT_AUTO_REGISTER_ALL=true
+```
+
+---
+
+# Manually Registering Handlers
+- Inside your `MessengerServiceProvider` (or any of your providers), you must register all bot handlers you want enabled in your application.
+- You can use the `MessengerBots` facade to register the handlers. Be sure you do it inside the `boot` method.
 
 ***Example:***
 
