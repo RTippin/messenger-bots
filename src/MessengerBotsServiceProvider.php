@@ -2,7 +2,6 @@
 
 namespace RTippin\MessengerBots;
 
-use App\Bots\SystemMessageBot;
 use Illuminate\Support\ServiceProvider;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\Bots\ChuckNorrisBot;
@@ -28,6 +27,31 @@ use RTippin\MessengerBots\Bots\YoutubeBot;
 class MessengerBotsServiceProvider extends ServiceProvider
 {
     /**
+     * All bots provided by this package.
+     */
+    const BOTS = [
+        ChuckNorrisBot::class,
+        CoinTossBot::class,
+        CommandsBot::class,
+        DadJokeBot::class,
+        InsultBot::class,
+        JokeBot::class,
+        KanyeBot::class,
+        KnockBot::class,
+        LocationBot::class,
+        QuotableBot::class,
+        RandomImageBot::class,
+        ReactionBot::class,
+        ReplyBot::class,
+        RockPaperScissorsBot::class,
+        RollBot::class,
+        WeatherBot::class,
+        WikiBot::class,
+        YoMommaBot::class,
+        YoutubeBot::class,
+    ];
+
+    /**
      * Bootstrap any package services.
      *
      * @return void
@@ -35,7 +59,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (config('messenger-bots.auto_register_all')) {
-            $this->registerAllBots();
+            MessengerBots::registerHandlers(self::BOTS);
         }
 
         if ($this->app->runningInConsole()) {
@@ -53,33 +77,5 @@ class MessengerBotsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/messenger-bots.php', 'messenger-bots');
-    }
-
-    /**
-     * When enabled, register all of our provided bots for the application.
-     */
-    private function registerAllBots(): void
-    {
-        MessengerBots::registerHandlers([
-            ChuckNorrisBot::class,
-            CoinTossBot::class,
-            CommandsBot::class,
-            DadJokeBot::class,
-            InsultBot::class,
-            JokeBot::class,
-            KanyeBot::class,
-            KnockBot::class,
-            LocationBot::class,
-            QuotableBot::class,
-            RandomImageBot::class,
-            ReactionBot::class,
-            ReplyBot::class,
-            RockPaperScissorsBot::class,
-            RollBot::class,
-            WeatherBot::class,
-            WikiBot::class,
-            YoMommaBot::class,
-            YoutubeBot::class,
-        ]);
     }
 }
