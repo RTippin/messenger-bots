@@ -56,7 +56,8 @@ class LocationBot extends BotActionHandler
     }
 
     /**
-     * @param array $location
+     * @param  array  $location
+     *
      * @throws Throwable
      */
     private function sendLocationMessage(array $location): void

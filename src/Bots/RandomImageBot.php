@@ -60,7 +60,7 @@ class RandomImageBot extends BotActionHandler
     }
 
     /**
-     * @param string $body
+     * @param  string  $body
      * @return array
      */
     private function stashImage(string $body): array
@@ -77,7 +77,7 @@ class RandomImageBot extends BotActionHandler
     }
 
     /**
-     * @param string $imagePath
+     * @param  string  $imagePath
      */
     private function unlinkImage(string $imagePath): void
     {

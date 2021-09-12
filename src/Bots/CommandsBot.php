@@ -59,7 +59,7 @@ class CommandsBot extends BotActionHandler
     }
 
     /**
-     * @param BotAction $action
+     * @param  BotAction  $action
      * @return bool
      */
     private function adminOnlyActionWhenNotAdmin(BotAction $action): bool
@@ -68,7 +68,7 @@ class CommandsBot extends BotActionHandler
     }
 
     /**
-     * @param BotAction $action
+     * @param  BotAction  $action
      * @return string
      */
     private function makeActionString(BotAction $action): string

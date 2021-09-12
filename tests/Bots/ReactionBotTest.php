@@ -109,6 +109,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider passesEmojiValidation
+     *
      * @param $reaction
      */
     public function it_passes_validation_attaching_to_a_bot_handler($reaction)
@@ -135,6 +136,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider failsEmojiValidation
+     *
      * @param $reaction
      */
     public function it_fails_validation_attaching_to_a_bot_handler($reaction)

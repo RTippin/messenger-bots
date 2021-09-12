@@ -19,7 +19,7 @@ class ReactionBot extends BotActionHandler
     /**
      * ReactionBot constructor.
      *
-     * @param EmojiInterface $emoji
+     * @param  EmojiInterface  $emoji
      */
     public function __construct(EmojiInterface $emoji)
     {
@@ -51,7 +51,7 @@ class ReactionBot extends BotActionHandler
     }
 
     /**
-     * @param array|null $payload
+     * @param  array|null  $payload
      * @return string|null
      */
     public function serializePayload(?array $payload): ?string

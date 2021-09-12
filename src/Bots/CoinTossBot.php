@@ -50,7 +50,8 @@ class CoinTossBot extends BotActionHandler
     }
 
     /**
-     * @param string $userChoice
+     * @param  string  $userChoice
+     *
      * @throws Throwable
      */
     private function sendCoinTossMessages(string $userChoice): void
@@ -105,8 +106,8 @@ class CoinTossBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
-     * @param string $userChoice
+     * @param  string  $botChoice
+     * @param  string  $userChoice
      * @return string
      */
     private function getChoiceRollMessage(string $botChoice, string $userChoice): string
@@ -115,8 +116,8 @@ class CoinTossBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
-     * @param string $userChoice
+     * @param  string  $botChoice
+     * @param  string  $userChoice
      * @return string
      */
     private function getChoiceOutcomeMessage(string $botChoice, string $userChoice): string
@@ -129,7 +130,7 @@ class CoinTossBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
+     * @param  string  $botChoice
      * @return string
      */
     private function getRollMessage(string $botChoice): string
