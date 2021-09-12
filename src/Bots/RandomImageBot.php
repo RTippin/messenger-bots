@@ -39,6 +39,7 @@ class RandomImageBot extends BotActionHandler
             try {
                 $this->composer()->image($stash[0]);
             } catch (Throwable $e) {
+                report($e);
                 $this->releaseCooldown();
             }
 
@@ -59,7 +60,7 @@ class RandomImageBot extends BotActionHandler
     }
 
     /**
-     * @param string $body
+     * @param  string  $body
      * @return array
      */
     private function stashImage(string $body): array
@@ -69,14 +70,14 @@ class RandomImageBot extends BotActionHandler
         }
 
         $name = uniqid();
-        $imagePath = '/tmp/'.$name;
+        $imagePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.$name;
         file_put_contents($imagePath, $body);
 
         return [new UploadedFile($imagePath, $name), $imagePath];
     }
 
     /**
-     * @param string $imagePath
+     * @param  string  $imagePath
      */
     private function unlinkImage(string $imagePath): void
     {

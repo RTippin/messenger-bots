@@ -67,8 +67,9 @@ class WikiBot extends BotActionHandler
     }
 
     /**
-     * @param string $search
-     * @param array $results
+     * @param  string  $search
+     * @param  array  $results
+     *
      * @throws Throwable
      */
     private function sendWikiResultMessages(string $search, array $results): void
@@ -89,7 +90,7 @@ class WikiBot extends BotActionHandler
     }
 
     /**
-     * @param string $search
+     * @param  string  $search
      * @return Response
      */
     private function getWikiSearch(string $search): Response
@@ -106,7 +107,7 @@ class WikiBot extends BotActionHandler
     /**
      * Format wiki results. Index 1 contains titles, index 3 contains the links.
      *
-     * @param array $results
+     * @param  array  $results
      * @return array
      */
     private function formatResults(array $results): array
