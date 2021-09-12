@@ -63,7 +63,7 @@ class WeatherBot extends BotActionHandler
     }
 
     /**
-     * @param string $location
+     * @param  string  $location
      * @return Response
      */
     private function getWeather(string $location): Response
@@ -76,7 +76,7 @@ class WeatherBot extends BotActionHandler
     }
 
     /**
-     * @param array $weather
+     * @param  array  $weather
      * @return string
      */
     private function generateWeatherText(array $weather): string

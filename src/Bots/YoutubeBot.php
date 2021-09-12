@@ -65,8 +65,9 @@ class YoutubeBot extends BotActionHandler
     }
 
     /**
-     * @param string $search
-     * @param array $results
+     * @param  string  $search
+     * @param  array  $results
+     *
      * @throws Throwable
      */
     private function sendYoutubeResultMessages(string $search, array $results): void
@@ -87,7 +88,7 @@ class YoutubeBot extends BotActionHandler
     }
 
     /**
-     * @param string $search
+     * @param  string  $search
      * @return Response
      */
     private function getYoutubeSearch(string $search): Response

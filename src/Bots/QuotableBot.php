@@ -48,7 +48,8 @@ class QuotableBot extends BotActionHandler
     }
 
     /**
-     * @param array $quote
+     * @param  array  $quote
+     *
      * @throws Throwable
      */
     private function sendQuoteMessage(array $quote): void

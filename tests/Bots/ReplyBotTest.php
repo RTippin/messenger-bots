@@ -153,6 +153,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider passesValidation
+     *
      * @param $quote
      * @param $replies
      */
@@ -181,6 +182,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider failsValidation
+     *
      * @param $quote
      * @param $replies
      */

@@ -60,7 +60,8 @@ class RockPaperScissorsBot extends BotActionHandler
     }
 
     /**
-     * @param string $userChoice
+     * @param  string  $userChoice
+     *
      * @throws Throwable
      */
     private function sendGameMessages(string $userChoice): void
@@ -125,8 +126,8 @@ class RockPaperScissorsBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
-     * @param string $userChoice
+     * @param  string  $botChoice
+     * @param  string  $userChoice
      * @return string
      */
     private function getChoiceRollMessage(string $botChoice, string $userChoice): string
@@ -135,8 +136,8 @@ class RockPaperScissorsBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
-     * @param string $userChoice
+     * @param  string  $botChoice
+     * @param  string  $userChoice
      * @return string
      */
     private function getWinningMessage(string $botChoice, string $userChoice): string
@@ -153,7 +154,7 @@ class RockPaperScissorsBot extends BotActionHandler
     }
 
     /**
-     * @param string $botChoice
+     * @param  string  $botChoice
      * @return string
      */
     private function getRollMessage(string $botChoice): string

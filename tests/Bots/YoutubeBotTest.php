@@ -162,6 +162,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider passesLimitValidation
+     *
      * @param $limit
      */
     public function it_passes_validation_attaching_to_a_bot_handler($limit)
@@ -187,6 +188,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     /**
      * @test
      * @dataProvider failsLimitValidation
+     *
      * @param $limit
      */
     public function it_fails_validation_attaching_to_a_bot_handler($limit)
