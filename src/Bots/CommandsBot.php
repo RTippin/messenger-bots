@@ -53,6 +53,7 @@ class CommandsBot extends BotActionHandler
     private function getBotActions(): Collection
     {
         return BotAction::validHandler()
+            ->enabled()
             ->where('bot_id', '=', $this->action->bot_id)
             ->select(['triggers', 'handler', 'admin_only'])
             ->get();
