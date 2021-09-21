@@ -118,7 +118,7 @@ class RockPaperScissorsBot extends BotActionHandler
             return 'rock';
         }
 
-        if ($roll > 33 && $roll < 67) {
+        if ($roll < 67) {
             return 'paper';
         }
 

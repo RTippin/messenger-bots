@@ -46,7 +46,7 @@ class CommandsBot extends BotActionHandler
     }
 
     /**
-     * Get all valid actions for the current bot and condense to triggers and name.
+     * Get all valid actions for the current bot and condense to trigger's and name.
      *
      * @return Collection
      */
