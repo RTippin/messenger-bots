@@ -46,13 +46,14 @@ class CommandsBot extends BotActionHandler
     }
 
     /**
-     * Get all valid actions for the current bot and condense to triggers and name.
+     * Get all valid actions for the current bot and condense to trigger's and name.
      *
      * @return Collection
      */
     private function getBotActions(): Collection
     {
         return BotAction::validHandler()
+            ->enabled()
             ->where('bot_id', '=', $this->action->bot_id)
             ->select(['triggers', 'handler', 'admin_only'])
             ->get();

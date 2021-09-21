@@ -189,6 +189,37 @@ class CommandsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_ignores_disabled_actions()
+    {
+        $handlers = [
+            ChuckNorrisBot::class,
+            DadJokeBot::class,
+            InsultBot::class,
+        ];
+        MessengerBots::registerHandlers($handlers);
+        $thread = $this->createGroupThread($this->tippin);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
+        $action = BotAction::factory()->for($bot)->owner($this->tippin)->handler(CommandsBot::class)->triggers('!commands|!c')->create();
+        BotAction::factory()->for($bot)->owner($this->tippin)->handler(ChuckNorrisBot::class)->triggers('!trigger')->create();
+        BotAction::factory()->for($bot)->owner($this->tippin)->handler(DadJokeBot::class)->triggers('!trigger')->create();
+        BotAction::factory()->for($bot)->owner($this->tippin)->handler(InsultBot::class)->triggers('!trigger')->disabled()->create();
+
+        MessengerBots::initializeHandler(CommandsBot::class)
+            ->setDataForMessage($thread, $action, $message)
+            ->handle();
+
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'owner_type' => 'bots',
+        ]);
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Chuck Norris - ( !trigger ), Dad Joke - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'owner_type' => 'bots',
+        ]);
+    }
+
+    /** @test */
     public function it_fires_events()
     {
         BaseMessengerAction::enableEvents();
