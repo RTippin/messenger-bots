@@ -214,7 +214,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Chuck Norris - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'body' => 'Chuck Norris - ( !trigger ), Dad Joke - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
             'owner_type' => 'bots',
         ]);
     }
