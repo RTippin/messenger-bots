@@ -20,7 +20,7 @@ class GiphyBotTest extends MessengerBotsTestCase
     const DATA = [
         'data' => [
             'image_url' => 'https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif',
-        ]
+        ],
     ];
 
     protected function setUp(): void
