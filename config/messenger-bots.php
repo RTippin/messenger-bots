@@ -3,7 +3,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Weather bot API key
+    | Weather Bot API Key
     |--------------------------------------------------------------------------
     |
     | When registering the weather bot, you must obtain an API key from:
@@ -13,7 +13,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | IP-PI key
+    | IP-PI Key
     |--------------------------------------------------------------------------
     |
     | When registering the location bot, you can opt to use the paid (pro)
@@ -24,7 +24,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Random image endpoint
+    | Random Image Endpoint
     |--------------------------------------------------------------------------
     |
     | When registering the random image bot, we will download an image from
@@ -34,7 +34,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Youtube key
+    | Youtube API Key
     |--------------------------------------------------------------------------
     |
     | When registering the youtube bot, you must have a valid Youtube API key.
@@ -45,7 +45,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Automatically register all the bots we provide.
+    | Giphy API Key
+    |--------------------------------------------------------------------------
+    |
+    | When registering the giphy bot, you must have a valid Giphy API key.
+    | To obtain a key, please visit
+    | https://developers.giphy.com
+    */
+    'giphy_api_key' => env('BOT_GIPHY_API_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatically Register All The Bots Provided.
     |--------------------------------------------------------------------------
     */
     'auto_register_all' => env('BOT_AUTO_REGISTER_ALL', false),

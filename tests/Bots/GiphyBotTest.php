@@ -2,43 +2,48 @@
 
 namespace RTippin\MessengerBots\Tests\Bots;
 
-use Exception;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
-use RTippin\Messenger\Actions\Messages\StoreImageMessage;
+use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
 use RTippin\Messenger\Models\BotAction;
 use RTippin\Messenger\Models\Message;
-use RTippin\MessengerBots\Bots\RandomImageBot;
+use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
-class RandomImageBotTest extends MessengerBotsTestCase
+class GiphyBotTest extends MessengerBotsTestCase
 {
+    const DATA = [
+        'data' => [
+            'image_url' => 'https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif',
+        ]
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        MessengerBots::registerHandlers([RandomImageBot::class]);
+        MessengerBots::registerHandlers([GiphyBot::class]);
     }
 
     /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'alias' => 'random_image',
-            'description' => 'Get a random image.',
-            'name' => 'Random Image',
+            'alias' => 'giphy',
+            'description' => 'Get a random gif from giphy, with an optional tag. [ !gif {tag?} ]',
+            'name' => 'Giphy',
             'unique' => true,
             'authorize' => false,
-            'triggers' => null,
-            'match' => null,
+            'triggers' => ['!gif', '!giphy'],
+            'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(RandomImageBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(GiphyBot::class));
     }
 
     /** @test */
@@ -52,32 +57,33 @@ class RandomImageBotTest extends MessengerBotsTestCase
             'thread' => $thread->id,
             'bot' => $bot->id,
         ]), [
-            'handler' => 'random_image',
-            'match' => 'exact',
+            'handler' => 'giphy',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!image'],
         ])
             ->assertSuccessful();
     }
 
     /** @test */
-    public function it_gets_response_and_stores_image_message()
+    public function it_gets_response_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            config('messenger-bots.random_image_url') => Http::response([]),
+            GiphyBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
-        $image = MessengerBots::initializeHandler(RandomImageBot::class)
+        $giphy = MessengerBots::initializeHandler(GiphyBot::class)
             ->setDataForMessage($thread, $action, $message);
 
-        $image->handle();
+        $giphy->handle();
 
-        $this->assertSame(1, Message::image()->count());
-        $this->assertFalse($image->shouldReleaseCooldown());
+        $this->assertDatabaseHas('messages', [
+            'body' => 'https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif',
+            'owner_type' => 'bots',
+        ]);
+        $this->assertFalse($giphy->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -87,34 +93,14 @@ class RandomImageBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            config('messenger-bots.random_image_url') => Http::response([], 400),
+            GiphyBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
-        $image = MessengerBots::initializeHandler(RandomImageBot::class)
+        $giphy = MessengerBots::initializeHandler(GiphyBot::class)
             ->setDataForMessage($thread, $action, $message);
 
-        $image->handle();
+        $giphy->handle();
 
-        $this->assertTrue($image->shouldReleaseCooldown());
-    }
-
-    /** @test */
-    public function it_releases_cooldown_when_store_image_fails()
-    {
-        $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
-        $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
-        Http::fake([
-            config('messenger-bots.random_image_url') => Http::response([]),
-        ]);
-        $this->mock(StoreImageMessage::class)
-            ->shouldReceive('execute')
-            ->andThrow(new Exception('Error.'));
-        $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message);
-
-        $image->handle();
-
-        $this->assertTrue($image->shouldReleaseCooldown());
+        $this->assertTrue($giphy->shouldReleaseCooldown());
     }
 
     /** @test */
@@ -127,17 +113,19 @@ class RandomImageBotTest extends MessengerBotsTestCase
         Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
+            Typing::class,
         ]);
 
         Http::fake([
-            config('messenger-bots.random_image_url') => Http::response([]),
+            GiphyBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
 
-        MessengerBots::initializeHandler(RandomImageBot::class)
+        MessengerBots::initializeHandler(GiphyBot::class)
             ->setDataForMessage($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);
         Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }

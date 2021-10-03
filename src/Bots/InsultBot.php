@@ -36,15 +36,15 @@ class InsultBot extends BotActionHandler
     {
         $insult = $this->getInsult();
 
-        if ($insult->successful()) {
-            $insult = htmlspecialchars_decode($insult->json('insult'));
-
-            $this->composer()->emitTyping()->message("{$this->message->owner->getProviderName()}, $insult");
+        if ($insult->failed()) {
+            $this->releaseCooldown();
 
             return;
         }
 
-        $this->releaseCooldown();
+        $insult = htmlspecialchars_decode($insult->json('insult'));
+
+        $this->composer()->emitTyping()->message("{$this->message->owner->getProviderName()}, $insult");
     }
 
     /**
