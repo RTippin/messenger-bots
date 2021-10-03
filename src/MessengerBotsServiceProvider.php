@@ -8,6 +8,7 @@ use RTippin\MessengerBots\Bots\ChuckNorrisBot;
 use RTippin\MessengerBots\Bots\CoinTossBot;
 use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
+use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
@@ -34,6 +35,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
         CoinTossBot::class,
         CommandsBot::class,
         DadJokeBot::class,
+        GiphyBot::class,
         InsultBot::class,
         JokeBot::class,
         KanyeBot::class,
