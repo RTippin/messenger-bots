@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Actions\Messages\StoreImageMessage;
+use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
@@ -127,6 +128,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
         Event::fake([
             NewMessageBroadcast::class,
             NewMessageEvent::class,
+            Typing::class,
         ]);
 
         Http::fake([
@@ -139,5 +141,6 @@ class RandomImageBotTest extends MessengerBotsTestCase
 
         Event::assertDispatched(NewMessageBroadcast::class);
         Event::assertDispatched(NewMessageEvent::class);
+        Event::assertDispatched(Typing::class);
     }
 }
