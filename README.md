@@ -24,6 +24,7 @@
   - Coin Toss Bot
   - Commands Bot
   - Dad Joke Bot
+  - Giphy Bot
   - Insult Bot
   - Joke Bot
   - Kanye West Bot
@@ -78,6 +79,7 @@ $ composer require rtippin/messenger-bots
 'weather_api_key' => env('BOT_WEATHER_API_KEY'),
 'ip_api_key' => env('BOT_LOCATION_API_KEY'),
 'youtube_api_key' => env('BOT_YOUTUBE_API_KEY'),
+'giphy_api_key' => env('BOT_GIPHY_API_KEY'),
 'random_image_url' => env('BOT_RANDOM_IMAGE_URL', 'https://source.unsplash.com/random'),
 'auto_register_all' => env('BOT_AUTO_REGISTER_ALL', false),
 ```
@@ -88,9 +90,9 @@ $ composer require rtippin/messenger-bots
 $ php artisan vendor:publish --tag=messenger-bots
 ```
 
-- Currently, only the `WeatherBot`, `LocationBot`, `YoutubeBot`, and `RandomImageBot` use config values.
 - To use weather bot, you must get an API key from [Weather API][link-weather-api]
 - To use YouTube bot, you must get an API key from [Google Developers Console][link-google-api]
+- To use Giphy bot, you must get an API key from [Giphy][link-giphy-api]
 - You may use the location bot without an API key, but for commercial use, you must get an API key from [IP API][link-ip-api]
 - Random image bot will use unsplash as the default endpoint to grab a random image from. You may overwrite this endpoint.
 
@@ -124,6 +126,7 @@ use RTippin\MessengerBots\Bots\ChuckNorrisBot;
 use RTippin\MessengerBots\Bots\CoinTossBot;
 use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
+use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
@@ -154,6 +157,7 @@ class MessengerServiceProvider extends ServiceProvider
             CoinTossBot::class,
             CommandsBot::class,
             DadJokeBot::class,
+            GiphyBot::class,
             InsultBot::class,
             JokeBot::class,
             KanyeBot::class,
@@ -202,3 +206,4 @@ class MessengerServiceProvider extends ServiceProvider
 [link-weather-api]: https://www.weatherapi.com
 [link-google-api]: https://console.developers.google.com
 [link-ip-api]: https://ip-api.com
+[link-giphy-api]: https://developers.giphy.com

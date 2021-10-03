@@ -50,7 +50,7 @@ return [
     |
     | When registering the giphy bot, you must have a valid Giphy API key.
     | To obtain a key, please visit
-    | https://developers.giphy.com/
+    | https://developers.giphy.com
     */
     'giphy_api_key' => env('BOT_GIPHY_API_KEY'),
 
