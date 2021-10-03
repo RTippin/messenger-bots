@@ -33,22 +33,22 @@ class RandomImageBot extends BotActionHandler
     {
         $image = $this->getImage();
 
-        if ($image->successful()) {
-            $stash = $this->stashImage($image->body());
-
-            try {
-                $this->composer()->image($stash[0]);
-            } catch (Throwable $e) {
-                report($e);
-                $this->releaseCooldown();
-            }
-
-            $this->unlinkImage($stash[1]);
+        if ($image->failed()) {
+            $this->releaseCooldown();
 
             return;
         }
 
-        $this->releaseCooldown();
+        $stash = $this->stashImage($image->body());
+
+        try {
+            $this->composer()->image($stash[0]);
+        } catch (Throwable $e) {
+            report($e);
+            $this->releaseCooldown();
+        }
+
+        $this->unlinkImage($stash[1]);
     }
 
     /**

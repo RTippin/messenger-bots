@@ -18,8 +18,6 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class RandomImageBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['quote' => 'Kanye da bomb.'];
-
     protected function setUp(): void
     {
         parent::setUp();

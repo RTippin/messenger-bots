@@ -38,7 +38,7 @@ class GiphyBot extends BotActionHandler
     {
         $gif = $this->getGif($this->generateTag());
 
-        if (! $gif->successful()) {
+        if ($gif->failed()) {
             $this->releaseCooldown();
 
             return;

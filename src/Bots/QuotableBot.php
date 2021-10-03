@@ -38,13 +38,13 @@ class QuotableBot extends BotActionHandler
     {
         $quote = $this->getQuote();
 
-        if ($quote->successful()) {
-            $this->sendQuoteMessage($quote->json('data')[0]);
+        if ($quote->failed()) {
+            $this->releaseCooldown();
 
             return;
         }
 
-        $this->releaseCooldown();
+        $this->sendQuoteMessage($quote->json('data')[0]);
     }
 
     /**
