@@ -4,6 +4,7 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
@@ -52,7 +53,7 @@ class GiphyBot extends BotActionHandler
      */
     private function generateTag(): ?string
     {
-        return explode(' ', $this->message->body)[1] ?? null;
+        return trim(Str::remove($this->matchingTrigger, $this->message->body, false)) ?: null;
     }
 
     /**
