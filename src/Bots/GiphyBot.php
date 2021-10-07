@@ -4,7 +4,6 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
@@ -37,7 +36,7 @@ class GiphyBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $gif = $this->getGif($this->generateTag());
+        $gif = $this->getGif();
 
         if ($gif->failed()) {
             $this->releaseCooldown();
@@ -49,22 +48,13 @@ class GiphyBot extends BotActionHandler
     }
 
     /**
-     * @return string|null
-     */
-    private function generateTag(): ?string
-    {
-        return trim(Str::remove($this->matchingTrigger, $this->message->body, false)) ?: null;
-    }
-
-    /**
-     * @param  string|null  $tag
      * @return Response
      */
-    private function getGif(?string $tag): Response
+    private function getGif(): Response
     {
         return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
             'api_key' => config('messenger-bots.giphy_api_key'),
-            'tag' => $tag,
+            'tag' => $this->getParsedMessage(),
         ]);
     }
 }
