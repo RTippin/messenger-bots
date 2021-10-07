@@ -73,7 +73,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             config('messenger-bots.random_image_url') => Http::response([]),
         ]);
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $image->handle();
 
@@ -91,7 +91,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             config('messenger-bots.random_image_url') => Http::response([], 400),
         ]);
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $image->handle();
 
@@ -111,7 +111,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             ->shouldReceive('execute')
             ->andThrow(new Exception('Error.'));
         $image = MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $image->handle();
 
@@ -136,7 +136,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RandomImageBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

@@ -75,7 +75,7 @@ class GiphyBotTest extends MessengerBotsTestCase
             GiphyBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $giphy = MessengerBots::initializeHandler(GiphyBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $giphy->handle();
 
@@ -96,7 +96,7 @@ class GiphyBotTest extends MessengerBotsTestCase
             GiphyBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $giphy = MessengerBots::initializeHandler(GiphyBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $giphy->handle();
 
@@ -121,7 +121,7 @@ class GiphyBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(GiphyBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

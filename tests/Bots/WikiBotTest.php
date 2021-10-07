@@ -51,13 +51,13 @@ class WikiBotTest extends MessengerBotsTestCase
     public function it_gets_response_and_stores_messages()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki PHP']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!wiki PHP')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             WikiBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki');
+            ->setDataForHandler($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -77,13 +77,13 @@ class WikiBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_http_fails()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki PHP']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!wiki PHP')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             WikiBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki');
+            ->setDataForHandler($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -97,10 +97,10 @@ class WikiBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_no_valid_search()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!wiki')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki');
+            ->setDataForHandler($thread, $action, $message, '!wiki');
 
         $wiki->handle();
 
@@ -115,7 +115,7 @@ class WikiBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!wiki PHP']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!wiki PHP')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Event::fake([
             NewMessageBroadcast::class,
@@ -128,7 +128,7 @@ class WikiBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(WikiBot::class)
-            ->setDataForMessage($thread, $action, $message, '!wiki')
+            ->setDataForHandler($thread, $action, $message, '!wiki')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

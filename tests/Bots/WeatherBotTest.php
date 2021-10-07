@@ -82,13 +82,13 @@ class WeatherBotTest extends MessengerBotsTestCase
     public function it_gets_response_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!w Location')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w');
+            ->setDataForHandler($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -102,13 +102,13 @@ class WeatherBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_http_fails()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!w Location')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             WeatherBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w');
+            ->setDataForHandler($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -122,10 +122,10 @@ class WeatherBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_no_selection()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!w')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w');
+            ->setDataForHandler($thread, $action, $message, '!w');
 
         $weather->handle();
 
@@ -140,7 +140,7 @@ class WeatherBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!w Location']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!w Location')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Event::fake([
             NewMessageBroadcast::class,
@@ -153,7 +153,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(WeatherBot::class)
-            ->setDataForMessage($thread, $action, $message, '!w')
+            ->setDataForHandler($thread, $action, $message, '!w')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

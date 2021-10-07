@@ -73,7 +73,7 @@ class InsultBotTest extends MessengerBotsTestCase
             InsultBot::API_ENDPOINT => Http::response(self::DATA),
         ]);
         $insult = MessengerBots::initializeHandler(InsultBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $insult->handle();
 
@@ -93,7 +93,7 @@ class InsultBotTest extends MessengerBotsTestCase
             InsultBot::API_ENDPOINT => Http::response([], 400),
         ]);
         $insult = MessengerBots::initializeHandler(InsultBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $insult->handle();
 
@@ -118,7 +118,7 @@ class InsultBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(InsultBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

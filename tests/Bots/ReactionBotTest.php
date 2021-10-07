@@ -47,7 +47,7 @@ class ReactionBotTest extends MessengerBotsTestCase
             Bot::factory()->for($thread)->owner($this->tippin)->create()
         )->owner($this->tippin)->payload(['reaction' => ':100:'])->create();
         $react = MessengerBots::initializeHandler(ReactionBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $react->handle();
 
@@ -72,7 +72,7 @@ class ReactionBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(ReactionBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(ReactionAddedBroadcast::class);
