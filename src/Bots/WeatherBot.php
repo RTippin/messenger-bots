@@ -37,9 +37,9 @@ class WeatherBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $location = trim(Str::remove($this->matchingTrigger, $this->message->body, false));
+        $location = $this->getParsedMessage();
 
-        if (! empty($location)) {
+        if (! is_null($location)) {
             $weather = $this->getWeather($location);
 
             if ($weather->successful()) {
