@@ -2,7 +2,6 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
