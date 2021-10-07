@@ -65,7 +65,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!rps rock')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!rps');
 
         $game->handle();
 
@@ -83,7 +83,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!rps')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!rps');
 
         $game->handle();
 
@@ -101,7 +101,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!rps unknown')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $game = MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!rps');
 
         $game->handle();
 
@@ -126,7 +126,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RockPaperScissorsBot::class)
-            ->setDataForHandler($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message, '!rps')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);
