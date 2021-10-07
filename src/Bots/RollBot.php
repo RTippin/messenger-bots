@@ -2,7 +2,6 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
@@ -54,18 +53,16 @@ class RollBot extends BotActionHandler
      */
     private function getNumbers(): ?array
     {
-        $base = trim(Str::remove($this->matchingTrigger, $this->message->body, false));
+        $choices = $this->getParsedWords();
 
-        if (empty($base)) {
+        if (is_null($choices)) {
             return [0, 100];
         }
 
-        $values = explode(' ', $base);
-
-        if (count($values) === 2
-            && is_numeric($values[0])
-            && is_numeric($values[1])) {
-            return [(int) $values[0], (int) $values[1]];
+        if (count($choices) === 2
+            && is_numeric($choices[0])
+            && is_numeric($choices[1])) {
+            return [(int) $choices[0], (int) $choices[1]];
         }
 
         return null;

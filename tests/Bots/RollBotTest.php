@@ -62,10 +62,10 @@ class RollBotTest extends MessengerBotsTestCase
     public function it_rolls_without_selection_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll');
+            ->setDataForHandler($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -77,10 +77,10 @@ class RollBotTest extends MessengerBotsTestCase
     public function it_stores_invalid_selection_message_and_releases_cooldown()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll 1 unknown']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!roll 1 unknown')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll');
+            ->setDataForHandler($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -94,10 +94,10 @@ class RollBotTest extends MessengerBotsTestCase
     public function it_rolls_between_desired_numbers_and_stores_message()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll 1 1']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!roll 1 1')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $roll = MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll');
+            ->setDataForHandler($thread, $action, $message, '!roll');
 
         $roll->handle();
 
@@ -112,7 +112,7 @@ class RollBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!roll']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Event::fake([
             NewMessageBroadcast::class,
@@ -121,7 +121,7 @@ class RollBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(RollBot::class)
-            ->setDataForMessage($thread, $action, $message, '!roll')
+            ->setDataForHandler($thread, $action, $message, '!roll')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

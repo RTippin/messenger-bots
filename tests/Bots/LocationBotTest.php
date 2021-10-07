@@ -76,7 +76,7 @@ class LocationBotTest extends MessengerBotsTestCase
             LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::DATA),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
-            ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1');
+            ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
 
         $location->handle();
 
@@ -98,7 +98,7 @@ class LocationBotTest extends MessengerBotsTestCase
             LocationBot::API_ENDPOINT_PRO.'127.0.0.1*' => Http::response(self::DATA),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
-            ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1');
+            ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
 
         $location->handle();
 
@@ -119,7 +119,7 @@ class LocationBotTest extends MessengerBotsTestCase
             LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response([], 400),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
-            ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1');
+            ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
 
         $location->handle();
 
@@ -140,7 +140,7 @@ class LocationBotTest extends MessengerBotsTestCase
             LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(['status' => 'error']),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
-            ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1');
+            ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
 
         $location->handle();
 
@@ -169,7 +169,7 @@ class LocationBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(LocationBot::class)
-            ->setDataForMessage($thread, $action, $message, null, false, '127.0.0.1')
+            ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

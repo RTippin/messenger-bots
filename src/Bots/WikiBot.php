@@ -5,7 +5,6 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use Throwable;
 
@@ -48,9 +47,9 @@ class WikiBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $search = trim(Str::remove($this->matchingTrigger, $this->message->body, false));
+        $search = $this->getParsedMessage();
 
-        if (! empty($search)) {
+        if (! is_null($search)) {
             $wiki = $this->getWikiSearch($search);
 
             if ($wiki->successful()

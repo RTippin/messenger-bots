@@ -67,7 +67,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $momma = MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $momma->handle();
 
@@ -89,7 +89,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(YoMommaBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

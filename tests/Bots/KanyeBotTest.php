@@ -67,7 +67,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $kanye = MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $kanye->handle();
 
@@ -89,7 +89,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(KanyeBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

@@ -67,7 +67,7 @@ class JokeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $joke = MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message);
 
         $joke->handle();
 
@@ -89,7 +89,7 @@ class JokeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(JokeBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

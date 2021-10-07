@@ -74,7 +74,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         )->owner($this->tippin)->handler(CommandsBot::class)->triggers('!commands|!c')->create();
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -109,7 +109,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         }
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -144,7 +144,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         BotAction::factory()->for($bot)->owner($this->tippin)->handler(InsultBot::class)->triggers('!trigger')->create();
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -175,7 +175,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         BotAction::factory()->for($bot)->owner($this->tippin)->handler(InsultBot::class)->triggers('!trigger')->create();
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message, null, true)
+            ->setDataForHandler($thread, $action, $message, null, true)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -206,7 +206,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         BotAction::factory()->for($bot)->owner($this->tippin)->handler(InsultBot::class)->triggers('!trigger')->disabled()->create();
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         $this->assertDatabaseHas('messages', [
@@ -235,7 +235,7 @@ class CommandsBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(CommandsBot::class)
-            ->setDataForMessage($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message)
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);

@@ -28,7 +28,6 @@ class YoutubeBotTest extends MessengerBotsTestCase
         parent::setUp();
 
         MessengerBots::registerHandlers([YoutubeBot::class]);
-        config()->set('messenger-bots.youtube_api_key', 'YOUTUBE-KEY');
     }
 
     /** @test */
@@ -51,13 +50,13 @@ class YoutubeBotTest extends MessengerBotsTestCase
     public function it_gets_response_and_stores_messages()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!youtube Rick-Roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube');
+            ->setDataForHandler($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -74,13 +73,13 @@ class YoutubeBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_http_fails()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!youtube Rick-Roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
             YoutubeBot::API_ENDPOINT.'*' => Http::response([], 400),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube');
+            ->setDataForHandler($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -94,10 +93,10 @@ class YoutubeBotTest extends MessengerBotsTestCase
     public function it_releases_cooldown_and_sends_error_message_when_no_valid_search()
     {
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!youtube')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube');
+            ->setDataForHandler($thread, $action, $message, '!youtube');
 
         $youtube->handle();
 
@@ -112,7 +111,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     {
         BaseMessengerAction::enableEvents();
         $thread = $this->createGroupThread($this->tippin);
-        $message = Message::factory()->for($thread)->owner($this->tippin)->create(['body' => '!youtube Rick-Roll']);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->body('!youtube Rick-Roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Event::fake([
             NewMessageBroadcast::class,
@@ -125,7 +124,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(YoutubeBot::class)
-            ->setDataForMessage($thread, $action, $message, '!youtube')
+            ->setDataForHandler($thread, $action, $message, '!youtube')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);
