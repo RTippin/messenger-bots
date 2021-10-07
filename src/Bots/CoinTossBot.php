@@ -84,9 +84,9 @@ class CoinTossBot extends BotActionHandler
      */
     private function getChoice(): ?string
     {
-        $choice = Str::lower(explode(' ', $this->message->body)[1] ?? '');
+        $choice = $this->getParsedWords(true)[0] ?? null;
 
-        if (empty($choice)) {
+        if (is_null($choice)) {
             return '';
         }
 

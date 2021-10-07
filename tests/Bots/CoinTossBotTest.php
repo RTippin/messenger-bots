@@ -65,7 +65,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!toss heads')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $toss = MessengerBots::initializeHandler(CoinTossBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!toss');
 
         $toss->handle();
 
@@ -83,7 +83,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!toss')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $toss = MessengerBots::initializeHandler(CoinTossBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!toss');
 
         $toss->handle();
 
@@ -101,7 +101,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!toss unknown')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $toss = MessengerBots::initializeHandler(CoinTossBot::class)
-            ->setDataForHandler($thread, $action, $message);
+            ->setDataForHandler($thread, $action, $message, '!toss');
 
         $toss->handle();
 
@@ -126,7 +126,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
         ]);
 
         MessengerBots::initializeHandler(CoinTossBot::class)
-            ->setDataForHandler($thread, $action, $message)
+            ->setDataForHandler($thread, $action, $message, '!toss')
             ->handle();
 
         Event::assertDispatched(NewMessageBroadcast::class);
