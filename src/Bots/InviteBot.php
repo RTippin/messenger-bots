@@ -58,6 +58,7 @@ class InviteBot extends BotActionHandler
     /**
      * @param  Invite  $invite
      * @param  int  $expireMinutes
+     *
      * @throws Throwable
      */
     private function sendSuccessMessage(Invite $invite, int $expireMinutes): void
