@@ -39,7 +39,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             'name' => 'Youtube Videos Search',
             'unique' => true,
             'authorize' => false,
-            'triggers' => ['!youtube'],
+            'triggers' => ['!youtube', '!yt'],
             'match' => 'starts:with:caseless',
         ];
 

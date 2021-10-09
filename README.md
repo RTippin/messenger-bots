@@ -26,6 +26,7 @@
   - Dad Joke Bot
   - Giphy Bot
   - Insult Bot
+  - Invite Bot
   - Joke Bot
   - Kanye West Bot
   - Knock Bot
@@ -67,8 +68,8 @@ MESSENGER_BOTS_ENABLED=true
 
 ### Via Composer
 
-``` bash
-$ composer require rtippin/messenger-bots
+```bash
+composer require rtippin/messenger-bots
 ```
 
 ---
@@ -86,8 +87,8 @@ $ composer require rtippin/messenger-bots
 
 ### Publish the config file
 
-``` bash
-$ php artisan vendor:publish --tag=messenger-bots
+```bash
+php artisan vendor:publish --tag=messenger-bots
 ```
 
 - To use weather bot, you must get an API key from [Weather API][link-weather-api]
@@ -128,6 +129,7 @@ use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InsultBot;
+use RTippin\MessengerBots\Bots\InviteBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
@@ -159,6 +161,7 @@ class MessengerServiceProvider extends ServiceProvider
             DadJokeBot::class,
             GiphyBot::class,
             InsultBot::class,
+            InviteBot::class,
             JokeBot::class,
             KanyeBot::class,
             KnockBot::class,

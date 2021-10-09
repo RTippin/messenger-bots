@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class WeatherBot extends BotActionHandler
@@ -28,7 +29,7 @@ class WeatherBot extends BotActionHandler
             'name' => 'Weather',
             'unique' => true,
             'triggers' => ['!w', '!weather'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 

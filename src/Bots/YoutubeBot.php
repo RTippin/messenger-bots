@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class YoutubeBot extends BotActionHandler
@@ -26,8 +27,8 @@ class YoutubeBot extends BotActionHandler
             'description' => 'Get the top video results for a youtube search. [ !youtube Stairway To Heaven ]',
             'name' => 'Youtube Videos Search',
             'unique' => true,
-            'triggers' => ['!youtube'],
-            'match' => 'starts:with:caseless',
+            'triggers' => ['!youtube', '!yt'],
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 
