@@ -27,7 +27,7 @@ class YoutubeBot extends BotActionHandler
             'description' => 'Get the top video results for a youtube search. [ !youtube Stairway To Heaven ]',
             'name' => 'Youtube Videos Search',
             'unique' => true,
-            'triggers' => ['!youtube'],
+            'triggers' => ['!youtube', '!yt'],
             'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
