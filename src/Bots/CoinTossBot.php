@@ -3,6 +3,7 @@
 namespace RTippin\MessengerBots\Bots;
 
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class CoinTossBot extends BotActionHandler
@@ -28,7 +29,7 @@ class CoinTossBot extends BotActionHandler
             'name' => 'Coin Toss',
             'unique' => true,
             'triggers' => ['!toss', '!headsOrTails', '!coinToss'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 

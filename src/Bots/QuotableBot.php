@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class QuotableBot extends BotActionHandler
@@ -26,8 +27,8 @@ class QuotableBot extends BotActionHandler
             'description' => 'Get a random quote.',
             'name' => 'Quotable Quotes',
             'unique' => true,
-            'match' => 'exact:caseless',
             'triggers' => ['!quote', '!inspire', '!quotable'],
+            'match' => MessengerBots::MATCH_EXACT_CASELESS,
         ];
     }
 

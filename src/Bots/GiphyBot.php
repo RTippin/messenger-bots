@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class GiphyBot extends BotActionHandler
@@ -27,7 +28,7 @@ class GiphyBot extends BotActionHandler
             'name' => 'Giphy',
             'unique' => true,
             'triggers' => ['!gif', '!giphy'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 

@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class LocationBot extends BotActionHandler
@@ -31,8 +32,8 @@ class LocationBot extends BotActionHandler
             'description' => 'Get the general location of the message sender.',
             'name' => 'Locator',
             'unique' => true,
-            'match' => 'exact:caseless',
             'triggers' => ['!location', '!findMe', '!whereAmI'],
+            'match' => MessengerBots::MATCH_EXACT_CASELESS,
         ];
     }
 

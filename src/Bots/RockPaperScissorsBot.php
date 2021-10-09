@@ -3,6 +3,7 @@
 namespace RTippin\MessengerBots\Bots;
 
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class RockPaperScissorsBot extends BotActionHandler
@@ -38,7 +39,7 @@ class RockPaperScissorsBot extends BotActionHandler
             'name' => 'Rock Paper Scissors',
             'unique' => true,
             'triggers' => ['!rps'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 

@@ -22,8 +22,8 @@ class CommandsBot extends BotActionHandler
             'description' => 'List all triggers the current bot has across its actions.',
             'name' => 'List Commands / Triggers',
             'unique' => true,
-            'match' => 'exact:caseless',
             'triggers' => ['!commands', '!c'],
+            'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
         ];
     }
 

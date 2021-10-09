@@ -3,6 +3,7 @@
 namespace RTippin\MessengerBots\Bots;
 
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class RollBot extends BotActionHandler
@@ -20,7 +21,7 @@ class RollBot extends BotActionHandler
             'name' => 'Roll Numbers',
             'unique' => true,
             'triggers' => ['!r', '!roll'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 

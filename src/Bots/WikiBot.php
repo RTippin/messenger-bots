@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\MessengerBots;
 use Throwable;
 
 class WikiBot extends BotActionHandler
@@ -28,7 +29,7 @@ class WikiBot extends BotActionHandler
             'name' => 'Wikipedia Search',
             'unique' => true,
             'triggers' => ['!wiki'],
-            'match' => 'starts:with:caseless',
+            'match' => MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
     }
 
