@@ -45,7 +45,7 @@ class GiphyBot extends BotActionHandler
             return;
         }
 
-        $this->composer()->emitTyping()->message($gif->json('data')['image_url']);
+        $this->composer()->emitTyping()->message($gif->json('data')['url']);
     }
 
     /**

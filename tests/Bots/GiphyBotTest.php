@@ -19,7 +19,7 @@ class GiphyBotTest extends MessengerBotsTestCase
 {
     const DATA = [
         'data' => [
-            'image_url' => 'https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif',
+            'url' => 'https://giphy.com/gifs/screen-monitor-closeup-26tn33aiTi1jkl6H6',
         ],
     ];
 
@@ -80,7 +80,7 @@ class GiphyBotTest extends MessengerBotsTestCase
         $giphy->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif',
+            'body' => 'https://giphy.com/gifs/screen-monitor-closeup-26tn33aiTi1jkl6H6',
             'owner_type' => 'bots',
         ]);
         $this->assertFalse($giphy->shouldReleaseCooldown());
