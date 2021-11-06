@@ -4,7 +4,7 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Database\Eloquent\Collection;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Facades\MessengerBots;
+use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Models\BotAction;
 use Throwable;
 
@@ -19,11 +19,11 @@ class CommandsBot extends BotActionHandler
     {
         return [
             'alias' => 'commands',
-            'description' => 'List all triggers the current bot has across its actions.',
-            'name' => 'List Commands / Triggers',
+            'description' => 'List all actions and triggers the bot has attached.',
+            'name' => 'List Commands',
             'unique' => true,
             'triggers' => ['!commands', '!c'],
-            'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
+            'match' => MessengerBots::MATCH_EXACT_CASELESS,
         ];
     }
 
@@ -74,6 +74,6 @@ class CommandsBot extends BotActionHandler
      */
     private function makeActionString(BotAction $action): string
     {
-        return MessengerBots::getHandlerSettings($action->handler)['name'].' - ( '.$action->triggers.' )';
+        return $action->getHandlerSettings()['name'].' - [ '.implode(' | ', $action->getTriggers()).' ]';
     }
 }

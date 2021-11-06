@@ -34,12 +34,12 @@ class CommandsBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'commands',
-            'description' => 'List all triggers the current bot has across its actions.',
-            'name' => 'List Commands / Triggers',
+            'description' => 'List all actions and triggers the bot has attached.',
+            'name' => 'List Commands',
             'unique' => true,
             'authorize' => false,
             'triggers' => ['!commands', '!c'],
-            'match' => 'exact:caseless',
+            'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
         ];
 
         $this->assertSame($expected, MessengerBots::getHandlerSettings(CommandsBot::class));
@@ -82,7 +82,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'List Commands / Triggers - ( !commands|!c )',
+            'body' => 'List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
@@ -117,11 +117,11 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Chuck Norris - ( !trigger ), Dad Joke - ( !trigger ), Insult - ( !trigger ), Jokester - ( !trigger ), Kanye West - ( !trigger )',
+            'body' => 'Chuck Norris - [ !trigger ], Dad Joke - [ !trigger ], Insult - [ !trigger ], Jokester - [ !trigger ], Kanye West - [ !trigger ]',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Knock Knock - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'body' => 'Knock Knock - [ !trigger ], List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
@@ -152,7 +152,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Chuck Norris - ( !trigger ), Insult - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'body' => 'Chuck Norris - [ !trigger ], Insult - [ !trigger ], List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
@@ -183,7 +183,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Chuck Norris - ( !trigger ), Dad Joke - ( !trigger ), Insult - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'body' => 'Chuck Norris - [ !trigger ], Dad Joke - [ !trigger ], Insult - [ !trigger ], List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
@@ -214,7 +214,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'Chuck Norris - ( !trigger ), Dad Joke - ( !trigger ), List Commands / Triggers - ( !commands|!c )',
+            'body' => 'Chuck Norris - [ !trigger ], Dad Joke - [ !trigger ], List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
