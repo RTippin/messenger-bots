@@ -27,6 +27,7 @@ class JokeBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => JokeBot::class,
             'alias' => 'random_joke',
             'description' => 'Get a random joke. Has a setup and a punchline.',
             'name' => 'Jokester',
@@ -36,7 +37,7 @@ class JokeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(JokeBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(JokeBot::class)->toArray());
     }
 
     /** @test */

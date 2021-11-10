@@ -34,6 +34,7 @@ class GiphyBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => GiphyBot::class,
             'alias' => 'giphy',
             'description' => 'Get a random gif from giphy, with an optional tag. [ !gif {tag?} ]',
             'name' => 'Giphy',
@@ -43,7 +44,7 @@ class GiphyBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(GiphyBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(GiphyBot::class)->toArray());
     }
 
     /** @test */

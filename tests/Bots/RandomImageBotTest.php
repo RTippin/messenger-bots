@@ -30,6 +30,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => RandomImageBot::class,
             'alias' => 'random_image',
             'description' => 'Get a random image.',
             'name' => 'Random Image',
@@ -39,7 +40,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(RandomImageBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(RandomImageBot::class)->toArray());
     }
 
     /** @test */

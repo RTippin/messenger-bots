@@ -30,6 +30,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => DadJokeBot::class,
             'alias' => 'dad_joke',
             'description' => 'Get a random dad joke.',
             'name' => 'Dad Joke',
@@ -39,7 +40,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(DadJokeBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(DadJokeBot::class)->toArray());
     }
 
     /** @test */
