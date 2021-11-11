@@ -74,6 +74,6 @@ class CommandsBot extends BotActionHandler
      */
     private function makeActionString(BotAction $action): string
     {
-        return $action->getHandlerSettings()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
+        return $action->getHandlersDTO()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
     }
 }
