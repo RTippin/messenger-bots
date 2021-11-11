@@ -4,6 +4,7 @@ namespace RTippin\MessengerBots\Tests;
 
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\MessengerBotsServiceProvider;
+use function PHPUnit\Framework\assertSame;
 
 class AutoRegistrarTest extends MessengerBotsTestCase
 {
@@ -19,8 +20,6 @@ class AutoRegistrarTest extends MessengerBotsTestCase
     /** @test */
     public function it_can_auto_register_all_bots()
     {
-        foreach (MessengerBotsServiceProvider::BOTS as $bot) {
-            $this->assertTrue(MessengerBots::isValidHandler($bot));
-        }
+        $this->assertSame(MessengerBotsServiceProvider::BOTS, MessengerBots::getHandlerClasses());
     }
 }

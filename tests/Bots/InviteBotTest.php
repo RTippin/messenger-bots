@@ -30,6 +30,7 @@ class InviteBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => InviteBot::class,
             'alias' => 'invitations',
             'description' => 'Generates a short-lived group invitation code and link.',
             'name' => 'Invite Generator',
@@ -39,7 +40,7 @@ class InviteBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(InviteBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(InviteBot::class)->toArray());
     }
 
     /** @test */

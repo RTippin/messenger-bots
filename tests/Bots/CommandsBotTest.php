@@ -33,6 +33,7 @@ class CommandsBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => CommandsBot::class,
             'alias' => 'commands',
             'description' => 'List all actions and triggers the bot has attached.',
             'name' => 'List Commands',
@@ -42,7 +43,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(CommandsBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(CommandsBot::class)->toArray());
     }
 
     /** @test */

@@ -27,6 +27,7 @@ class RollBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => RollBot::class,
             'alias' => 'roll',
             'description' => 'Rolls a random number between 0 and 100. You may also specify the number range to roll between. [ !roll {start} {end} ]',
             'name' => 'Roll Numbers',
@@ -36,7 +37,7 @@ class RollBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(RollBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(RollBot::class)->toArray());
     }
 
     /** @test */

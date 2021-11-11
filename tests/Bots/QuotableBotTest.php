@@ -37,6 +37,7 @@ class QuotableBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => QuotableBot::class,
             'alias' => 'quotable',
             'description' => 'Get a random quote.',
             'name' => 'Quotable Quotes',
@@ -46,7 +47,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(QuotableBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(QuotableBot::class)->toArray());
     }
 
     /** @test */

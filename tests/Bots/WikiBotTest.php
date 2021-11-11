@@ -35,6 +35,7 @@ class WikiBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => WikiBot::class,
             'alias' => 'wiki',
             'description' => 'Get the top results for a wikipedia article search. [ !wiki {search term} ]',
             'name' => 'Wikipedia Search',
@@ -44,7 +45,7 @@ class WikiBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(WikiBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(WikiBot::class)->toArray());
     }
 
     /** @test */

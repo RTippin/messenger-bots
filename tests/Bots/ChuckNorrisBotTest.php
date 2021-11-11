@@ -30,6 +30,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => ChuckNorrisBot::class,
             'alias' => 'chuck',
             'description' => 'Get a random Chuck Norris joke.',
             'name' => 'Chuck Norris',
@@ -39,7 +40,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(ChuckNorrisBot::class)->toArray());
     }
 
     /** @test */

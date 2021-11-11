@@ -46,6 +46,7 @@ class WeatherBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => WeatherBot::class,
             'alias' => 'weather',
             'description' => 'Get the current weather for the given location. [ !w {location} ]',
             'name' => 'Weather',
@@ -55,7 +56,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(WeatherBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(WeatherBot::class)->toArray());
     }
 
     /** @test */

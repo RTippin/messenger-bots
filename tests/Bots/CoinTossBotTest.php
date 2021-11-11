@@ -27,6 +27,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => CoinTossBot::class,
             'alias' => 'coin_toss',
             'description' => 'Toss a coin! Simple heads or tails. [ !toss {heads|tails} ]',
             'name' => 'Coin Toss',
@@ -36,7 +37,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(CoinTossBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(CoinTossBot::class)->toArray());
     }
 
     /** @test */

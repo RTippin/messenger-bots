@@ -27,6 +27,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
+            'class' => RockPaperScissorsBot::class,
             'alias' => 'rock_paper_scissors',
             'description' => 'Play a quick game of rock, paper, scissors! [ !rps {rock|paper|scissors} ]',
             'name' => 'Rock Paper Scissors',
@@ -36,7 +37,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(RockPaperScissorsBot::class));
+        $this->assertSame($expected, MessengerBots::getHandlerSettings(RockPaperScissorsBot::class)->toArray());
     }
 
     /** @test */
