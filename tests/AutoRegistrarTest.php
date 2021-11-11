@@ -4,7 +4,6 @@ namespace RTippin\MessengerBots\Tests;
 
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\MessengerBotsServiceProvider;
-use function PHPUnit\Framework\assertSame;
 
 class AutoRegistrarTest extends MessengerBotsTestCase
 {
