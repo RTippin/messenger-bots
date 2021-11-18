@@ -29,7 +29,6 @@ class KnockBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => KnockBot::class,
             'alias' => 'knock',
             'description' => 'Have the bot send a knock at the thread.',
             'name' => 'Knock Knock',
@@ -39,7 +38,7 @@ class KnockBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(KnockBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(KnockBot::class)->toArray());
     }
 
     /** @test */

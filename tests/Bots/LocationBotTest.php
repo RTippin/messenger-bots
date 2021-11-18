@@ -35,7 +35,6 @@ class LocationBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => LocationBot::class,
             'alias' => 'location',
             'description' => 'Get the general location of the message sender.',
             'name' => 'Locator',
@@ -45,7 +44,7 @@ class LocationBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(LocationBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(LocationBot::class)->toArray());
     }
 
     /** @test */
