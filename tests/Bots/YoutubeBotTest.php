@@ -34,7 +34,6 @@ class YoutubeBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => YoutubeBot::class,
             'alias' => 'youtube',
             'description' => 'Get the top video results for a youtube search. [ !youtube Stairway To Heaven ]',
             'name' => 'Youtube Videos Search',
@@ -44,7 +43,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(YoutubeBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(YoutubeBot::class)->toArray());
     }
 
     /** @test */

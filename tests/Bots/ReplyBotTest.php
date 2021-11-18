@@ -27,7 +27,6 @@ class ReplyBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => ReplyBot::class,
             'alias' => 'reply',
             'description' => 'Reply with the given response(s).',
             'name' => 'Reply',
@@ -37,7 +36,7 @@ class ReplyBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ReplyBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(ReplyBot::class)->toArray());
     }
 
     /** @test */

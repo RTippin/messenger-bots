@@ -26,7 +26,6 @@ class ReactionBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => ReactionBot::class,
             'alias' => 'react',
             'description' => 'Adds the specified reaction to a message.',
             'name' => 'Reaction',
@@ -36,7 +35,7 @@ class ReactionBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(ReactionBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(ReactionBot::class)->toArray());
     }
 
     /** @test */

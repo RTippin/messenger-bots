@@ -30,7 +30,6 @@ class InsultBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => InsultBot::class,
             'alias' => 'insult',
             'description' => 'Responds with a random insult.',
             'name' => 'Insult',
@@ -40,7 +39,7 @@ class InsultBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(InsultBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(InsultBot::class)->toArray());
     }
 
     /** @test */

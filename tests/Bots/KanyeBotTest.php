@@ -27,7 +27,6 @@ class KanyeBotTest extends MessengerBotsTestCase
     public function it_gets_formatted_settings()
     {
         $expected = [
-            'class' => KanyeBot::class,
             'alias' => 'kanye',
             'description' => 'Get a random Kanye West quote.',
             'name' => 'Kanye West',
@@ -37,7 +36,7 @@ class KanyeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlerSettings(KanyeBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlersDTO(KanyeBot::class)->toArray());
     }
 
     /** @test */
