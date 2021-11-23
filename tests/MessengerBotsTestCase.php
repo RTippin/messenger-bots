@@ -2,16 +2,14 @@
 
 namespace RTippin\MessengerBots\Tests;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Actions\Bots\BotActionHandler;
-use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\MessengerServiceProvider;
-use RTippin\Messenger\Models\Messenger as MessengerModel;
 use RTippin\Messenger\Models\Participant;
 use RTippin\Messenger\Models\Thread;
 use RTippin\MessengerBots\MessengerBotsServiceProvider;
@@ -20,14 +18,9 @@ use RTippin\MessengerBots\Tests\Fixtures\UserModel;
 class MessengerBotsTestCase extends TestCase
 {
     /**
-     * @var MessengerProvider|UserModel|Authenticatable
+     * @var UserModel
      */
-    protected $tippin;
-
-    /**
-     * @var MessengerProvider|UserModel|Authenticatable
-     */
-    protected $doe;
+    protected UserModel $tippin;
 
     protected function getPackageProviders($app): array
     {
@@ -41,7 +34,7 @@ class MessengerBotsTestCase extends TestCase
     {
         $config = $app->get('config');
 
-        $config->set('messenger.provider_uuids', false);
+        $config->set('messenger.provider_uuids', env('USE_UUID') === true);
         $config->set('messenger.bots.enabled', true);
         $config->set('messenger.storage.threads.disk', 'messenger');
         $config->set('database.default', 'testbench');
@@ -51,6 +44,12 @@ class MessengerBotsTestCase extends TestCase
             'prefix' => '',
             'foreign_key_constraints' => true,
         ]);
+
+        if (env('USE_MORPH_MAPS') === true) {
+            Relation::morphMap([
+                'users' => UserModel::class,
+            ]);
+        }
     }
 
     protected function setUp(): void
@@ -64,7 +63,7 @@ class MessengerBotsTestCase extends TestCase
         Messenger::registerProviders([
             UserModel::class,
         ]);
-        $this->storeBaseUsers();
+        $this->storeTippin();
         Storage::fake('messenger');
         BaseMessengerAction::disableEvents();
         BotActionHandler::isTesting(true);
@@ -78,23 +77,16 @@ class MessengerBotsTestCase extends TestCase
         parent::tearDown();
     }
 
-    private function storeBaseUsers(): void
+    private function storeTippin(): void
     {
         $this->tippin = UserModel::create([
             'name' => 'Richard Tippin',
             'email' => 'tippindev@gmail.com',
             'password' => 'secret',
         ]);
-        $this->doe = UserModel::create([
-            'name' => 'John Doe',
-            'email' => 'doe@example.net',
-            'password' => 'secret',
-        ]);
-        MessengerModel::factory()->owner($this->tippin)->create();
-        MessengerModel::factory()->owner($this->doe)->create();
     }
 
-    protected function createGroupThread($admin, ...$participants): Thread
+    protected function createGroupThread(UserModel $admin, ...$participants): Thread
     {
         $group = Thread::factory()
             ->group()
