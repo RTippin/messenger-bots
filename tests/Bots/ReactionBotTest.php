@@ -27,7 +27,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'react',
-            'description' => 'Adds the specified reaction to a message.',
+            'description' => 'Adds a reaction to the message.',
             'name' => 'Reaction',
             'unique' => false,
             'authorize' => false,

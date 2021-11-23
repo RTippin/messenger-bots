@@ -33,7 +33,7 @@ class ReplyBot extends BotActionHandler
     {
         return [
             'alias' => 'reply',
-            'description' => 'Reply with the given response(s).',
+            'description' => 'Replies with the given response(s).',
             'name' => 'Reply',
         ];
     }

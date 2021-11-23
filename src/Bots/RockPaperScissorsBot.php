@@ -35,7 +35,7 @@ class RockPaperScissorsBot extends BotActionHandler
     {
         return [
             'alias' => 'rock_paper_scissors',
-            'description' => 'Play a quick game of rock, paper, scissors! [ !rps {rock|paper|scissors} ]',
+            'description' => 'Play a game of rock, paper, scissors! [ !rps {rock|paper|scissors} ]',
             'name' => 'Rock Paper Scissors',
             'unique' => true,
             'triggers' => ['!rps'],

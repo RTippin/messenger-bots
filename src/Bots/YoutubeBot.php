@@ -24,7 +24,7 @@ class YoutubeBot extends BotActionHandler
     {
         return [
             'alias' => 'youtube',
-            'description' => 'Get the top video results for a youtube search. [ !youtube Stairway To Heaven ]',
+            'description' => 'Get the top video results for a youtube search. [ !youtube {search} ]',
             'name' => 'Youtube Videos Search',
             'unique' => true,
             'triggers' => ['!youtube', '!yt'],
@@ -93,7 +93,7 @@ class YoutubeBot extends BotActionHandler
      */
     private function getYoutubeSearch(string $search): Response
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
+        return Http::acceptJson()->timeout(5)->get(self::API_ENDPOINT, [
             'key' => config('messenger-bots.youtube_api_key'),
             'maxResults' => ($this->getPayload('limit') ?? 1),
             'q' => $search,

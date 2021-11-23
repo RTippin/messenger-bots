@@ -53,7 +53,7 @@ class GiphyBot extends BotActionHandler
      */
     private function getGif(): Response
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
+        return Http::acceptJson()->timeout(5)->get(self::API_ENDPOINT, [
             'api_key' => config('messenger-bots.giphy_api_key'),
             'tag' => $this->getParsedMessage(),
         ]);

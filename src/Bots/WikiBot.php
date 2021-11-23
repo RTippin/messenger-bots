@@ -25,7 +25,7 @@ class WikiBot extends BotActionHandler
     {
         return [
             'alias' => 'wiki',
-            'description' => 'Get the top results for a wikipedia article search. [ !wiki {search term} ]',
+            'description' => 'Get the top results for a wikipedia article search. [ !wiki {search} ]',
             'name' => 'Wikipedia Search',
             'unique' => true,
             'triggers' => ['!wiki'],
@@ -95,7 +95,7 @@ class WikiBot extends BotActionHandler
      */
     private function getWikiSearch(string $search): Response
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT, [
+        return Http::acceptJson()->timeout(5)->get(self::API_ENDPOINT, [
             'limit' => ($this->getPayload('limit') ?? 3),
             'search' => $search,
             'action' => 'opensearch',

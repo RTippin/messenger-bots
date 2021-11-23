@@ -69,7 +69,7 @@ class WeatherBot extends BotActionHandler
      */
     private function getWeather(string $location): Response
     {
-        return Http::timeout(15)->get(self::API_ENDPOINT, [
+        return Http::timeout(5)->get(self::API_ENDPOINT, [
             'key' => config('messenger-bots.weather_api_key'),
             'q' => $location,
             'aqi' => 'no',

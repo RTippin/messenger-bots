@@ -17,7 +17,7 @@ class KnockBot extends BotActionHandler
     {
         return [
             'alias' => 'knock',
-            'description' => 'Have the bot send a knock at the thread.',
+            'description' => 'Sends a knock to the group.',
             'name' => 'Knock Knock',
             'unique' => true,
         ];
