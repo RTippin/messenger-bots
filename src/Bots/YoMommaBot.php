@@ -22,7 +22,7 @@ class YoMommaBot extends BotActionHandler
     {
         return [
             'alias' => 'yomomma',
-            'description' => 'Get a random yo momma joke.',
+            'description' => 'Get a random yo-momma joke.',
             'name' => 'Yo Momma',
             'unique' => true,
         ];

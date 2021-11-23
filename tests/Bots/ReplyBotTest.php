@@ -28,7 +28,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'reply',
-            'description' => 'Reply with the given response(s).',
+            'description' => 'Replies with the given response(s).',
             'name' => 'Reply',
             'unique' => false,
             'authorize' => false,

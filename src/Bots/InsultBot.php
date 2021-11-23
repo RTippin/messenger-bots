@@ -52,6 +52,6 @@ class InsultBot extends BotActionHandler
      */
     private function getInsult(): Response
     {
-        return Http::acceptJson()->timeout(15)->get(self::API_ENDPOINT);
+        return Http::acceptJson()->timeout(5)->get(self::API_ENDPOINT);
     }
 }

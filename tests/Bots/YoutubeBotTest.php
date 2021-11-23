@@ -35,7 +35,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'youtube',
-            'description' => 'Get the top video results for a youtube search. [ !youtube Stairway To Heaven ]',
+            'description' => 'Get the top video results for a youtube search. [ !youtube {search} ]',
             'name' => 'Youtube Videos Search',
             'unique' => true,
             'authorize' => false,

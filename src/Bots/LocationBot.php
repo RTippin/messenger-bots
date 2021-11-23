@@ -88,7 +88,7 @@ class LocationBot extends BotActionHandler
         $apiKey = config('messenger-bots.ip_api_key');
         $endpoint = $apiKey ? self::API_ENDPOINT_PRO : self::API_ENDPOINT_FREE;
 
-        return Http::timeout(15)->get($endpoint.$this->senderIp, [
+        return Http::timeout(5)->get($endpoint.$this->senderIp, [
             'key' => $apiKey,
             'fields' => 'status,country,regionName,city',
         ]);

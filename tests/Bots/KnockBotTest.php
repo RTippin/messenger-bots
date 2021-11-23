@@ -30,7 +30,7 @@ class KnockBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'knock',
-            'description' => 'Have the bot send a knock at the thread.',
+            'description' => 'Sends a knock to the group.',
             'name' => 'Knock Knock',
             'unique' => true,
             'authorize' => false,

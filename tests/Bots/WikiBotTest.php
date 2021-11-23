@@ -36,7 +36,7 @@ class WikiBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'wiki',
-            'description' => 'Get the top results for a wikipedia article search. [ !wiki {search term} ]',
+            'description' => 'Get the top results for a wikipedia article search. [ !wiki {search} ]',
             'name' => 'Wikipedia Search',
             'unique' => true,
             'authorize' => false,

@@ -19,8 +19,10 @@ jobs:
       matrix:
         php: [7.4, 8.0]
         laravel: [^8.0]
+        use-uuid: [false, true]
+        morph-maps: [false, true]
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Uuid ${{ matrix.use-uuid }} - MorphMap ${{ matrix.morph-maps }}
 
     steps:
       - name: Checkout code
@@ -39,4 +41,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose
+        run: USE_UUID=${{ matrix.use-uuid }} USE_MORPH_MAPS=${{ matrix.morph-maps }} vendor/bin/phpunit --verbose
