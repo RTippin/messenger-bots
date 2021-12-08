@@ -3,8 +3,8 @@
 namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Support\Collection;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Contracts\EmojiInterface;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class ReplyBot extends BotActionHandler

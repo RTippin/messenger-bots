@@ -44,7 +44,7 @@ class LocationBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(LocationBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(LocationBot::class)->toArray());
     }
 
     /** @test */

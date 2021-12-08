@@ -36,7 +36,7 @@ class RollBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(RollBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(RollBot::class)->toArray());
     }
 
     /** @test */

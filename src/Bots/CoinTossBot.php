@@ -2,8 +2,8 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\MessengerBots;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class CoinTossBot extends BotActionHandler

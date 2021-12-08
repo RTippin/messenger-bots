@@ -44,7 +44,7 @@ class WikiBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(WikiBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(WikiBot::class)->toArray());
     }
 
     /** @test */

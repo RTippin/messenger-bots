@@ -5,8 +5,8 @@ namespace RTippin\MessengerBots\Bots;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Exceptions\FileServiceException;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class RandomImageBot extends BotActionHandler

@@ -42,7 +42,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(CommandsBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(CommandsBot::class)->toArray());
     }
 
     /** @test */

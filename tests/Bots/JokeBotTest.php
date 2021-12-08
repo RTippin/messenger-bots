@@ -36,7 +36,7 @@ class JokeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(JokeBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(JokeBot::class)->toArray());
     }
 
     /** @test */

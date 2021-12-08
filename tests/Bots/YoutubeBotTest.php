@@ -43,7 +43,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(YoutubeBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(YoutubeBot::class)->toArray());
     }
 
     /** @test */

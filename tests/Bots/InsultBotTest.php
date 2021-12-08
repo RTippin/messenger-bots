@@ -39,7 +39,7 @@ class InsultBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(InsultBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(InsultBot::class)->toArray());
     }
 
     /** @test */

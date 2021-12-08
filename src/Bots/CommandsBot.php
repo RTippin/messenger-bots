@@ -3,9 +3,9 @@
 namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Database\Eloquent\Collection;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Models\BotAction;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class CommandsBot extends BotActionHandler
@@ -74,6 +74,6 @@ class CommandsBot extends BotActionHandler
      */
     private function makeActionString(BotAction $action): string
     {
-        return $action->getHandlersDTO()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
+        return $action->getHandler()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
     }
 }

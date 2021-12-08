@@ -2,11 +2,11 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Contracts\EmojiInterface;
 use RTippin\Messenger\Exceptions\FeatureDisabledException;
 use RTippin\Messenger\Exceptions\ReactionException;
 use RTippin\Messenger\Rules\HasEmoji;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class ReactionBot extends BotActionHandler

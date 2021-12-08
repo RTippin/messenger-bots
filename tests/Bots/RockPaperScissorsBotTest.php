@@ -36,7 +36,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(RockPaperScissorsBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(RockPaperScissorsBot::class)->toArray());
     }
 
     /** @test */
