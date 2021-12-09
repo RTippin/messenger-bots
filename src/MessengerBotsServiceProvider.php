@@ -25,11 +25,12 @@ use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
+use RTippin\MessengerBots\Packages\GamesPackage;
 
 class MessengerBotsServiceProvider extends ServiceProvider
 {
     /**
-     * All bots provided by this package.
+     * All bot handlers provided by this package.
      */
     const BOTS = [
         ChuckNorrisBot::class,
@@ -56,6 +57,13 @@ class MessengerBotsServiceProvider extends ServiceProvider
     ];
 
     /**
+     * All bot packages provided by this package.
+     */
+    const PACKAGES = [
+        GamesPackage::class,
+    ];
+
+    /**
      * Bootstrap any package services.
      *
      * @return void
@@ -65,6 +73,8 @@ class MessengerBotsServiceProvider extends ServiceProvider
         if (config('messenger-bots.auto_register_all')) {
             MessengerBots::registerHandlers(self::BOTS);
         }
+
+//        MessengerBots::registerPackagedBots(self::PACKAGES);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
