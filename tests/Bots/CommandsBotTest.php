@@ -34,7 +34,7 @@ class CommandsBotTest extends MessengerBotsTestCase
     {
         $expected = [
             'alias' => 'commands',
-            'description' => 'List all actions and triggers the bot has attached.',
+            'description' => 'List all actions and triggers that all bots in the group have attached.',
             'name' => 'List Commands',
             'unique' => true,
             'authorize' => false,
@@ -78,11 +78,38 @@ class CommandsBotTest extends MessengerBotsTestCase
             ->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'body' => 'Richard Tippin, we can respond to the following commands:',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
             'body' => 'List Commands - [ !commands | !c ]',
+            'owner_type' => 'bots',
+        ]);
+    }
+
+    /** @test */
+    public function it_gets_actions_across_all_bots_in_a_thread()
+    {
+        MessengerBots::registerHandlers([ChuckNorrisBot::class]);
+        $thread = $this->createGroupThread($this->tippin);
+        $message = Message::factory()->for($thread)->owner($this->tippin)->create();
+        BotAction::factory()->for(
+            Bot::factory()->for($thread)->owner($this->tippin)->create()
+        )->owner($this->tippin)->handler(ChuckNorrisBot::class)->triggers('!chuck')->create();
+        $action = BotAction::factory()->for(
+            Bot::factory()->for($thread)->owner($this->tippin)->create()
+        )->owner($this->tippin)->handler(CommandsBot::class)->triggers('!commands|!c')->create();
+
+        MessengerBots::initializeHandler(CommandsBot::class)
+            ->setDataForHandler($thread, $action, $message)
+            ->handle();
+
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Richard Tippin, we can respond to the following commands:',
+            'owner_type' => 'bots',
+        ]);
+        $this->assertDatabaseHas('messages', [
+            'body' => 'Chuck Norris - [ !chuck ], List Commands - [ !commands | !c ]',
             'owner_type' => 'bots',
         ]);
     }
@@ -113,7 +140,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             ->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'body' => 'Richard Tippin, we can respond to the following commands:',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
@@ -148,7 +175,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             ->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'body' => 'Richard Tippin, we can respond to the following commands:',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
@@ -179,7 +206,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             ->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'body' => 'Richard Tippin, we can respond to the following commands:',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
@@ -210,7 +237,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             ->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Richard Tippin, I can respond to the following commands:',
+            'body' => 'Richard Tippin, we can respond to the following commands:',
             'owner_type' => 'bots',
         ]);
         $this->assertDatabaseHas('messages', [
