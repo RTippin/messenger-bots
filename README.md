@@ -99,8 +99,8 @@ php artisan vendor:publish --tag=messenger-bots
 
 ---
 
-# Auto Registering Handlers
-- If you plan to use all the bot handlers we provide, you can skip registering them manually by enabling the `BOT_AUTO_REGISTER_ALL` flag.
+# Auto Registering Handlers and Packages
+- If you plan to use all the bot handlers and packaged bots provided, you can skip registering them manually by enabling the `BOT_AUTO_REGISTER_ALL` flag.
 
 ***Update your `.env`***
 

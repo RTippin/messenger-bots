@@ -32,7 +32,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
     /**
      * All bot handlers provided by this package.
      */
-    const BOTS = [
+    const HANDLERS = [
         ChuckNorrisBot::class,
         CoinTossBot::class,
         CommandsBot::class,
@@ -71,10 +71,9 @@ class MessengerBotsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (config('messenger-bots.auto_register_all')) {
-            MessengerBots::registerHandlers(self::BOTS);
+            MessengerBots::registerHandlers(self::HANDLERS);
+            MessengerBots::registerPackagedBots(self::PACKAGES);
         }
-
-//        MessengerBots::registerPackagedBots(self::PACKAGES);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
