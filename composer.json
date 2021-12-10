@@ -16,7 +16,7 @@
         "Faker"
     ],
     "require": {
-        "php": "^7.4||^8.0",
+        "php": "^7.4|^8.0|^8.1",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.3",
         "rtippin/messenger": "^1.13"
