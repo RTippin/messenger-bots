@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase;
 use RTippin\Messenger\Actions\BaseMessengerAction;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\MessengerServiceProvider;
 use RTippin\Messenger\Models\Participant;
 use RTippin\Messenger\Models\Thread;
+use RTippin\Messenger\Support\BotActionHandler;
 use RTippin\MessengerBots\MessengerBotsServiceProvider;
 use RTippin\MessengerBots\Tests\Fixtures\UserModel;
 
