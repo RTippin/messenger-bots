@@ -27,6 +27,7 @@ use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
 use RTippin\MessengerBots\Packages\GamesPackage;
 use RTippin\MessengerBots\Packages\JokesterPackage;
+use RTippin\MessengerBots\Packages\NeoPackage;
 
 class MessengerBotsServiceProvider extends ServiceProvider
 {
@@ -63,6 +64,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
     const PACKAGES = [
         GamesPackage::class,
         JokesterPackage::class,
+        NeoPackage::class,
     ];
 
     /**
