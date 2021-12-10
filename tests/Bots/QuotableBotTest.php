@@ -46,7 +46,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(QuotableBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(QuotableBot::class)->toArray());
     }
 
     /** @test */

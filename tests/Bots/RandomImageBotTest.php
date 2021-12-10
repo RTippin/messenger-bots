@@ -39,7 +39,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(RandomImageBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(RandomImageBot::class)->toArray());
     }
 
     /** @test */

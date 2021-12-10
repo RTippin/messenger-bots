@@ -43,7 +43,7 @@ class GiphyBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(GiphyBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(GiphyBot::class)->toArray());
     }
 
     /** @test */

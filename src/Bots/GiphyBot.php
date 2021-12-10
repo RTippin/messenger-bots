@@ -4,8 +4,8 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\MessengerBots;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class GiphyBot extends BotActionHandler

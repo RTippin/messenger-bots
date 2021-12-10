@@ -39,7 +39,7 @@ class InviteBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(InviteBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(InviteBot::class)->toArray());
     }
 
     /** @test */

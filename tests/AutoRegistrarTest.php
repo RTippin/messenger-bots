@@ -17,8 +17,14 @@ class AutoRegistrarTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_can_auto_register_all_bots()
+    public function it_can_auto_register_all_handlers()
     {
-        $this->assertSame(MessengerBotsServiceProvider::BOTS, MessengerBots::getHandlerClasses());
+        $this->assertSame(MessengerBotsServiceProvider::HANDLERS, MessengerBots::getHandlerClasses());
+    }
+
+    /** @test */
+    public function it_can_auto_register_all_packages()
+    {
+        $this->assertSame(MessengerBotsServiceProvider::PACKAGES, MessengerBots::getPackagedBotClasses());
     }
 }

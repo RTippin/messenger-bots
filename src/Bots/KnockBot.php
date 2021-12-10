@@ -2,8 +2,8 @@
 
 namespace RTippin\MessengerBots\Bots;
 
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Facades\Messenger;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class KnockBot extends BotActionHandler

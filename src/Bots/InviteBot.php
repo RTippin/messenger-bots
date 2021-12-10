@@ -3,10 +3,10 @@
 namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Support\Str;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Models\Invite;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class InviteBot extends BotActionHandler

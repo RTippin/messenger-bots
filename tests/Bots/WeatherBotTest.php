@@ -55,7 +55,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(WeatherBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(WeatherBot::class)->toArray());
     }
 
     /** @test */

@@ -3,9 +3,9 @@
 namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Database\Eloquent\Collection;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
 use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Models\BotAction;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class CommandsBot extends BotActionHandler
@@ -19,7 +19,7 @@ class CommandsBot extends BotActionHandler
     {
         return [
             'alias' => 'commands',
-            'description' => 'List all actions and triggers the bot has attached.',
+            'description' => 'List all actions and triggers that all bots in the group have attached.',
             'name' => 'List Commands',
             'unique' => true,
             'triggers' => ['!commands', '!c'],
@@ -38,7 +38,7 @@ class CommandsBot extends BotActionHandler
             ->sort()
             ->chunk(5);
 
-        $this->composer()->emitTyping()->message("{$this->message->owner->getProviderName()}, I can respond to the following commands:");
+        $this->composer()->emitTyping()->message("{$this->message->owner->getProviderName()}, we can respond to the following commands:");
 
         foreach ($actions as $action) {
             $this->composer()->message($action->implode(', '));
@@ -52,9 +52,7 @@ class CommandsBot extends BotActionHandler
      */
     private function getBotActions(): Collection
     {
-        return BotAction::validHandler()
-            ->enabled()
-            ->where('bot_id', '=', $this->action->bot_id)
+        return BotAction::validFromThread($this->thread->id)
             ->select(['triggers', 'handler', 'admin_only'])
             ->get();
     }
@@ -74,6 +72,6 @@ class CommandsBot extends BotActionHandler
      */
     private function makeActionString(BotAction $action): string
     {
-        return $action->getHandlersDTO()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
+        return $action->getHandler()->name.' - [ '.implode(' | ', $action->getTriggers()).' ]';
     }
 }

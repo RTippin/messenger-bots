@@ -56,7 +56,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Automatically Register All The Bots Provided.
+    | Automatically Register All The Bots and Packages Provided.
     |--------------------------------------------------------------------------
     */
     'auto_register_all' => env('BOT_AUTO_REGISTER_ALL', false),

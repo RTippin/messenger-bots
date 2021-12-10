@@ -36,7 +36,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(CoinTossBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(CoinTossBot::class)->toArray());
     }
 
     /** @test */

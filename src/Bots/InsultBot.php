@@ -4,7 +4,7 @@ namespace RTippin\MessengerBots\Bots;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use RTippin\Messenger\Actions\Bots\BotActionHandler;
+use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
 class InsultBot extends BotActionHandler

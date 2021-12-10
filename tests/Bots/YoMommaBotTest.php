@@ -36,7 +36,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlersDTO(YoMommaBot::class)->toArray());
+        $this->assertSame($expected, MessengerBots::getHandlers(YoMommaBot::class)->toArray());
     }
 
     /** @test */

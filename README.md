@@ -14,10 +14,10 @@
 
 ## Notice
 - This package is not required to use the bots feature built into `Messenger`.
-- For more documentation on creating custom bot handlers, visit our [Chat Bots][link-bots-docs] documentation.
+- For more documentation on creating custom bot handlers and packages, visit the official [Chat Bots][link-bots-docs] documentation.
 
 ### Features:
-- Ready to go bot action handlers that will plug into the core messenger package.
+- Ready-made bot action handlers and packages that will plug into the core messenger package.
 - Register only the selected bots you wish to use, or let us auto-register all bots we provide.
 - Included Bot Handlers:
   - Chuck Norris Bot
@@ -41,6 +41,10 @@
   - Wikipedia Bot
   - YoMomma Bot
   - Youtube Bot
+- Included Bot Packages:
+  - Games Package
+  - Jokester Package
+  - Neo package
 
 ---
 
@@ -99,8 +103,8 @@ php artisan vendor:publish --tag=messenger-bots
 
 ---
 
-# Auto Registering Handlers
-- If you plan to use all the bot handlers we provide, you can skip registering them manually by enabling the `BOT_AUTO_REGISTER_ALL` flag.
+# Auto Registering Handlers and Packages
+- If you plan to use all the bot handlers and packaged bots provided, you can skip registering them manually by enabling the `BOT_AUTO_REGISTER_ALL` flag.
 
 ***Update your `.env`***
 
@@ -110,9 +114,9 @@ BOT_AUTO_REGISTER_ALL=true
 
 ---
 
-# Manually Registering Handlers
-- Inside your `MessengerServiceProvider` (or any of your providers), you must register all bot handlers you want enabled in your application.
-- You can use the `MessengerBots` facade to register the handlers. Be sure you do it inside the `boot` method.
+# Manually Registering Handlers and Bot Packages
+- Inside your `MessengerServiceProvider` (or any of your providers), you must register all bot handlers and bot packages you want enabled in your application.
+- You can use the `MessengerBots` facade to register the handlers and packages. Be sure you do it inside the `boot` method.
 
 ***Example:***
 
@@ -144,6 +148,9 @@ use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
+use RTippin\MessengerBots\Packages\GamesPackage;
+use RTippin\MessengerBots\Packages\JokesterPackage;
+use RTippin\MessengerBots\Packages\NeoPackage;
 
 class MessengerServiceProvider extends ServiceProvider
 {
@@ -177,11 +184,17 @@ class MessengerServiceProvider extends ServiceProvider
             YoMommaBot::class,
             YoutubeBot::class,
         ]);
+
+        MessengerBots::registerPackagedBots([
+            GamesPackage::class,
+            JokesterPackage::class,
+            NeoPackage::class,
+        ]);
     }
 }
 ```
 
-### Registered handlers will now be available to choose when adding an action to a bot.
+### Registered handlers and packages will now be available to choose when adding an action to a bot or installing a packaged bot.
 
 ---
 
