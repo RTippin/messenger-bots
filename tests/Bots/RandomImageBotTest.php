@@ -101,6 +101,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
     /** @test */
     public function it_releases_cooldown_when_store_image_fails()
     {
+        $this->withoutExceptionHandling();
         $thread = $this->createGroupThread($this->tippin);
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
