@@ -97,10 +97,10 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
             'body' => 'I found the following document(s) matching ( test ) :',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'testing.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute(),
+            'body' => ':floppy_disk: testing.pdf - '.$testPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertDatabaseMissing('messages', [
-            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute(),
+            'body' => ':floppy_disk: foo.pdf - '.$fooPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertFalse($finder->shouldReleaseCooldown());
     }
@@ -125,10 +125,10 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
             'body' => 'I found the following document(s) matching ( foo ) :',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'testing_foo.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute(),
+            'body' => ':floppy_disk: testing_foo.pdf - '.$testPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute(),
+            'body' => ':floppy_disk: foo.pdf - '.$fooPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertFalse($finder->shouldReleaseCooldown());
     }
