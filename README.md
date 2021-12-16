@@ -24,6 +24,7 @@
   - Coin Toss Bot
   - Commands Bot
   - Dad Joke Bot
+  - Document Finder Bot
   - Giphy Bot
   - Insult Bot
   - Invite Bot
@@ -40,7 +41,7 @@
   - Weather Bot
   - Wikipedia Bot
   - YoMomma Bot
-  - Youtube Bot
+  - YouTube Bot
 - Included Bot Packages:
   - Games Package
   - Jokester Package
@@ -131,6 +132,7 @@ use RTippin\MessengerBots\Bots\ChuckNorrisBot;
 use RTippin\MessengerBots\Bots\CoinTossBot;
 use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
+use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\InviteBot;
@@ -166,6 +168,7 @@ class MessengerServiceProvider extends ServiceProvider
             CoinTossBot::class,
             CommandsBot::class,
             DadJokeBot::class,
+            DocumentFinderBot::class,
             GiphyBot::class,
             InsultBot::class,
             InviteBot::class,

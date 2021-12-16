@@ -4,6 +4,7 @@ namespace RTippin\MessengerBots\Tests\Packages;
 
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\Bots\CommandsBot;
+use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
@@ -26,6 +27,12 @@ class NeoPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidPackagedBot(NeoPackage::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
@@ -37,21 +44,26 @@ class NeoPackageTest extends MessengerBotsTestCase
                 'md' => '/messenger/assets/bot-package/md/neo_package/avatar.jpg',
                 'lg' => '/messenger/assets/bot-package/lg/neo_package/avatar.jpg',
             ],
-            'installs' => [
-                MessengerBots::getHandlers(GiphyBot::class)->toArray(),
-                MessengerBots::getHandlers(InviteBot::class)->toArray(),
-                MessengerBots::getHandlers(KanyeBot::class)->toArray(),
-                MessengerBots::getHandlers(CommandsBot::class)->toArray(),
-                MessengerBots::getHandlers(LocationBot::class)->toArray(),
-                MessengerBots::getHandlers(QuotableBot::class)->toArray(),
-                MessengerBots::getHandlers(RandomImageBot::class)->toArray(),
-                MessengerBots::getHandlers(WeatherBot::class)->toArray(),
-                MessengerBots::getHandlers(WikiBot::class)->toArray(),
-                MessengerBots::getHandlers(YoutubeBot::class)->toArray(),
-            ],
+            'installs' => [],
+            'already_installed' => [],
         ];
+        $installs = [
+            MessengerBots::getHandlers(CommandsBot::class)->toArray(),
+            MessengerBots::getHandlers(DocumentFinderBot::class)->toArray(),
+            MessengerBots::getHandlers(GiphyBot::class)->toArray(),
+            MessengerBots::getHandlers(InviteBot::class)->toArray(),
+            MessengerBots::getHandlers(KanyeBot::class)->toArray(),
+            MessengerBots::getHandlers(LocationBot::class)->toArray(),
+            MessengerBots::getHandlers(QuotableBot::class)->toArray(),
+            MessengerBots::getHandlers(RandomImageBot::class)->toArray(),
+            MessengerBots::getHandlers(WeatherBot::class)->toArray(),
+            MessengerBots::getHandlers(WikiBot::class)->toArray(),
+            MessengerBots::getHandlers(YoutubeBot::class)->toArray(),
+        ];
+        $package = MessengerBots::getPackagedBots(NeoPackage::class);
 
-        $this->assertSame($expected, MessengerBots::getPackagedBots(NeoPackage::class)->toArray());
+        $this->assertSame($expected, $package->toArray());
+        $this->assertSame($installs, $package->installs->toArray());
     }
 
     /** @test */
@@ -67,7 +79,7 @@ class NeoPackageTest extends MessengerBotsTestCase
         ])
             ->assertSuccessful()
             ->assertJson([
-                'actions_count' => 10,
+                'actions_count' => 11,
             ]);
     }
 }

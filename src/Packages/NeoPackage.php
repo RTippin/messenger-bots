@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Packages;
 use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Support\PackagedBot;
 use RTippin\MessengerBots\Bots\CommandsBot;
+use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
@@ -42,6 +43,10 @@ class NeoPackage extends PackagedBot
         return [
             CommandsBot::class => [
                 'cooldown' => 120,
+            ],
+            DocumentFinderBot::class => [
+                'cooldown' => 15,
+                'limit' => 10,
             ],
             GiphyBot::class => [
                 'cooldown' => 15,
