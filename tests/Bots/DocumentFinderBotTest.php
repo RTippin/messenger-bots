@@ -53,7 +53,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         $finder->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'Please select a valid search term, i.e. ( !document resume )'
+            'body' => 'Please select a valid search term, i.e. ( !document resume )',
         ]);
         $this->assertTrue($finder->shouldReleaseCooldown());
     }
@@ -72,7 +72,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         $finder->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'I didn\'t find any document(s) matching ( unknown )'
+            'body' => 'I didn\'t find any document(s) matching ( unknown )',
         ]);
         $this->assertFalse($finder->shouldReleaseCooldown());
     }
@@ -94,13 +94,13 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         $finder->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'I found the following document(s) matching ( test ) :'
+            'body' => 'I found the following document(s) matching ( test ) :',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'testing.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute()
+            'body' => 'testing.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertDatabaseMissing('messages', [
-            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute()
+            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertFalse($finder->shouldReleaseCooldown());
     }
@@ -122,13 +122,13 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         $finder->handle();
 
         $this->assertDatabaseHas('messages', [
-            'body' => 'I found the following document(s) matching ( foo ) :'
+            'body' => 'I found the following document(s) matching ( foo ) :',
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'testing_foo.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute()
+            'body' => 'testing_foo.pdf - :floppy_disk: '.$testPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertDatabaseHas('messages', [
-            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute()
+            'body' => 'foo.pdf - :floppy_disk: '.$fooPdf->getDocumentDownloadRoute(),
         ]);
         $this->assertFalse($finder->shouldReleaseCooldown());
     }
