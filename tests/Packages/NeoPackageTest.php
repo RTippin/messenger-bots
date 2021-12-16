@@ -4,6 +4,7 @@ namespace RTippin\MessengerBots\Tests\Packages;
 
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\MessengerBots\Bots\CommandsBot;
+use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
@@ -48,6 +49,7 @@ class NeoPackageTest extends MessengerBotsTestCase
         ];
         $installs = [
             MessengerBots::getHandlers(CommandsBot::class)->toArray(),
+            MessengerBots::getHandlers(DocumentFinderBot::class)->toArray(),
             MessengerBots::getHandlers(GiphyBot::class)->toArray(),
             MessengerBots::getHandlers(InviteBot::class)->toArray(),
             MessengerBots::getHandlers(KanyeBot::class)->toArray(),
@@ -77,7 +79,7 @@ class NeoPackageTest extends MessengerBotsTestCase
         ])
             ->assertSuccessful()
             ->assertJson([
-                'actions_count' => 10,
+                'actions_count' => 11,
             ]);
     }
 }
