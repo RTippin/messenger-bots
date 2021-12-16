@@ -19,6 +19,12 @@ class GamesPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidPackagedBot(GamesPackage::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
@@ -30,14 +36,18 @@ class GamesPackageTest extends MessengerBotsTestCase
                 'md' => '/messenger/assets/bot-package/md/games_package/avatar.png',
                 'lg' => '/messenger/assets/bot-package/lg/games_package/avatar.png',
             ],
-            'installs' => [
-                MessengerBots::getHandlers(CoinTossBot::class)->toArray(),
-                MessengerBots::getHandlers(RockPaperScissorsBot::class)->toArray(),
-                MessengerBots::getHandlers(RollBot::class)->toArray(),
-            ],
+            'installs' => [],
+            'already_installed' => [],
         ];
+        $installs = [
+            MessengerBots::getHandlers(CoinTossBot::class)->toArray(),
+            MessengerBots::getHandlers(RockPaperScissorsBot::class)->toArray(),
+            MessengerBots::getHandlers(RollBot::class)->toArray(),
+        ];
+        $package = MessengerBots::getPackagedBots(GamesPackage::class);
 
-        $this->assertSame($expected, MessengerBots::getPackagedBots(GamesPackage::class)->toArray());
+        $this->assertSame($expected, $package->toArray());
+        $this->assertSame($installs, $package->installs->toArray());
     }
 
     /** @test */

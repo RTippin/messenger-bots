@@ -23,6 +23,12 @@ class JokesterPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidPackagedBot(JokesterPackage::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
@@ -34,18 +40,22 @@ class JokesterPackageTest extends MessengerBotsTestCase
                 'md' => '/messenger/assets/bot-package/md/jokester_package/avatar.jpg',
                 'lg' => '/messenger/assets/bot-package/lg/jokester_package/avatar.jpg',
             ],
-            'installs' => [
-                MessengerBots::getHandlers(ChuckNorrisBot::class)->toArray(),
-                MessengerBots::getHandlers(DadJokeBot::class)->toArray(),
-                MessengerBots::getHandlers(InsultBot::class)->toArray(),
-                MessengerBots::getHandlers(JokeBot::class)->toArray(),
-                MessengerBots::getHandlers(KnockBot::class)->toArray(),
-                MessengerBots::getHandlers(ReactionBot::class)->toArray(),
-                MessengerBots::getHandlers(YoMommaBot::class)->toArray(),
-            ],
+            'installs' => [],
+            'already_installed' => [],
         ];
+        $installs = [
+            MessengerBots::getHandlers(ChuckNorrisBot::class)->toArray(),
+            MessengerBots::getHandlers(DadJokeBot::class)->toArray(),
+            MessengerBots::getHandlers(InsultBot::class)->toArray(),
+            MessengerBots::getHandlers(JokeBot::class)->toArray(),
+            MessengerBots::getHandlers(KnockBot::class)->toArray(),
+            MessengerBots::getHandlers(ReactionBot::class)->toArray(),
+            MessengerBots::getHandlers(YoMommaBot::class)->toArray(),
+        ];
+        $package = MessengerBots::getPackagedBots(JokesterPackage::class);
 
-        $this->assertSame($expected, MessengerBots::getPackagedBots(JokesterPackage::class)->toArray());
+        $this->assertSame($expected, $package->toArray());
+        $this->assertSame($installs, $package->installs->toArray());
     }
 
     /** @test */
