@@ -32,9 +32,9 @@ class GamesPackageTest extends MessengerBotsTestCase
             'name' => 'Games',
             'description' => 'Bundles games you can play with the bot.',
             'avatar' => [
-                'sm' => '/messenger/assets/bot-package/sm/games_package/avatar.png',
-                'md' => '/messenger/assets/bot-package/md/games_package/avatar.png',
-                'lg' => '/messenger/assets/bot-package/lg/games_package/avatar.png',
+                'sm' => '/messenger/assets/bot-package/sm/games_package/avatar.gif',
+                'md' => '/messenger/assets/bot-package/md/games_package/avatar.gif',
+                'lg' => '/messenger/assets/bot-package/lg/games_package/avatar.gif',
             ],
             'installs' => [],
             'already_installed' => [],

@@ -20,7 +20,7 @@ class GamesPackage extends PackagedBot
             'alias' => 'games_package',
             'description' => 'Bundles games you can play with the bot.',
             'name' => 'Games',
-            'avatar' => __DIR__.'/../../assets/games_package_avatar.png',
+            'avatar' => __DIR__.'/../../assets/games_package_avatar.gif',
         ];
     }
 
