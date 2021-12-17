@@ -32,6 +32,12 @@ class LocationBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidHandler(LocationBot::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
