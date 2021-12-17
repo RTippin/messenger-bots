@@ -30,6 +30,12 @@ class CommandsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidHandler(CommandsBot::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [

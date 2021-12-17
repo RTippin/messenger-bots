@@ -27,6 +27,12 @@ class InsultBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidHandler(InsultBot::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [

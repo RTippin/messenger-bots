@@ -26,6 +26,12 @@ class KnockBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidHandler(KnockBot::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [

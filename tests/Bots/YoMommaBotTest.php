@@ -24,6 +24,12 @@ class YoMommaBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_is_registered()
+    {
+        $this->assertTrue(MessengerBots::isValidHandler(YoMommaBot::class));
+    }
+
+    /** @test */
     public function it_gets_formatted_settings()
     {
         $expected = [
