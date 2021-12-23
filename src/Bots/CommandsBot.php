@@ -34,7 +34,7 @@ class CommandsBot extends BotActionHandler
     {
         $actions = $this->getBotActions()
             ->reject(fn (BotAction $action) => $this->adminOnlyActionWhenNotAdmin($action))
-            ->transform(fn (BotAction $action) => $this->makeActionString($action))
+            ->map(fn (BotAction $action) => $this->makeActionString($action))
             ->sort()
             ->chunk(5);
 

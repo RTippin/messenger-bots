@@ -112,7 +112,7 @@ class WikiBot extends BotActionHandler
      */
     private function formatResults(array $results): array
     {
-        return (new Collection($results[1]))
+        return Collection::make($results[1])
             ->map(fn ($value, $key) => $value.' - '.$results[3][$key])
             ->toArray();
     }

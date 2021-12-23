@@ -90,7 +90,7 @@ class RockPaperScissorsBot extends BotActionHandler
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
     private function getChoice(): ?string
     {

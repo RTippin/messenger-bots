@@ -37,7 +37,7 @@ class JokeBot extends BotActionHandler
 
         $this->composer()->emitTyping()->message($joke['setup']);
 
-        if (! self::isTesting()) {
+        if (! static::isTesting()) {
             sleep(6);
         }
 
@@ -49,10 +49,10 @@ class JokeBot extends BotActionHandler
      */
     private function getJoke(): array
     {
-        return (new Collection(
+        return Collection::make(
             json_decode(
                 file_get_contents(self::JOKES_FILE), true
             )
-        ))->random();
+        )->random();
     }
 }

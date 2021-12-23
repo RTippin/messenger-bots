@@ -43,10 +43,10 @@ class YoMommaBot extends BotActionHandler
      */
     public function getYoMomma(): string
     {
-        return (new Collection(
+        return Collection::make(
             json_decode(
                 file_get_contents(self::JOKES_FILE)
             )
-        ))->random();
+        )->random();
     }
 }
