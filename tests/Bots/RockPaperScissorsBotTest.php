@@ -30,7 +30,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'rock_paper_scissors',
@@ -42,7 +42,7 @@ class RockPaperScissorsBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(RockPaperScissorsBot::class)->toArray());
+        $this->assertSame($expected, RockPaperScissorsBot::getDTO()->toArray());
     }
 
     /** @test */

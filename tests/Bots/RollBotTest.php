@@ -30,7 +30,7 @@ class RollBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'roll',
@@ -42,7 +42,7 @@ class RollBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(RollBot::class)->toArray());
+        $this->assertSame($expected, RollBot::getDTO()->toArray());
     }
 
     /** @test */

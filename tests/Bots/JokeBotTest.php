@@ -30,7 +30,7 @@ class JokeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'random_joke',
@@ -42,7 +42,7 @@ class JokeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(JokeBot::class)->toArray());
+        $this->assertSame($expected, JokeBot::getDTO()->toArray());
     }
 
     /** @test */

@@ -33,7 +33,7 @@ class InviteBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'invitations',
@@ -45,7 +45,7 @@ class InviteBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(InviteBot::class)->toArray());
+        $this->assertSame($expected, InviteBot::getDTO()->toArray());
     }
 
     /** @test */

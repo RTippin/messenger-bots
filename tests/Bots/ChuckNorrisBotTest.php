@@ -33,7 +33,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'chuck',
@@ -45,7 +45,7 @@ class ChuckNorrisBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(ChuckNorrisBot::class)->toArray());
+        $this->assertSame($expected, ChuckNorrisBot::getDTO()->toArray());
     }
 
     /** @test */

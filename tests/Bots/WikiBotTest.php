@@ -38,7 +38,7 @@ class WikiBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'wiki',
@@ -50,7 +50,7 @@ class WikiBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(WikiBot::class)->toArray());
+        $this->assertSame($expected, WikiBot::getDTO()->toArray());
     }
 
     /** @test */

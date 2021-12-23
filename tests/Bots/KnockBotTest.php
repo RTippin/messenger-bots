@@ -32,7 +32,7 @@ class KnockBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'knock',
@@ -44,7 +44,7 @@ class KnockBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(KnockBot::class)->toArray());
+        $this->assertSame($expected, KnockBot::getDTO()->toArray());
     }
 
     /** @test */

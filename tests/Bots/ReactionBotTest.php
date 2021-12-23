@@ -29,7 +29,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'react',
@@ -41,7 +41,7 @@ class ReactionBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(ReactionBot::class)->toArray());
+        $this->assertSame($expected, ReactionBot::getDTO()->toArray());
     }
 
     /** @test */

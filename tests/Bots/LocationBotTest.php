@@ -38,7 +38,7 @@ class LocationBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'location',
@@ -50,7 +50,7 @@ class LocationBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(LocationBot::class)->toArray());
+        $this->assertSame($expected, LocationBot::getDTO()->toArray());
     }
 
     /** @test */

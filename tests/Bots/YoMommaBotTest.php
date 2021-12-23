@@ -30,7 +30,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'yomomma',
@@ -42,7 +42,7 @@ class YoMommaBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(YoMommaBot::class)->toArray());
+        $this->assertSame($expected, YoMommaBot::getDTO()->toArray());
     }
 
     /** @test */

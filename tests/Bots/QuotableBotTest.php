@@ -40,7 +40,7 @@ class QuotableBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'quotable',
@@ -52,7 +52,7 @@ class QuotableBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(QuotableBot::class)->toArray());
+        $this->assertSame($expected, QuotableBot::getDTO()->toArray());
     }
 
     /** @test */

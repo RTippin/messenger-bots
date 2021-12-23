@@ -30,7 +30,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'document_finder',
@@ -42,7 +42,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
             'match' => \RTippin\Messenger\MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(DocumentFinderBot::class)->toArray());
+        $this->assertSame($expected, DocumentFinderBot::getDTO()->toArray());
     }
 
     /** @test */

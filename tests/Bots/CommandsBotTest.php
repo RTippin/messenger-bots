@@ -36,7 +36,7 @@ class CommandsBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'commands',
@@ -48,7 +48,7 @@ class CommandsBotTest extends MessengerBotsTestCase
             'match' => \RTippin\Messenger\MessengerBots::MATCH_EXACT_CASELESS,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(CommandsBot::class)->toArray());
+        $this->assertSame($expected, CommandsBot::getDTO()->toArray());
     }
 
     /** @test */

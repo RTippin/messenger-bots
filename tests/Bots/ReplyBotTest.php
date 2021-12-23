@@ -30,7 +30,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'reply',
@@ -42,7 +42,7 @@ class ReplyBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(ReplyBot::class)->toArray());
+        $this->assertSame($expected, ReplyBot::getDTO()->toArray());
     }
 
     /** @test */

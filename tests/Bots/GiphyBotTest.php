@@ -37,7 +37,7 @@ class GiphyBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'giphy',
@@ -49,7 +49,7 @@ class GiphyBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(GiphyBot::class)->toArray());
+        $this->assertSame($expected, GiphyBot::getDTO()->toArray());
     }
 
     /** @test */

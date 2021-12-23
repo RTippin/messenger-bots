@@ -33,7 +33,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'random_image',
@@ -45,7 +45,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(RandomImageBot::class)->toArray());
+        $this->assertSame($expected, RandomImageBot::getDTO()->toArray());
     }
 
     /** @test */

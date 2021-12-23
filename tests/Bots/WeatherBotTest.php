@@ -49,7 +49,7 @@ class WeatherBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'weather',
@@ -61,7 +61,7 @@ class WeatherBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(WeatherBot::class)->toArray());
+        $this->assertSame($expected, WeatherBot::getDTO()->toArray());
     }
 
     /** @test */

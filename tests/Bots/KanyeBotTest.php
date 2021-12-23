@@ -30,7 +30,7 @@ class KanyeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'kanye',
@@ -42,7 +42,7 @@ class KanyeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(KanyeBot::class)->toArray());
+        $this->assertSame($expected, KanyeBot::getDTO()->toArray());
     }
 
     /** @test */

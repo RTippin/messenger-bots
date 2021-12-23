@@ -25,7 +25,7 @@ class GamesPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_package_dto()
     {
         $expected = [
             'alias' => 'games_package',
@@ -40,11 +40,11 @@ class GamesPackageTest extends MessengerBotsTestCase
             'already_installed' => [],
         ];
         $installs = [
-            MessengerBots::getHandlers(CoinTossBot::class)->toArray(),
-            MessengerBots::getHandlers(RockPaperScissorsBot::class)->toArray(),
-            MessengerBots::getHandlers(RollBot::class)->toArray(),
+            CoinTossBot::getDTO()->toArray(),
+            RockPaperScissorsBot::getDTO()->toArray(),
+            RollBot::getDTO()->toArray(),
         ];
-        $package = MessengerBots::getPackagedBots(GamesPackage::class);
+        $package = GamesPackage::getDTO();
 
         $this->assertSame($expected, $package->toArray());
         $this->assertSame($installs, $package->installs->toArray());

@@ -33,7 +33,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'dad_joke',
@@ -45,7 +45,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(DadJokeBot::class)->toArray());
+        $this->assertSame($expected, DadJokeBot::getDTO()->toArray());
     }
 
     /** @test */

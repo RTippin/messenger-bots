@@ -30,7 +30,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'coin_toss',
@@ -42,7 +42,7 @@ class CoinTossBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(CoinTossBot::class)->toArray());
+        $this->assertSame($expected, CoinTossBot::getDTO()->toArray());
     }
 
     /** @test */
