@@ -9,6 +9,7 @@ use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Actions\Messages\StoreImageMessage;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -19,6 +20,15 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class RandomImageBotTest extends MessengerBotsTestCase
 {
+    const PARAMS = [
+        'handler' => 'random_image',
+        'match' => 'exact',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
+        'triggers' => ['!image'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -49,6 +59,12 @@ class RandomImageBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, RandomImageBot::testResolve(self::PARAMS));
+    }
+
+    /** @test */
     public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
@@ -58,14 +74,7 @@ class RandomImageBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'random_image',
-            'match' => 'exact',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-            'triggers' => ['!image'],
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 

@@ -17,9 +17,10 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class YoutubeBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'items' => [
             ['id' => ['videoId' => 'dQw4w9WgXcQ']],
+            ['id' => ['videoId' => 'b2F-DItXtZs']],
         ],
     ];
 
@@ -59,7 +60,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!youtube Rick-Roll')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
         $youtube = MessengerBots::initializeHandler(YoutubeBot::class)
             ->setDataForHandler($thread, $action, $message, '!youtube');
@@ -71,6 +72,9 @@ class YoutubeBotTest extends MessengerBotsTestCase
         ]);
         $this->assertDatabaseHas('messages', [
             'body' => 'https://youtu.be/dQw4w9WgXcQ',
+        ]);
+        $this->assertDatabaseHas('messages', [
+            'body' => 'https://youtu.be/b2F-DItXtZs',
         ]);
         $this->assertFalse($youtube->shouldReleaseCooldown());
     }
@@ -126,7 +130,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            YoutubeBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(YoutubeBot::class)
@@ -139,7 +143,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_serializes_payload_when_attaching_to_a_bot_handler()
+    public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -156,12 +160,7 @@ class YoutubeBotTest extends MessengerBotsTestCase
             'enabled' => true,
             'limit' => 2,
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'payload' => [
-                    'limit' => 2,
-                ],
-            ]);
+            ->assertSuccessful();
     }
 
     /**
@@ -170,24 +169,20 @@ class YoutubeBotTest extends MessengerBotsTestCase
      *
      * @param $limit
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($limit)
+    public function it_passes_resolving_params($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'youtube',
-            'match' => 'exact',
+        $resolve = YoutubeBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        if (is_null($limit)) {
+            $limit = 'null';
+        }
+
+        $this->assertSame('{"limit":'.$limit.'}', $resolve->payload);
     }
 
     /**
@@ -198,23 +193,14 @@ class YoutubeBotTest extends MessengerBotsTestCase
      */
     public function it_fails_validation_attaching_to_a_bot_handler($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'youtube',
-            'match' => 'exact',
+        $resolve = YoutubeBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('limit');
+        ]);
+
+        $this->assertArrayHasKey('limit', $resolve);
     }
 
     public function passesLimitValidation(): array

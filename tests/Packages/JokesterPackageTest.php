@@ -59,6 +59,15 @@ class JokesterPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_passes_resolving_installs()
+    {
+        $installs = JokesterPackage::testInstalls();
+
+        $this->assertCount(8, $installs['resolved']);
+        $this->assertCount(0, $installs['failed']);
+    }
+
+    /** @test */
     public function it_can_be_installed()
     {
         $thread = $this->createGroupThread($this->tippin);
@@ -69,9 +78,6 @@ class JokesterPackageTest extends MessengerBotsTestCase
         ]), [
             'alias' => 'jokester_package',
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'actions_count' => 8,
-            ]);
+            ->assertSuccessful();
     }
 }

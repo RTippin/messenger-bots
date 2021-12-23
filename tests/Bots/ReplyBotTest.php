@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -128,7 +129,7 @@ class ReplyBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_serializes_payload_when_attaching_to_a_bot_handler()
+    public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -145,15 +146,25 @@ class ReplyBotTest extends MessengerBotsTestCase
             'enabled' => true,
             'triggers' => ['!reply'],
             'quote_original' => false,
-            'replies' => ['One', 'Two 💯'],
+            'replies' => ['Reply'],
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'payload' => [
-                    'quote_original' => false,
-                    'replies' => ['One', 'Two :100:'],
-                ],
-            ]);
+            ->assertSuccessful();
+    }
+
+    /** @test */
+    public function it_converts_emoji_to_shortcode_when_serialized()
+    {
+        $resolve = ReplyBot::testResolve([
+            'cooldown' => 0,
+            'admin_only' => false,
+            'enabled' => true,
+            'match' => 'exact',
+            'triggers' => ['!reply'],
+            'quote_original' => false,
+            'replies' => ['We feel like 💩'],
+        ]);
+
+        $this->assertSame('{"replies":["We feel like :poop:"],"quote_original":false}', $resolve->payload);
     }
 
     /**
@@ -163,26 +174,19 @@ class ReplyBotTest extends MessengerBotsTestCase
      * @param $quote
      * @param $replies
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($quote, $replies)
+    public function it_passes_resolving_params($quote, $replies)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'reply',
-            'match' => 'exact',
+        $resolve = ReplyBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!reply'],
+            'match' => 'exact',
+            'triggers' => ['!100'],
             'quote_original' => $quote,
             'replies' => $replies,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, $resolve);
     }
 
     /**
@@ -192,27 +196,20 @@ class ReplyBotTest extends MessengerBotsTestCase
      * @param $quote
      * @param $replies
      */
-    public function it_fails_validation_attaching_to_a_bot_handler($quote, $replies)
+    public function it_fails_resolving_params($quote, $replies)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'reply',
-            'match' => 'exact',
+        $resolve = ReplyBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
-            'triggers' => ['!reply'],
+            'match' => 'exact',
+            'triggers' => ['!100'],
             'quote_original' => $quote,
             'replies' => $replies,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['quote_original', 'replies']);
+        ]);
+
+        $this->assertArrayHasKey('quote_original', $resolve);
+        $this->assertArrayHasKey('replies', $resolve);
     }
 
     public function passesValidation(): array

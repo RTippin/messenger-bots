@@ -51,6 +51,15 @@ class GamesPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_passes_resolving_installs()
+    {
+        $installs = GamesPackage::testInstalls();
+
+        $this->assertCount(3, $installs['resolved']);
+        $this->assertCount(0, $installs['failed']);
+    }
+
+    /** @test */
     public function it_can_be_installed()
     {
         $thread = $this->createGroupThread($this->tippin);
@@ -61,9 +70,6 @@ class GamesPackageTest extends MessengerBotsTestCase
         ]), [
             'alias' => 'games_package',
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'actions_count' => 3,
-            ]);
+            ->assertSuccessful();
     }
 }

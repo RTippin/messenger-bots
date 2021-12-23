@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,13 +18,19 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class QuotableBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'data' => [
             [
                 'quoteText' => 'Do better!',
                 'quoteAuthor' => 'Some Guy',
             ],
         ],
+    ];
+    const PARAMS = [
+        'handler' => 'quotable',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
     ];
 
     protected function setUp(): void
@@ -56,6 +63,12 @@ class QuotableBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, QuotableBot::testResolve(self::PARAMS));
+    }
+
+    /** @test */
     public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
@@ -65,12 +78,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'quotable',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -81,7 +89,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            QuotableBot::API_ENDPOINT => Http::response(self::DATA),
+            QuotableBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
         $quote = MessengerBots::initializeHandler(QuotableBot::class)
             ->setDataForHandler($thread, $action, $message);
@@ -125,7 +133,7 @@ class QuotableBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            QuotableBot::API_ENDPOINT => Http::response(self::DATA),
+            QuotableBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(QuotableBot::class)

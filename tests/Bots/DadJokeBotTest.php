@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,7 +18,15 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class DadJokeBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['joke' => 'Dad joke.'];
+    const RESPONSE = ['joke' => 'Dad joke.'];
+    const PARAMS = [
+        'handler' => 'dad_joke',
+        'match' => 'exact',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
+        'triggers' => ['!dadjoke'],
+    ];
 
     protected function setUp(): void
     {
@@ -49,6 +58,12 @@ class DadJokeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, DadJokeBot::testResolve(self::PARAMS));
+    }
+
+    /** @test */
     public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
@@ -58,14 +73,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'dad_joke',
-            'match' => 'exact',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-            'triggers' => ['!dadjoke'],
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -76,7 +84,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            DadJokeBot::API_ENDPOINT => Http::response(self::DATA),
+            DadJokeBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
         $dad = MessengerBots::initializeHandler(DadJokeBot::class)
             ->setDataForHandler($thread, $action, $message);
@@ -121,7 +129,7 @@ class DadJokeBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            DadJokeBot::API_ENDPOINT => Http::response(self::DATA),
+            DadJokeBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(DadJokeBot::class)
