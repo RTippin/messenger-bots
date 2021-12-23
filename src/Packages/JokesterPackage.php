@@ -10,10 +10,15 @@ use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
+use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 
 class JokesterPackage extends PackagedBot
 {
+    const INSULT_TRIGGERS = ['!insult', 'fuck', 'asshole', 'bitch', 'shit', 'cunt'];
+    const DAD_TRIGGERS = ['!dad', 'dad', 'daddy', 'father'];
+    const MOM_TRIGGERS = ['!yomomma', 'mom', 'mommy', 'mother'];
+
     /**
      * The packages settings.
      *
@@ -45,12 +50,12 @@ class JokesterPackage extends PackagedBot
             DadJokeBot::class => [
                 'cooldown' => 15,
                 'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
-                'triggers' => ['!dad', 'dad', 'daddy', 'father'],
+                'triggers' => self::DAD_TRIGGERS,
             ],
             InsultBot::class => [
                 'cooldown' => 120,
                 'match' => MessengerBots::MATCH_CONTAINS_ANY_CASELESS,
-                'triggers' => ['!insult', 'fuck', 'asshole', 'bitch', 'shit', 'cunt'],
+                'triggers' => self::INSULT_TRIGGERS,
             ],
             JokeBot::class => [
                 'cooldown' => 15,
@@ -66,18 +71,44 @@ class JokesterPackage extends PackagedBot
                 [
                     'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
                     'reaction' => '💩',
-                    'triggers' => ['shit', 'poop', 'crap'],
+                    'triggers' => ['shit', 'poop', 'crap', 'poo', 'dung', 'feces'],
                 ],
                 [
                     'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
                     'reaction' => '🤣',
                     'triggers' => ['lmao', 'rofl', 'lol', 'ha', 'lmfao', 'lulz', 'haha'],
                 ],
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '👎',
+                    'triggers' => ['no', 'nope', 'never', 'negative'],
+                ],
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '🖕',
+                    'triggers' => self::INSULT_TRIGGERS,
+                ],
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '👩',
+                    'triggers' => self::MOM_TRIGGERS,
+                ],
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '👨',
+                    'triggers' => self::DAD_TRIGGERS,
+                ],
+            ],
+            ReplyBot::class => [
+                'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                'triggers' => ['help'],
+                'replies' => ['How about you google that: https://www.google.com/'],
+                'quote_original' => true,
             ],
             YoMommaBot::class => [
                 'cooldown' => 15,
                 'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
-                'triggers' => ['!yomomma', 'mom', 'mommy', 'mother'],
+                'triggers' => self::MOM_TRIGGERS,
             ],
         ];
     }
