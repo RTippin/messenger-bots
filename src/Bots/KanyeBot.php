@@ -41,10 +41,10 @@ class KanyeBot extends BotActionHandler
      */
     private function getKanyeQuote(): string
     {
-        return (new Collection(
+        return Collection::make(
             json_decode(
                 file_get_contents(self::KANYE_FILE)
             )
-        ))->random();
+        )->random();
     }
 }

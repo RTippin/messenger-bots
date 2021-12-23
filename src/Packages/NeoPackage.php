@@ -12,12 +12,15 @@ use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\LocationBot;
 use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
+use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
 
 class NeoPackage extends PackagedBot
 {
+    const COOL_TRIGGERS = ['cool', 'nice', 'awesome', 'sweet', '100', ':100:', 'wow'];
+
     /**
      * The packages settings.
      *
@@ -69,6 +72,18 @@ class NeoPackage extends PackagedBot
                 'cooldown' => 60,
                 'match' => MessengerBots::MATCH_EXACT_CASELESS,
                 'triggers' => ['!image', '!picture'],
+            ],
+            ReactionBot::class => [
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '👍',
+                    'triggers' => self::COOL_TRIGGERS,
+                ],
+                [
+                    'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                    'reaction' => '💯',
+                    'triggers' => self::COOL_TRIGGERS,
+                ],
             ],
             WeatherBot::class => [
                 'cooldown' => 15,

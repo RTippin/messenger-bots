@@ -9,6 +9,7 @@ use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
+use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
 use RTippin\MessengerBots\Packages\JokesterPackage;
 use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
@@ -29,7 +30,7 @@ class JokesterPackageTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_package_dto()
     {
         $expected = [
             'alias' => 'jokester_package',
@@ -44,18 +45,28 @@ class JokesterPackageTest extends MessengerBotsTestCase
             'already_installed' => [],
         ];
         $installs = [
-            MessengerBots::getHandlers(ChuckNorrisBot::class)->toArray(),
-            MessengerBots::getHandlers(DadJokeBot::class)->toArray(),
-            MessengerBots::getHandlers(InsultBot::class)->toArray(),
-            MessengerBots::getHandlers(JokeBot::class)->toArray(),
-            MessengerBots::getHandlers(KnockBot::class)->toArray(),
-            MessengerBots::getHandlers(ReactionBot::class)->toArray(),
-            MessengerBots::getHandlers(YoMommaBot::class)->toArray(),
+            ChuckNorrisBot::getDTO()->toArray(),
+            DadJokeBot::getDTO()->toArray(),
+            InsultBot::getDTO()->toArray(),
+            JokeBot::getDTO()->toArray(),
+            KnockBot::getDTO()->toArray(),
+            ReactionBot::getDTO()->toArray(),
+            ReplyBot::getDTO()->toArray(),
+            YoMommaBot::getDTO()->toArray(),
         ];
         $package = MessengerBots::getPackagedBots(JokesterPackage::class);
 
         $this->assertSame($expected, $package->toArray());
         $this->assertSame($installs, $package->installs->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_installs()
+    {
+        $installs = JokesterPackage::testInstalls();
+
+        $this->assertCount(13, $installs['resolved']);
+        $this->assertCount(0, $installs['failed']);
     }
 
     /** @test */
@@ -69,9 +80,6 @@ class JokesterPackageTest extends MessengerBotsTestCase
         ]), [
             'alias' => 'jokester_package',
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'actions_count' => 8,
-            ]);
+            ->assertSuccessful();
     }
 }

@@ -17,7 +17,7 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class WikiBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'PHP',
         ['PHP', 'PhpStorm'],
         ['', ''],
@@ -38,7 +38,7 @@ class WikiBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'wiki',
@@ -50,7 +50,7 @@ class WikiBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(WikiBot::class)->toArray());
+        $this->assertSame($expected, WikiBot::getDTO()->toArray());
     }
 
     /** @test */
@@ -60,7 +60,7 @@ class WikiBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!wiki PHP')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            WikiBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            WikiBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
         $wiki = MessengerBots::initializeHandler(WikiBot::class)
             ->setDataForHandler($thread, $action, $message, '!wiki');
@@ -130,7 +130,7 @@ class WikiBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            WikiBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            WikiBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(WikiBot::class)
@@ -143,7 +143,7 @@ class WikiBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_serializes_payload_when_attaching_to_a_bot_handler()
+    public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -154,18 +154,12 @@ class WikiBotTest extends MessengerBotsTestCase
             'bot' => $bot->id,
         ]), [
             'handler' => 'wiki',
-            'match' => 'exact',
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => 2,
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'payload' => [
-                    'limit' => 2,
-                ],
-            ]);
+            ->assertSuccessful();
     }
 
     /**
@@ -174,24 +168,20 @@ class WikiBotTest extends MessengerBotsTestCase
      *
      * @param $limit
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($limit)
+    public function it_passes_resolving_params($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'wiki',
-            'match' => 'exact',
+        $resolve = WikiBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        if (is_null($limit)) {
+            $limit = 'null';
+        }
+
+        $this->assertSame('{"limit":'.$limit.'}', $resolve->payload);
     }
 
     /**
@@ -200,25 +190,16 @@ class WikiBotTest extends MessengerBotsTestCase
      *
      * @param $limit
      */
-    public function it_fails_validation_attaching_to_a_bot_handler($limit)
+    public function it_fails_resolving_params($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'wiki',
-            'match' => 'exact',
+        $resolve = WikiBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('limit');
+        ]);
+
+        $this->assertArrayHasKey('limit', $resolve);
     }
 
     public function passesLimitValidation(): array

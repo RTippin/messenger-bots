@@ -33,7 +33,7 @@ class InviteBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'invitations',
@@ -45,7 +45,7 @@ class InviteBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(InviteBot::class)->toArray());
+        $this->assertSame($expected, InviteBot::getDTO()->toArray());
     }
 
     /** @test */
@@ -184,23 +184,20 @@ class InviteBotTest extends MessengerBotsTestCase
      *
      * @param $minutes
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($minutes)
+    public function it_passes_resolving_params($minutes)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'invitations',
+        $resolve = InviteBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'lifetime_minutes' => $minutes,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        if (is_null($minutes)) {
+            $minutes = 'null';
+        }
+
+        $this->assertSame('{"lifetime_minutes":'.$minutes.'}', $resolve->payload);
     }
 
     /**
@@ -209,24 +206,16 @@ class InviteBotTest extends MessengerBotsTestCase
      *
      * @param $minutes
      */
-    public function it_fails_validation_attaching_to_a_bot_handler($minutes)
+    public function it_fails_resolving_params($minutes)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'invitations',
+        $resolve = InviteBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'lifetime_minutes' => $minutes,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('lifetime_minutes');
+        ]);
+
+        $this->assertArrayHasKey('lifetime_minutes', $resolve);
     }
 
     public function passesLifetimeValidation(): array

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -16,6 +17,15 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class KanyeBotTest extends MessengerBotsTestCase
 {
+    const PARAMS = [
+        'handler' => 'kanye',
+        'match' => 'exact',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
+        'triggers' => ['!kanye'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,7 +40,7 @@ class KanyeBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'kanye',
@@ -42,7 +52,13 @@ class KanyeBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(KanyeBot::class)->toArray());
+        $this->assertSame($expected, KanyeBot::getDTO()->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, KanyeBot::testResolve(self::PARAMS));
     }
 
     /** @test */
@@ -55,14 +71,7 @@ class KanyeBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'kanye',
-            'match' => 'exact',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-            'triggers' => ['!kanye'],
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 

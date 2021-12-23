@@ -80,7 +80,7 @@ class CoinTossBot extends BotActionHandler
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
     private function getChoice(): ?string
     {

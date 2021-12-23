@@ -30,7 +30,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'document_finder',
@@ -42,7 +42,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
             'match' => \RTippin\Messenger\MessengerBots::MATCH_STARTS_WITH_CASELESS,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(DocumentFinderBot::class)->toArray());
+        $this->assertSame($expected, DocumentFinderBot::getDTO()->toArray());
     }
 
     /** @test */
@@ -194,23 +194,20 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
      *
      * @param $limit
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($limit)
+    public function it_passes_resolving_params($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'document_finder',
+        $resolve = DocumentFinderBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        if (is_null($limit)) {
+            $limit = 'null';
+        }
+
+        $this->assertSame('{"limit":'.$limit.'}', $resolve->payload);
     }
 
     /**
@@ -219,24 +216,16 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
      *
      * @param $limit
      */
-    public function it_fails_validation_attaching_to_a_bot_handler($limit)
+    public function it_fails_resolving_params($limit)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'document_finder',
+        $resolve = DocumentFinderBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
             'limit' => $limit,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('limit');
+        ]);
+
+        $this->assertArrayHasKey('limit', $resolve);
     }
 
     public function passesLimitValidation(): array

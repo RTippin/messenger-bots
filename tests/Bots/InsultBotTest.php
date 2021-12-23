@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,7 +18,15 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class InsultBotTest extends MessengerBotsTestCase
 {
-    const DATA = ['insult' => 'You suck!'];
+    const RESPONSE = ['insult' => 'You suck!'];
+    const PARAMS = [
+        'handler' => 'insult',
+        'match' => 'exact',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
+        'triggers' => ['!insult'],
+    ];
 
     protected function setUp(): void
     {
@@ -33,7 +42,7 @@ class InsultBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'insult',
@@ -45,7 +54,13 @@ class InsultBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(InsultBot::class)->toArray());
+        $this->assertSame($expected, InsultBot::getDTO()->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, InsultBot::testResolve(self::PARAMS));
     }
 
     /** @test */
@@ -58,14 +73,7 @@ class InsultBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'insult',
-            'match' => 'exact',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-            'triggers' => ['!insult'],
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -76,7 +84,7 @@ class InsultBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            InsultBot::API_ENDPOINT => Http::response(self::DATA),
+            InsultBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
         $insult = MessengerBots::initializeHandler(InsultBot::class)
             ->setDataForHandler($thread, $action, $message);
@@ -120,7 +128,7 @@ class InsultBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            InsultBot::API_ENDPOINT => Http::response(self::DATA),
+            InsultBot::API_ENDPOINT => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(InsultBot::class)

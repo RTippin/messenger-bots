@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,7 +18,7 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class WeatherBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'location' => [
             'name' => 'Name',
             'region' => 'Region',
@@ -32,6 +33,13 @@ class WeatherBotTest extends MessengerBotsTestCase
                 'text' => 'partly cloudy',
             ],
         ],
+    ];
+    const PARAMS = [
+        'handler' => 'weather',
+        'match' => 'exact',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
     ];
 
     protected function setUp(): void
@@ -49,7 +57,7 @@ class WeatherBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'weather',
@@ -61,7 +69,13 @@ class WeatherBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(WeatherBot::class)->toArray());
+        $this->assertSame($expected, WeatherBot::getDTO()->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, WeatherBot::testResolve(self::PARAMS));
     }
 
     /** @test */
@@ -74,13 +88,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'weather',
-            'match' => 'exact',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -91,7 +99,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body('!w Location')->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            WeatherBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
         $weather = MessengerBots::initializeHandler(WeatherBot::class)
             ->setDataForHandler($thread, $action, $message, '!w');
@@ -155,7 +163,7 @@ class WeatherBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            WeatherBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            WeatherBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(WeatherBot::class)

@@ -65,7 +65,7 @@ class RandomImageBot extends BotActionHandler
      */
     private function stashImage(string $body): array
     {
-        if (self::isTesting()) {
+        if (static::isTesting()) {
             return [UploadedFile::fake()->image('test.jpg'), 'test.jpg'];
         }
 
@@ -81,7 +81,7 @@ class RandomImageBot extends BotActionHandler
      */
     private function unlinkImage(string $imagePath): void
     {
-        if (! self::isTesting()) {
+        if (! static::isTesting()) {
             unlink($imagePath);
         }
     }

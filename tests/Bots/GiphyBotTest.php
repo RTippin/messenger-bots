@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,10 +18,16 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class GiphyBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'data' => [
             'url' => 'https://giphy.com/gifs/screen-monitor-closeup-26tn33aiTi1jkl6H6',
         ],
+    ];
+    const PARAMS = [
+        'handler' => 'giphy',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
     ];
 
     protected function setUp(): void
@@ -37,7 +44,7 @@ class GiphyBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'giphy',
@@ -49,7 +56,13 @@ class GiphyBotTest extends MessengerBotsTestCase
             'match' => 'starts:with:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(GiphyBot::class)->toArray());
+        $this->assertSame($expected, GiphyBot::getDTO()->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, GiphyBot::testResolve(self::PARAMS));
     }
 
     /** @test */
@@ -62,12 +75,7 @@ class GiphyBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'giphy',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -78,7 +86,7 @@ class GiphyBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            GiphyBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            GiphyBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
         $giphy = MessengerBots::initializeHandler(GiphyBot::class)
             ->setDataForHandler($thread, $action, $message);
@@ -123,7 +131,7 @@ class GiphyBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            GiphyBot::API_ENDPOINT.'*' => Http::response(self::DATA),
+            GiphyBot::API_ENDPOINT.'*' => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(GiphyBot::class)

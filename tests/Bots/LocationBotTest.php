@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ClientEvents\Typing;
 use RTippin\Messenger\Broadcasting\NewMessageBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -17,11 +18,17 @@ use RTippin\MessengerBots\Tests\MessengerBotsTestCase;
 
 class LocationBotTest extends MessengerBotsTestCase
 {
-    const DATA = [
+    const RESPONSE = [
         'status' => 'success',
         'city' => 'City',
         'regionName' => 'Region',
         'country' => 'Country',
+    ];
+    const PARAMS = [
+        'handler' => 'location',
+        'cooldown' => 0,
+        'admin_only' => false,
+        'enabled' => true,
     ];
 
     protected function setUp(): void
@@ -38,7 +45,7 @@ class LocationBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'location',
@@ -50,7 +57,13 @@ class LocationBotTest extends MessengerBotsTestCase
             'match' => 'exact:caseless',
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(LocationBot::class)->toArray());
+        $this->assertSame($expected, LocationBot::getDTO()->toArray());
+    }
+
+    /** @test */
+    public function it_passes_resolving_params()
+    {
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, LocationBot::testResolve(self::PARAMS));
     }
 
     /** @test */
@@ -63,12 +76,7 @@ class LocationBotTest extends MessengerBotsTestCase
         $this->postJson(route('api.messenger.threads.bots.actions.store', [
             'thread' => $thread->id,
             'bot' => $bot->id,
-        ]), [
-            'handler' => 'location',
-            'cooldown' => 0,
-            'admin_only' => false,
-            'enabled' => true,
-        ])
+        ]), self::PARAMS)
             ->assertSuccessful();
     }
 
@@ -79,7 +87,7 @@ class LocationBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::RESPONSE),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
@@ -101,7 +109,7 @@ class LocationBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         Http::fake([
-            LocationBot::API_ENDPOINT_PRO.'127.0.0.1*' => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_PRO.'127.0.0.1*' => Http::response(self::RESPONSE),
         ]);
         $location = MessengerBots::initializeHandler(LocationBot::class)
             ->setDataForHandler($thread, $action, $message, null, false, '127.0.0.1');
@@ -171,7 +179,7 @@ class LocationBotTest extends MessengerBotsTestCase
         ]);
 
         Http::fake([
-            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::DATA),
+            LocationBot::API_ENDPOINT_FREE.'127.0.0.1*' => Http::response(self::RESPONSE),
         ]);
 
         MessengerBots::initializeHandler(LocationBot::class)

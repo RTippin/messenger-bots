@@ -5,6 +5,7 @@ namespace RTippin\MessengerBots\Tests\Bots;
 use Illuminate\Support\Facades\Event;
 use RTippin\Messenger\Actions\BaseMessengerAction;
 use RTippin\Messenger\Broadcasting\ReactionAddedBroadcast;
+use RTippin\Messenger\DataTransferObjects\ResolvedBotHandlerDTO;
 use RTippin\Messenger\Events\ReactionAddedEvent;
 use RTippin\Messenger\Facades\MessengerBots;
 use RTippin\Messenger\Models\Bot;
@@ -29,7 +30,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_gets_formatted_settings()
+    public function it_gets_handler_dto()
     {
         $expected = [
             'alias' => 'react',
@@ -41,7 +42,7 @@ class ReactionBotTest extends MessengerBotsTestCase
             'match' => null,
         ];
 
-        $this->assertSame($expected, MessengerBots::getHandlers(ReactionBot::class)->toArray());
+        $this->assertSame($expected, ReactionBot::getDTO()->toArray());
     }
 
     /** @test */
@@ -86,7 +87,7 @@ class ReactionBotTest extends MessengerBotsTestCase
     }
 
     /** @test */
-    public function it_serializes_payload_when_attaching_to_a_bot_handler()
+    public function it_can_be_attached_to_a_bot_handler()
     {
         $thread = $this->createGroupThread($this->tippin);
         $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
@@ -104,12 +105,22 @@ class ReactionBotTest extends MessengerBotsTestCase
             'triggers' => ['!100'],
             'reaction' => '💯',
         ])
-            ->assertSuccessful()
-            ->assertJson([
-                'payload' => [
-                    'reaction' => ':100:',
-                ],
-            ]);
+            ->assertSuccessful();
+    }
+
+    /** @test */
+    public function it_converts_emoji_to_shortcode_when_serialized()
+    {
+        $resolve = ReactionBot::testResolve([
+            'cooldown' => 0,
+            'admin_only' => false,
+            'enabled' => true,
+            'match' => 'exact',
+            'triggers' => ['!100'],
+            'reaction' => '💩',
+        ]);
+
+        $this->assertSame('{"reaction":":poop:"}', $resolve->payload);
     }
 
     /**
@@ -118,25 +129,18 @@ class ReactionBotTest extends MessengerBotsTestCase
      *
      * @param $reaction
      */
-    public function it_passes_validation_attaching_to_a_bot_handler($reaction)
+    public function it_passes_resolving_params($reaction)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'react',
-            'match' => 'exact',
+        $resolve = ReactionBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
+            'match' => 'exact',
             'triggers' => ['!100'],
             'reaction' => $reaction,
-        ])
-            ->assertSuccessful();
+        ]);
+
+        $this->assertInstanceOf(ResolvedBotHandlerDTO::class, $resolve);
     }
 
     /**
@@ -145,26 +149,18 @@ class ReactionBotTest extends MessengerBotsTestCase
      *
      * @param $reaction
      */
-    public function it_fails_validation_attaching_to_a_bot_handler($reaction)
+    public function it_fails_resolving_params($reaction)
     {
-        $thread = $this->createGroupThread($this->tippin);
-        $bot = Bot::factory()->for($thread)->owner($this->tippin)->create();
-        $this->actingAs($this->tippin);
-
-        $this->postJson(route('api.messenger.threads.bots.actions.store', [
-            'thread' => $thread->id,
-            'bot' => $bot->id,
-        ]), [
-            'handler' => 'react',
-            'match' => 'exact',
+        $resolve = ReactionBot::testResolve([
             'cooldown' => 0,
             'admin_only' => false,
             'enabled' => true,
+            'match' => 'exact',
             'triggers' => ['!100'],
             'reaction' => $reaction,
-        ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('reaction');
+        ]);
+
+        $this->assertArrayHasKey('reaction', $resolve);
     }
 
     public function passesEmojiValidation(): array
