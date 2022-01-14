@@ -7,12 +7,6 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
-env:
-  GIPHY_KEY: ${{ secrets.GIPHY_KEY }}
-  IP_API_KEY: ${{ secrets.IP_API_KEY }}
-  WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
-  YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
-
 jobs:
   tests:
     runs-on: ubuntu-20.04
@@ -21,7 +15,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.1]
-        laravel: [^8.42]
+        laravel: [^8.70]
 
     name: Integrations
 
@@ -41,5 +35,10 @@ jobs:
           composer require "illuminate/contracts=${{ matrix.laravel }}" --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
-      - name: Execute tests
+      - name: Execute integration tests
+        env:
+          GIPHY_KEY: ${{ secrets.GIPHY_KEY }}
+          IP_API_KEY: ${{ secrets.IP_API_KEY }}
+          WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
+          YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
         run: vendor/bin/phpunit --verbose --testsuite integration
