@@ -1,0 +1,45 @@
+name: integrations
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  GIPHY_KEY: ${{ secrets.GIPHY_KEY }}
+  IP_API_KEY: ${{ secrets.IP_API_KEY }}
+  WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
+  YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1]
+        laravel: [^8.42]
+
+    name: Integrations
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "illuminate/contracts=${{ matrix.laravel }}" --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose --testsuite integration
