@@ -41,4 +41,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: USE_UUID=${{ matrix.use-uuid }} USE_MORPH_MAPS=${{ matrix.morph-maps }} vendor/bin/phpunit --verbose
+        run: USE_UUID=${{ matrix.use-uuid }} USE_MORPH_MAPS=${{ matrix.morph-maps }} vendor/bin/phpunit --verbose --testsuite feature
