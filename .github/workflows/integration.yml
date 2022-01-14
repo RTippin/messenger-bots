@@ -1,14 +1,17 @@
-name: tests
+name: integrations
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
   schedule:
     - cron: '0 0 * * *'
+
+env:
+  GIPHY_KEY: ${{ secrets.GIPHY_KEY }}
+  IP_API_KEY: ${{ secrets.IP_API_KEY }}
+  WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
+  YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
 
 jobs:
   tests:
@@ -17,12 +20,10 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 8.0, 8.1]
+        php: [8.1]
         laravel: [^8.42]
-        use-uuid: [false, true]
-        morph-maps: [false, true]
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Uuid ${{ matrix.use-uuid }} - MorphMap ${{ matrix.morph-maps }}
+    name: Integrations
 
     steps:
       - name: Checkout code
@@ -41,4 +42,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: USE_UUID=${{ matrix.use-uuid }} USE_MORPH_MAPS=${{ matrix.morph-maps }} vendor/bin/phpunit --verbose --testsuite feature
+        run: vendor/bin/phpunit --verbose --testsuite integration
