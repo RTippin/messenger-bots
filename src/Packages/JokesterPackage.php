@@ -8,6 +8,7 @@ use RTippin\MessengerBots\Bots\ChuckNorrisBot;
 use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
+use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
@@ -61,6 +62,10 @@ class JokesterPackage extends PackagedBot
                 'cooldown' => 15,
                 'match' => MessengerBots::MATCH_EXACT_CASELESS,
                 'triggers' => ['!joke'],
+            ],
+            KanyeBot::class => [
+                'match' => MessengerBots::MATCH_EXACT_CASELESS,
+                'triggers' => ['!kanye'],
             ],
             KnockBot::class => [
                 'cooldown' => 300,

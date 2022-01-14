@@ -7,7 +7,6 @@ use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
-use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\LocationBot;
 use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
@@ -53,7 +52,6 @@ class NeoPackageTest extends MessengerBotsTestCase
             DocumentFinderBot::getDTO()->toArray(),
             GiphyBot::getDTO()->toArray(),
             InviteBot::getDTO()->toArray(),
-            KanyeBot::getDTO()->toArray(),
             LocationBot::getDTO()->toArray(),
             QuotableBot::getDTO()->toArray(),
             RandomImageBot::getDTO()->toArray(),
@@ -73,7 +71,7 @@ class NeoPackageTest extends MessengerBotsTestCase
     {
         $installs = NeoPackage::testInstalls();
 
-        $this->assertCount(13, $installs['resolved']);
+        $this->assertCount(12, $installs['resolved']);
         $this->assertCount(0, $installs['failed']);
     }
 
