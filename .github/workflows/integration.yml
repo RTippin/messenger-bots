@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/contracts=^8.x" --no-update
+          composer require "illuminate/contracts=^8.70" --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute integration tests
