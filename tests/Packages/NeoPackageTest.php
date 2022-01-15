@@ -7,8 +7,8 @@ use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
-use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\LocationBot;
+use RTippin\MessengerBots\Bots\NukeBot;
 use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
@@ -53,8 +53,8 @@ class NeoPackageTest extends MessengerBotsTestCase
             DocumentFinderBot::getDTO()->toArray(),
             GiphyBot::getDTO()->toArray(),
             InviteBot::getDTO()->toArray(),
-            KanyeBot::getDTO()->toArray(),
             LocationBot::getDTO()->toArray(),
+            NukeBot::getDTO()->toArray(),
             QuotableBot::getDTO()->toArray(),
             RandomImageBot::getDTO()->toArray(),
             ReactionBot::getDTO()->toArray(),

@@ -8,8 +8,8 @@ use RTippin\MessengerBots\Bots\CommandsBot;
 use RTippin\MessengerBots\Bots\DocumentFinderBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
-use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\LocationBot;
+use RTippin\MessengerBots\Bots\NukeBot;
 use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
@@ -58,12 +58,12 @@ class NeoPackage extends PackagedBot
                 'cooldown' => 120,
                 'lifetime_minutes' => 15,
             ],
-            KanyeBot::class => [
-                'match' => MessengerBots::MATCH_EXACT_CASELESS,
-                'triggers' => ['!kanye'],
-            ],
             LocationBot::class => [
                 'cooldown' => 15,
+            ],
+            NukeBot::class => [
+                'admin_only' => true,
+                'cooldown' => 0,
             ],
             QuotableBot::class => [
                 'cooldown' => 15,
