@@ -137,7 +137,7 @@ class NukeBotTest extends MessengerBotsTestCase
         $message = Message::factory()->for($thread)->owner($this->tippin)->body("!nuke $count")->create();
         $action = BotAction::factory()->for(Bot::factory()->for($thread)->owner($this->tippin)->create())->owner($this->tippin)->create();
         $nuke = MessengerBots::initializeHandler(NukeBot::class)
-            ->setDataForHandler($thread, $action, $message, "!nuke");
+            ->setDataForHandler($thread, $action, $message, '!nuke');
 
         $nuke->handle();
 
