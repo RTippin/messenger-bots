@@ -49,7 +49,7 @@ class BotIntegrations extends TestCase
 
         $this->assertTrue($giphy->ok());
         $this->assertArrayHasKey('data', $giphy->json());
-        $this->assertArrayHasKey('url',  $giphy->json('data'));
+        $this->assertArrayHasKey('url', $giphy->json('data'));
     }
 
     /** @test */
