@@ -33,7 +33,7 @@ class KanyeBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->composer()->emitTyping()->message(":bearded_person_tone5: \"{$this->getKanyeQuote()}\"");
+        $this->composer()->emitTyping()->message("🧔🏿 \"{$this->getKanyeQuote()}\"");
     }
 
     /**

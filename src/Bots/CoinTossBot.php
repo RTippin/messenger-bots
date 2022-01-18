@@ -12,8 +12,8 @@ class CoinTossBot extends BotActionHandler
      * Coins and their emojis.
      */
     const Coins = [
-        'heads' => ':cd:',
-        'tails' => ':dvd:',
+        'heads' => '💿',
+        'tails' => '📀',
     ];
 
     /**
@@ -58,7 +58,7 @@ class CoinTossBot extends BotActionHandler
     {
         $botChoice = $this->tossBotChoice();
 
-        $this->composer()->emitTyping()->message(':cd: Heads or :dvd: Tails!');
+        $this->composer()->emitTyping()->message('💿 Heads or 📀 Tails!');
 
         if (empty($userChoice)) {
             $this->composer()->message($this->getRollMessage($botChoice));

@@ -33,7 +33,7 @@ class YoMommaBot extends BotActionHandler
      */
     public function handle(): void
     {
-        $this->composer()->emitTyping()->message(":woman: {$this->getYoMomma()}");
+        $this->composer()->emitTyping()->message("👩 {$this->getYoMomma()}");
     }
 
     /**

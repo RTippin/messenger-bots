@@ -21,11 +21,10 @@ class BotIntegrations extends TestCase
     {
         $chuck = Http::acceptJson()
             ->timeout(30)
-            ->get(ChuckNorrisBot::API_ENDPOINT)
-            ->throw()
-            ->json();
+            ->get(ChuckNorrisBot::API_ENDPOINT);
 
-        $this->assertArrayHasKey('value', $chuck);
+        $this->assertTrue($chuck->ok());
+        $this->assertArrayHasKey('value', $chuck->json());
     }
 
     /** @test */
@@ -33,11 +32,10 @@ class BotIntegrations extends TestCase
     {
         $dad = Http::acceptJson()
             ->timeout(30)
-            ->get(DadJokeBot::API_ENDPOINT)
-            ->throw()
-            ->json();
+            ->get(DadJokeBot::API_ENDPOINT);
 
-        $this->assertArrayHasKey('joke', $dad);
+        $this->assertTrue($dad->ok());
+        $this->assertArrayHasKey('joke', $dad->json());
     }
 
     /** @test */
@@ -47,12 +45,11 @@ class BotIntegrations extends TestCase
             ->timeout(30)
             ->get(GiphyBot::API_ENDPOINT, [
                 'api_key' => env('GIPHY_KEY'),
-            ])
-            ->throw()
-            ->json();
+            ]);
 
-        $this->assertArrayHasKey('data', $giphy);
-        $this->assertArrayHasKey('url', $giphy['data']);
+        $this->assertTrue($giphy->ok());
+        $this->assertArrayHasKey('data', $giphy->json());
+        $this->assertArrayHasKey('url', $giphy->json('data'));
     }
 
     /** @test */
@@ -60,11 +57,10 @@ class BotIntegrations extends TestCase
     {
         $insult = Http::acceptJson()
             ->timeout(30)
-            ->get(InsultBot::API_ENDPOINT)
-            ->throw()
-            ->json();
+            ->get(InsultBot::API_ENDPOINT);
 
-        $this->assertArrayHasKey('insult', $insult);
+        $this->assertTrue($insult->ok());
+        $this->assertArrayHasKey('insult', $insult->json());
     }
 
     /** @test */
@@ -75,14 +71,13 @@ class BotIntegrations extends TestCase
             ->get(LocationBot::API_ENDPOINT_PRO.'google.com', [
                 'key' => env('IP_API_KEY'),
                 'fields' => 'status,country,regionName,city',
-            ])
-            ->throw()
-            ->json();
+            ]);
 
-        $this->assertArrayHasKey('status', $location);
-        $this->assertArrayHasKey('country', $location);
-        $this->assertArrayHasKey('regionName', $location);
-        $this->assertArrayHasKey('city', $location);
+        $this->assertTrue($location->ok());
+        $this->assertArrayHasKey('status', $location->json());
+        $this->assertArrayHasKey('country', $location->json());
+        $this->assertArrayHasKey('regionName', $location->json());
+        $this->assertArrayHasKey('city', $location->json());
     }
 
     /** @test */
@@ -90,21 +85,18 @@ class BotIntegrations extends TestCase
     {
         $quote = Http::acceptJson()
             ->timeout(30)
-            ->get(QuotableBot::API_ENDPOINT)
-            ->throw()
-            ->json();
+            ->get(QuotableBot::API_ENDPOINT);
 
-        $this->assertArrayHasKey('data', $quote);
-        $this->assertArrayHasKey('quoteText', $quote['data'][0]);
-        $this->assertArrayHasKey('quoteAuthor', $quote['data'][0]);
+        $this->assertTrue($quote->ok());
+        $this->assertArrayHasKey('data', $quote->json());
+        $this->assertArrayHasKey('quoteText', $quote->json('data')[0]);
+        $this->assertArrayHasKey('quoteAuthor', $quote->json('data')[0]);
     }
 
     /** @test */
     public function it_integrates_random_image_bot()
     {
-        $image = Http::timeout(30)
-            ->get('https://source.unsplash.com/random')
-            ->throw();
+        $image = Http::timeout(30)->get('https://source.unsplash.com/random');
 
         $this->assertTrue($image->ok());
     }
@@ -118,21 +110,20 @@ class BotIntegrations extends TestCase
                 'key' => env('WEATHER_KEY'),
                 'q' => 'Orlando',
                 'aqi' => 'no',
-            ])
-            ->throw()
-            ->json();
+            ]);
 
-        $this->assertArrayHasKey('location', $weather);
-        $this->assertArrayHasKey('current', $weather);
-        $this->assertArrayHasKey('name', $weather['location']);
-        $this->assertArrayHasKey('region', $weather['location']);
-        $this->assertArrayHasKey('country', $weather['location']);
-        $this->assertArrayHasKey('temp_f', $weather['current']);
-        $this->assertArrayHasKey('wind_mph', $weather['current']);
-        $this->assertArrayHasKey('wind_dir', $weather['current']);
-        $this->assertArrayHasKey('humidity', $weather['current']);
-        $this->assertArrayHasKey('condition', $weather['current']);
-        $this->assertArrayHasKey('text', $weather['current']['condition']);
+        $this->assertTrue($weather->ok());
+        $this->assertArrayHasKey('location', $weather->json());
+        $this->assertArrayHasKey('current', $weather->json());
+        $this->assertArrayHasKey('name', $weather->json('location'));
+        $this->assertArrayHasKey('region', $weather->json('location'));
+        $this->assertArrayHasKey('country', $weather->json('location'));
+        $this->assertArrayHasKey('temp_f', $weather->json('current'));
+        $this->assertArrayHasKey('wind_mph', $weather->json('current'));
+        $this->assertArrayHasKey('wind_dir', $weather->json('current'));
+        $this->assertArrayHasKey('humidity', $weather->json('current'));
+        $this->assertArrayHasKey('condition', $weather->json('current'));
+        $this->assertArrayHasKey('text', $weather->json('current')['condition']);
     }
 
     /** @test */
@@ -153,11 +144,10 @@ class BotIntegrations extends TestCase
                 'action' => 'opensearch',
                 'namespace' => 0,
                 'format' => 'json',
-            ])
-            ->throw()
-            ->json();
+            ]);
 
-        $this->assertSame($expects, $wiki);
+        $this->assertTrue($wiki->ok());
+        $this->assertSame($expects, $wiki->json());
     }
 
     /** @test */
@@ -171,12 +161,11 @@ class BotIntegrations extends TestCase
                 'q' => 'Rick Rolled',
                 'part' => 'id',
                 'type' => 'video',
-            ])
-            ->throw()
-            ->json();
+            ]);
 
-        $this->assertArrayHasKey('items', $youtube);
-        $this->assertArrayHasKey('id', $youtube['items'][0]);
-        $this->assertArrayHasKey('videoId', $youtube['items'][0]['id']);
+        $this->assertTrue($youtube->ok());
+        $this->assertArrayHasKey('items', $youtube->json());
+        $this->assertArrayHasKey('id', $youtube->json('items')[0]);
+        $this->assertArrayHasKey('videoId', $youtube->json('items')[0]['id']);
     }
 }

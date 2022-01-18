@@ -69,7 +69,7 @@ class InviteBot extends BotActionHandler
         );
 
         if (! is_null($invite->getInvitationRoute())) {
-            $this->composer()->message(":link: {$invite->getInvitationRoute()}");
+            $this->composer()->message("🔗 {$invite->getInvitationRoute()}");
         }
     }
 

@@ -42,7 +42,7 @@ class ChuckNorrisBot extends BotActionHandler
             return;
         }
 
-        $this->composer()->emitTyping()->message(":skull: {$quote->json('value')}");
+        $this->composer()->emitTyping()->message("💀 {$quote->json('value')}");
     }
 
     /**
