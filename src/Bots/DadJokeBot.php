@@ -42,7 +42,7 @@ class DadJokeBot extends BotActionHandler
             return;
         }
 
-        $this->composer()->emitTyping()->message(":man: {$joke->json('joke')}");
+        $this->composer()->emitTyping()->message("👨 {$joke->json('joke')}");
     }
 
     /**

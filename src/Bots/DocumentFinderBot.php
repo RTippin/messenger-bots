@@ -102,7 +102,7 @@ class DocumentFinderBot extends BotActionHandler
      */
     private function sendDocumentMessage(Message $document): void
     {
-        $this->composer()->message(":floppy_disk: $document->body - {$document->getDocumentDownloadRoute()}");
+        $this->composer()->message("💾 $document->body - {$document->getDocumentDownloadRoute()}");
     }
 
     /**
