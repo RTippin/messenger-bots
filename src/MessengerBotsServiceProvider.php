@@ -19,6 +19,7 @@ use RTippin\MessengerBots\Bots\LocationBot;
 use RTippin\MessengerBots\Bots\NukeBot;
 use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
+use RTippin\MessengerBots\Bots\ReactionBombBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\RockPaperScissorsBot;
@@ -52,6 +53,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
         NukeBot::class,
         QuotableBot::class,
         RandomImageBot::class,
+        ReactionBombBot::class,
         ReactionBot::class,
         ReplyBot::class,
         RockPaperScissorsBot::class,
