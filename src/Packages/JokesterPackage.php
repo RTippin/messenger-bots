@@ -10,6 +10,7 @@ use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
+use RTippin\MessengerBots\Bots\ReactionBombBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
@@ -71,6 +72,12 @@ class JokesterPackage extends PackagedBot
                 'cooldown' => 300,
                 'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
                 'triggers' => ['!knock', 'knock', 'ding', 'dong'],
+            ],
+            ReactionBombBot::class => [
+                'cooldown' => 300,
+                'match' => MessengerBots::MATCH_CONTAINS_CASELESS,
+                'reactions' => ['🤬', '💣'],
+                'triggers' => ['fuck'],
             ],
             ReactionBot::class => [
                 [

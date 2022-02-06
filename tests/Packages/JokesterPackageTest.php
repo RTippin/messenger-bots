@@ -9,6 +9,7 @@ use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\JokeBot;
 use RTippin\MessengerBots\Bots\KanyeBot;
 use RTippin\MessengerBots\Bots\KnockBot;
+use RTippin\MessengerBots\Bots\ReactionBombBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\ReplyBot;
 use RTippin\MessengerBots\Bots\YoMommaBot;
@@ -52,6 +53,7 @@ class JokesterPackageTest extends MessengerBotsTestCase
             JokeBot::getDTO()->toArray(),
             KanyeBot::getDTO()->toArray(),
             KnockBot::getDTO()->toArray(),
+            ReactionBombBot::getDTO()->toArray(),
             ReactionBot::getDTO()->toArray(),
             ReplyBot::getDTO()->toArray(),
             YoMommaBot::getDTO()->toArray(),
@@ -67,7 +69,7 @@ class JokesterPackageTest extends MessengerBotsTestCase
     {
         $installs = JokesterPackage::testInstalls();
 
-        $this->assertCount(14, $installs['resolved']);
+        $this->assertCount(15, $installs['resolved']);
         $this->assertCount(0, $installs['failed']);
     }
 
