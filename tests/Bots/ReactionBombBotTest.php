@@ -253,7 +253,7 @@ class ReactionBombBotTest extends MessengerBotsTestCase
                     ':nine:',
                     ':poop:',
                     ':100:',
-                ], true
+                ], true,
             ],
         ];
     }
