@@ -112,6 +112,5 @@ class NukeBot extends BotActionHandler
                     $message
             ))
         );
-
     }
 }
