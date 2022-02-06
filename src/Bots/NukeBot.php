@@ -2,6 +2,7 @@
 
 namespace RTippin\MessengerBots\Bots;
 
+use Illuminate\Support\Facades\DB;
 use RTippin\Messenger\Actions\Messages\ArchiveMessage;
 use RTippin\Messenger\Facades\Messenger;
 use RTippin\Messenger\MessengerBots;
@@ -99,7 +100,7 @@ class NukeBot extends BotActionHandler
     {
         Messenger::setScopedProvider($this->bot);
 
-        $this->thread
+        DB::transaction(fn () => $this->thread
             ->messages()
             ->nonSystem()
             ->latest()
@@ -107,8 +108,10 @@ class NukeBot extends BotActionHandler
             ->limit($count)
             ->get()
             ->each(fn (Message $message) => $this->archive->execute(
-                $this->thread,
-                $message
-            ));
+                    $this->thread,
+                    $message
+            ))
+        );
+
     }
 }
