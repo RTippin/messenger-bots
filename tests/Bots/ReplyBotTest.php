@@ -164,7 +164,7 @@ class ReplyBotTest extends MessengerBotsTestCase
             'replies' => ['We feel like 💩'],
         ]);
 
-        $this->assertSame('{"replies":["We feel like :poop:"],"quote_original":false}', $resolve->payload);
+        $this->assertSame('{"quote_original":false,"replies":["We feel like :poop:"]}', $resolve->payload);
     }
 
     /**
