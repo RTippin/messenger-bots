@@ -44,7 +44,7 @@
   - Wikipedia Bot
   - YoMomma Bot
   - YouTube Bot
-- Included Bot Packages:
+- Included Packaged Bots:
   - Games Package
   - Jokester Package
   - Neo package
@@ -165,7 +165,7 @@ class MessengerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         MessengerBots::registerHandlers([
             ChuckNorrisBot::class,
