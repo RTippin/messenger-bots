@@ -212,7 +212,7 @@ class ReplyBotTest extends MessengerBotsTestCase
         $this->assertArrayHasKey('replies', $resolve);
     }
 
-    public function passesValidation(): array
+    public static function passesValidation(): array
     {
         return [
             'True and one reply' => [true, ['1']],
@@ -223,7 +223,7 @@ class ReplyBotTest extends MessengerBotsTestCase
         ];
     }
 
-    public function failsValidation(): array
+    public static function failsValidation(): array
     {
         return [
             'Required' => [null, null],

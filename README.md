@@ -218,7 +218,7 @@ class MessengerServiceProvider extends ServiceProvider
 [ico-version]: https://img.shields.io/packagist/v/rtippin/messenger-bots.svg?style=plastic&cacheSeconds=3600
 [ico-downloads]: https://img.shields.io/packagist/dt/rtippin/messenger-bots.svg?style=plastic&cacheSeconds=3600
 [link-test]: https://github.com/RTippin/messenger-bots/actions
-[ico-test]: https://img.shields.io/github/workflow/status/rtippin/messenger-bots/tests?style=plastic
+[ico-test]: https://img.shields.io/github/actions/workflow/status/rtippin/messenger-bots/test.yml?branch=master&style=plastic
 [ico-styleci]: https://styleci.io/repos/371539005/shield?style=plastic&cacheSeconds=3600
 [ico-license]: https://img.shields.io/github/license/RTippin/messenger-bots?style=plastic
 [link-packagist]: https://packagist.org/packages/rtippin/messenger-bots

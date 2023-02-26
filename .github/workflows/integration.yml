@@ -6,7 +6,7 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     name: Integrations
 
@@ -17,7 +17,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
           tools: composer:v2
           coverage: none
 
@@ -32,4 +32,4 @@ jobs:
           IP_API_KEY: ${{ secrets.IP_API_KEY }}
           WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
           YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
-        run: vendor/bin/phpunit --verbose --testsuite integration
+        run: vendor/bin/phpunit --testsuite integration
