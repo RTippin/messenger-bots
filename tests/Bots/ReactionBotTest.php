@@ -163,7 +163,7 @@ class ReactionBotTest extends MessengerBotsTestCase
         $this->assertArrayHasKey('reaction', $resolve);
     }
 
-    public function passesEmojiValidation(): array
+    public static function passesEmojiValidation(): array
     {
         return [
             'Basic emoji shortcode' => [':poop:'],
@@ -176,7 +176,7 @@ class ReactionBotTest extends MessengerBotsTestCase
         ];
     }
 
-    public function failsEmojiValidation(): array
+    public static function failsEmojiValidation(): array
     {
         return [
             'Unknown emoji shortcode' => [':unknown:'],

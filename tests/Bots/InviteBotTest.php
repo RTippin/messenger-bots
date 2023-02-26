@@ -218,7 +218,7 @@ class InviteBotTest extends MessengerBotsTestCase
         $this->assertArrayHasKey('lifetime_minutes', $resolve);
     }
 
-    public function passesLifetimeValidation(): array
+    public static function passesLifetimeValidation(): array
     {
         return [
             'Nullable' => [null],
@@ -227,7 +227,7 @@ class InviteBotTest extends MessengerBotsTestCase
         ];
     }
 
-    public function failsLifetimeValidation(): array
+    public static function failsLifetimeValidation(): array
     {
         return [
             'Boolean' => [false],

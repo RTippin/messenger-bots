@@ -228,7 +228,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         $this->assertArrayHasKey('limit', $resolve);
     }
 
-    public function passesLimitValidation(): array
+    public static function passesLimitValidation(): array
     {
         return [
             'Nullable' => [null],
@@ -237,7 +237,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
         ];
     }
 
-    public function failLimitValidation(): array
+    public static function failLimitValidation(): array
     {
         return [
             'Boolean' => [false],

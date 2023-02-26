@@ -202,7 +202,7 @@ class WikiBotTest extends MessengerBotsTestCase
         $this->assertArrayHasKey('limit', $resolve);
     }
 
-    public function passesLimitValidation(): array
+    public static function passesLimitValidation(): array
     {
         return [
             'Nullable' => [null],
@@ -211,7 +211,7 @@ class WikiBotTest extends MessengerBotsTestCase
         ];
     }
 
-    public function failsLimitValidation(): array
+    public static function failsLimitValidation(): array
     {
         return [
             'Boolean' => [false],

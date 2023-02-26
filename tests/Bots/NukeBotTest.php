@@ -171,7 +171,7 @@ class NukeBotTest extends MessengerBotsTestCase
         Event::assertDispatched(MessageArchivedEvent::class);
     }
 
-    public function failsNukeCount(): array
+    public static function failsNukeCount(): array
     {
         return [
             'Invalid count' => ['unknown'],
