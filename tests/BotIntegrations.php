@@ -9,7 +9,6 @@ use RTippin\MessengerBots\Bots\DadJokeBot;
 use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InsultBot;
 use RTippin\MessengerBots\Bots\LocationBot;
-use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\WeatherBot;
 use RTippin\MessengerBots\Bots\WikiBot;
 use RTippin\MessengerBots\Bots\YoutubeBot;
@@ -99,23 +98,6 @@ class BotIntegrations extends TestCase
         $this->assertArrayHasKey('country', $location->json());
         $this->assertArrayHasKey('regionName', $location->json());
         $this->assertArrayHasKey('city', $location->json());
-    }
-
-    /** @test */
-    public function it_integrates_quotable_bot()
-    {
-        try {
-            $quote = Http::acceptJson()
-                ->timeout(30)
-                ->get(QuotableBot::API_ENDPOINT);
-        } catch (Throwable) {
-            $this->fail('Quote HTTP Failed.');
-        }
-
-        $this->assertTrue($quote->ok());
-        $this->assertArrayHasKey('data', $quote->json());
-        $this->assertArrayHasKey('quoteText', $quote->json('data')[0]);
-        $this->assertArrayHasKey('quoteAuthor', $quote->json('data')[0]);
     }
 
     /** @test */
