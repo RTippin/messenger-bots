@@ -10,7 +10,6 @@ use RTippin\MessengerBots\Bots\GiphyBot;
 use RTippin\MessengerBots\Bots\InviteBot;
 use RTippin\MessengerBots\Bots\LocationBot;
 use RTippin\MessengerBots\Bots\NukeBot;
-use RTippin\MessengerBots\Bots\QuotableBot;
 use RTippin\MessengerBots\Bots\RandomImageBot;
 use RTippin\MessengerBots\Bots\ReactionBot;
 use RTippin\MessengerBots\Bots\WeatherBot;
@@ -64,9 +63,6 @@ class NeoPackage extends PackagedBot
             NukeBot::class => [
                 'admin_only' => true,
                 'cooldown' => 0,
-            ],
-            QuotableBot::class => [
-                'cooldown' => 15,
             ],
             RandomImageBot::class => [
                 'cooldown' => 60,

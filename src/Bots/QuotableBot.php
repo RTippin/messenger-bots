@@ -8,6 +8,9 @@ use RTippin\Messenger\MessengerBots;
 use RTippin\Messenger\Support\BotActionHandler;
 use Throwable;
 
+/**
+ * @deprecated Quotes API no longer available.
+ */
 class QuotableBot extends BotActionHandler
 {
     /**

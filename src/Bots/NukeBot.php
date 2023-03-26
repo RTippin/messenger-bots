@@ -108,8 +108,8 @@ class NukeBot extends BotActionHandler
             ->limit($count)
             ->get()
             ->each(fn (Message $message) => $this->archive->execute(
-                    $this->thread,
-                    $message
+                $this->thread,
+                $message
             ))
         );
     }
