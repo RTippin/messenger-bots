@@ -64,9 +64,6 @@ class NeoPackage extends PackagedBot
                 'admin_only' => true,
                 'cooldown' => 0,
             ],
-            //            QuotableBot::class => [
-            //                'cooldown' => 15,
-            //            ],
             RandomImageBot::class => [
                 'cooldown' => 60,
                 'match' => MessengerBots::MATCH_EXACT_CASELESS,
