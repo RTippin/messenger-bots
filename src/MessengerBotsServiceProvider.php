@@ -50,7 +50,7 @@ class MessengerBotsServiceProvider extends ServiceProvider
         KnockBot::class,
         LocationBot::class,
         NukeBot::class,
-//        QuotableBot::class,
+        //        QuotableBot::class,
         RandomImageBot::class,
         ReactionBombBot::class,
         ReactionBot::class,

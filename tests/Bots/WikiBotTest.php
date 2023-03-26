@@ -164,6 +164,7 @@ class WikiBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider passesLimitValidation
      *
      * @param $limit
@@ -186,6 +187,7 @@ class WikiBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failsLimitValidation
      *
      * @param $limit

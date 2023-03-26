@@ -127,6 +127,7 @@ class NukeBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failsNukeCount
      *
      * @param $count
