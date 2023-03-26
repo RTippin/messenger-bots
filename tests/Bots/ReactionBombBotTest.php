@@ -163,6 +163,7 @@ class ReactionBombBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider passesEmojiValidation
      *
      * @param $reactions
@@ -183,6 +184,7 @@ class ReactionBombBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failsEmojiValidation
      *
      * @param $reactions

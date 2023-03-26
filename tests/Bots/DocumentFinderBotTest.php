@@ -190,6 +190,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider passesLimitValidation
      *
      * @param $limit
@@ -212,6 +213,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failLimitValidation
      *
      * @param $limit

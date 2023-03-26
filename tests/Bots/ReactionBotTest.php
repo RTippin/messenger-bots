@@ -125,6 +125,7 @@ class ReactionBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider passesEmojiValidation
      *
      * @param $reaction
@@ -145,6 +146,7 @@ class ReactionBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failsEmojiValidation
      *
      * @param $reaction

@@ -180,6 +180,7 @@ class InviteBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider passesLifetimeValidation
      *
      * @param $minutes
@@ -202,6 +203,7 @@ class InviteBotTest extends MessengerBotsTestCase
 
     /**
      * @test
+     *
      * @dataProvider failsLifetimeValidation
      *
      * @param $minutes
