@@ -130,7 +130,7 @@ class NukeBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failsNukeCount
      *
-     * @param $count
+     * @param  $count
      */
     public function it_stores_invalid_count_message_and_releases_cooldown($count)
     {
