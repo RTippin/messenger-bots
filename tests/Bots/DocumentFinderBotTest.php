@@ -193,7 +193,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
      *
      * @dataProvider passesLimitValidation
      *
-     * @param $limit
+     * @param  $limit
      */
     public function it_passes_resolving_params($limit)
     {
@@ -216,7 +216,7 @@ class DocumentFinderBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failLimitValidation
      *
-     * @param $limit
+     * @param  $limit
      */
     public function it_fails_resolving_params($limit)
     {

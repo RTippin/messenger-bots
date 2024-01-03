@@ -183,7 +183,7 @@ class InviteBotTest extends MessengerBotsTestCase
      *
      * @dataProvider passesLifetimeValidation
      *
-     * @param $minutes
+     * @param  $minutes
      */
     public function it_passes_resolving_params($minutes)
     {
@@ -206,7 +206,7 @@ class InviteBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failsLifetimeValidation
      *
-     * @param $minutes
+     * @param  $minutes
      */
     public function it_fails_resolving_params($minutes)
     {

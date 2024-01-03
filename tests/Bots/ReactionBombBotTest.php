@@ -166,7 +166,7 @@ class ReactionBombBotTest extends MessengerBotsTestCase
      *
      * @dataProvider passesEmojiValidation
      *
-     * @param $reactions
+     * @param  $reactions
      */
     public function it_passes_resolving_params($reactions)
     {
@@ -187,7 +187,7 @@ class ReactionBombBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failsEmojiValidation
      *
-     * @param $reactions
+     * @param  $reactions
      */
     public function it_fails_resolving_params($reactions, $limitTest = false)
     {

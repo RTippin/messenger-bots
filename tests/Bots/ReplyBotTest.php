@@ -172,8 +172,8 @@ class ReplyBotTest extends MessengerBotsTestCase
      *
      * @dataProvider passesValidation
      *
-     * @param $quote
-     * @param $replies
+     * @param  $quote
+     * @param  $replies
      */
     public function it_passes_resolving_params($quote, $replies)
     {
@@ -195,8 +195,8 @@ class ReplyBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failsValidation
      *
-     * @param $quote
-     * @param $replies
+     * @param  $quote
+     * @param  $replies
      */
     public function it_fails_resolving_params($quote, $replies)
     {

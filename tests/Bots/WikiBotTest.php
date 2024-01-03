@@ -167,7 +167,7 @@ class WikiBotTest extends MessengerBotsTestCase
      *
      * @dataProvider passesLimitValidation
      *
-     * @param $limit
+     * @param  $limit
      */
     public function it_passes_resolving_params($limit)
     {
@@ -190,7 +190,7 @@ class WikiBotTest extends MessengerBotsTestCase
      *
      * @dataProvider failsLimitValidation
      *
-     * @param $limit
+     * @param  $limit
      */
     public function it_fails_resolving_params($limit)
     {
