@@ -13,17 +13,17 @@
     "keywords": [
         "Laravel",
         "Messenger",
-        "Faker"
+        "Bots"
     ],
     "require": {
-        "php": "^8.2|^8.3",
+        "php": "^8.2|^8.3|^8.4",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.3",
-        "rtippin/messenger": "^1.23"
+        "rtippin/messenger": "^1.24"
     },
     "require-dev": {
-        "phpunit/phpunit": "~9.0|^10.0",
-        "orchestra/testbench": "~7|^8.0|^9.0"
+        "phpunit/phpunit": "^10.0|^11.5.3",
+        "orchestra/testbench": "^9.0|^10.0"
     },
     "autoload": {
         "psr-4": {
